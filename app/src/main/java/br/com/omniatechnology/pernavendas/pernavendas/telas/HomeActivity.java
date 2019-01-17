@@ -1,4 +1,4 @@
-package br.com.omniatechnology.pernavendas.pernavendas.views;
+package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,11 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    ImageButton imgVendas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class HomeActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+        imgVendas = findViewById(R.id.img_vendas);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

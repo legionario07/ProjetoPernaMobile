@@ -6,13 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
-import br.com.omniatechnology.pernavendas.pernavendas.api.Presenter.ILoginPresenter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.Presenter.LoginPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ILoginPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.LoginPresenter;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView, View.OnClickListener {
 

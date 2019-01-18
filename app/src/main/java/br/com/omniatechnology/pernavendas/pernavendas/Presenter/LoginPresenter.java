@@ -1,8 +1,7 @@
-package br.com.omniatechnology.pernavendas.pernavendas.api.Presenter;
+package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;

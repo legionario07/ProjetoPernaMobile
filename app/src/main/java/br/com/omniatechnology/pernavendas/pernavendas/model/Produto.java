@@ -1,10 +1,20 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.widget.Toast;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-public class Produto implements Serializable {
+import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IProduto;
+
+public class Produto implements Serializable, IProduto {
 
 	/**
 	 * 
@@ -164,5 +174,38 @@ public class Produto implements Serializable {
 			qtde = qtde - valorADecrementar;
 		}
 	}
+
+	@Override
+	public boolean create() {
+		return true;
+	}
+
+	@Override
+	public boolean delete() {
+		return true;
+	}
+
+	@Override
+	public boolean update() {
+		return true;
+	}
+
+	@Override
+	public Produto findById() {
+
+		return null;
+	}
+
+    @Override
+    public String isValid(Context context) {
+	    StringBuilder retorno = new StringBuilder();
+         if(TextUtils.isEmpty(getNome())){
+
+             retorno.append(context.getResources().getString(R.string.nome_vazio));
+        }
+
+        return retorno.toString();
+    }
+
 
 }

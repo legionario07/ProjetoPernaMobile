@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -19,7 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageButton imgVendas;
+    Button imgVendas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

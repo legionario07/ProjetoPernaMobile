@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@drawable/gradient"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".telas.HomeActivity"
     tools:showIn="@layout/app_bar_home">
@@ -12,27 +12,18 @@
    <LinearLayout
       android:layout_centerInParent="true"
        android:orientation="vertical"
+       android:gravity="center"
+       android:background="@android:color/transparent"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
 
+       <Button
 
-       <ImageButton
-           android:padding="20dp"
-           android:layout_marginLeft="20dp"
-           android:layout_marginRight="20dp"
-           android:src="@drawable/ic_local_drink_black_24dp"
+           android:text="@string/vender"
            android:id="@+id/img_vendas"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
-       <TextView
-           android:text="Vendas"
-           android:textAlignment="center"
            android:textStyle="bold"
-           android:textSize="15dp"
-           android:textColor="#ffffff"
-           android:layout_marginLeft="20dp"
-           android:layout_marginRight="20dp"
-           android:layout_width="match_parent"
+           android:drawableStart="@drawable/baseline_shopping_cart_black_48"
+           android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
 
 

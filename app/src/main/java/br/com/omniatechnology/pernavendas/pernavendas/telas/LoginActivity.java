@@ -1,5 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
+import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +16,11 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.Presenter.LoginPresent
 
 public class LoginActivity extends AppCompatActivity implements ILoginView, View.OnClickListener {
 
-    EditText inp_usuario;
-    EditText inp_senha;
+
     Button btn_login;
+
+    TextInputLayout usuarioWrapper;
+    TextInputLayout senhaWrapper;
 
     ILoginPresenter loginPresenter;
 
@@ -25,13 +29,14 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        inp_usuario = findViewById(R.id.inp_usuario);
-        inp_senha = findViewById(R.id.inp_senha);
         btn_login = findViewById(R.id.btn_login);
 
+        usuarioWrapper = findViewById(R.id.usuarioWrapper);
+        senhaWrapper = findViewById(R.id.senhaWrapper);
+
         loginPresenter = new LoginPresenter(this);
-        ((LoginPresenter) loginPresenter).addSenhaTextWatcher(inp_senha);
-        ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(inp_usuario);
+        ((LoginPresenter) loginPresenter).addSenhaTextWatcher(usuarioWrapper.getEditText());
+        ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(senhaWrapper.getEditText());
 
         btn_login.setOnClickListener(this);
 
@@ -40,6 +45,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     @Override
     public void OnLoginResultSucess() {
         Toast.makeText(this, getResources().getString(R.string.login_sucess),Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, HomeActivity.class));
+
     }
 
     @Override

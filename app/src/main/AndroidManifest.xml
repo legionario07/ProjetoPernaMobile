@@ -29,6 +29,7 @@
 
 
         </activity>
+        <activity android:name=".telas.NewProdutoActivity" />
     </application>
 
 </manifest>

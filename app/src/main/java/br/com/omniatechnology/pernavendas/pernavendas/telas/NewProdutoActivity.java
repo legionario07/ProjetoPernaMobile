@@ -1,17 +1,22 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IProdutoView.INewProdutoView;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class NewProdutoActivity extends AppCompatActivity implements INewProdutoView, View.OnClickListener {
 
@@ -39,13 +44,13 @@ public class NewProdutoActivity extends AppCompatActivity implements INewProduto
     }
 
     @Override
-    public void onCreateSucess() {
-        Toast.makeText(this, "Criado com Sucesso",Toast.LENGTH_LONG).show();
+    public void onCreateSuccess() {
+        Toast.makeText(this, getResources().getString(R.string.save_success) ,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onCreateError(String message) {
-        Toast.makeText(this, message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, LENGTH_LONG).show();
     }
 
     @Override
@@ -54,7 +59,13 @@ public class NewProdutoActivity extends AppCompatActivity implements INewProduto
         switch (v.getId()){
             case R.id.btn_save:
 
+                ProgressDialog progressDialog  =new ProgressDialog(this);
+                progressDialog.setMessage("Processando");
+                progressDialog.show();
+
                 produtoPresenter.onCreate();
+
+                progressDialog.dismiss();
 
                 break;
 

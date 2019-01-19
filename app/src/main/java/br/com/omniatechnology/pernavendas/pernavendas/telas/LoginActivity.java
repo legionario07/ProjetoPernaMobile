@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     }
 
     @Override
-    public void OnLoginResultSucess() {
+    public void OnLoginResultSuccess() {
         Toast.makeText(this, getResources().getString(R.string.login_sucess),Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, HomeActivity.class));
 

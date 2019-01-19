@@ -12,5 +12,7 @@
     <string name="usuario">Usuário</string>
     <string name="senha">Senha</string>
     <string name="vender">Vender</string>
-    <string name="nome_vazio">O nome não pode estar vazio</string>
+    <string name="nome_vazio">O Nome do Produto não pode estar vazio</string>
+    <string name="error_operacao">Não foi possível completar a operação</string>
+    <string name="save_success">Salvo com Sucesso</string>
 </resources>

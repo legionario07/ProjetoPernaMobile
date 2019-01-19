@@ -5,14 +5,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.concurrent.ExecutionException;
+
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IProdutoView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 public class ProdutoPresenter implements IProdutoPresenter {
 
     IProdutoView.INewProdutoView produtoView;
-    private ProdutoServiceImpl produtoService;
     private Context context;
     Produto produto;
 
@@ -35,17 +40,32 @@ public class ProdutoPresenter implements IProdutoPresenter {
 
         String retornoStr = produto.isValid(context);
 
-        if(retornoStr.length()>1)
+        Boolean isSave = false;
+
+        if (retornoStr.length() > 1)
             produtoView.onCreateError(retornoStr);
         else {
 
-            produtoView.onCreateSucess();
+            GenericDAO genericDAO = new GenericDAO();
+
+            try {
+                isSave = genericDAO.execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isSave)
+                produtoView.onCreateSucess();
+            else
+                produtoView.onCreateError(context.getResources().getString(R.string.error_operacao));
 
         }
 
     }
 
-    public void addTextWatcherNomeProduto(final EditText editText){
+    public void addTextWatcherNomeProduto(final EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,7 +84,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
         });
     }
 
-    public void addTextWatcherQtdeProduto(final EditText editText){
+    public void addTextWatcherQtdeProduto(final EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -79,6 +99,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 produto.setQtde(Integer.valueOf(s.toString()));
+                ViewUtils.hideKeyboard(context, editText);
             }
         });
     }

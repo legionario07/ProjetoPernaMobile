@@ -4,7 +4,7 @@ public interface IProdutoView {
 
     interface INewProdutoView{
 
-        void onCreateSucess();
+        void onCreateSuccess();
         void onCreateError(String message);
 
 

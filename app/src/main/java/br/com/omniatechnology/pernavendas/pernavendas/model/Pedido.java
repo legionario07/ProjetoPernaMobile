@@ -20,6 +20,7 @@ public class Pedido implements Serializable, IPedido {
 	private BigDecimal valorTotal;
 	private Produto produto;
 	private Integer total;
+	private BigDecimal desconto;
 
 	
 	
@@ -79,4 +80,11 @@ public class Pedido implements Serializable, IPedido {
 		return retorno.toString();
 	}
 
+    public BigDecimal getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(BigDecimal desconto) {
+        this.desconto = desconto;
+    }
 }

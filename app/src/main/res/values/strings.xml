@@ -11,4 +11,6 @@
     <string name="login_error">Não foi Possível realizar o Login</string>
     <string name="usuario">Usuário</string>
     <string name="senha">Senha</string>
+    <string name="vender">Vender</string>
+    <string name="nome_vazio">O nome não pode estar vazio</string>
 </resources>

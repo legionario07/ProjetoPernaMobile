@@ -9,8 +9,8 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/inp_layout_nome_produto"
-        android:layout_below="@id/inp_nome_produto"
+        android:id="@+id/inp_layout_tipo_unidade_de_medida"
+        android:layout_below="@id/inp_tipo_unidade_de_medida"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,31 +18,14 @@
         <EditText
             android:inputType="text"
             android:padding="10dp"
-            android:hint="@string/nome"
-            android:id="@+id/inp_nome_produto"
+            android:hint="@string/unidade_de_medida_ex_litros"
+            android:id="@+id/inp_tipo_unidade_de_medida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/inp_layout_qtde_produto"
-        android:layout_below="@id/inp_qtde_produto"
-        android:layout_marginTop="10dp"
-        android:hint="@string/quantidade"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:padding="10dp"
-            android:inputType="number"
-            android:id="@+id/inp_qtde_produto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-    </android.support.design.widget.TextInputLayout>
 
     <ImageButton
         android:src="@drawable/ic_save_black_24dp"

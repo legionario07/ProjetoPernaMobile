@@ -9,35 +9,32 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUnidadeDeMedidaPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UnidadeDeMedidaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class NewProdutoActivity extends AppCompatActivity implements IModelView.IProdutoView, View.OnClickListener {
+public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IModelView.IUnidadeDeMedidaView, View.OnClickListener {
 
-    TextInputLayout inpNomeProduto;
-    TextInputLayout inpQtdeProduto;
+    TextInputLayout inpTipoUnidadeDeMedida;
     ImageButton btnSave;
 
-    IProdutoPresenter produtoPresenter;
+    IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
 
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_produto_activity);
+        setContentView(R.layout.new_unidade_de_medida_activity);
 
-        inpNomeProduto = findViewById(R.id.inp_layout_nome_produto);
-        inpQtdeProduto = findViewById(R.id.inp_layout_qtde_produto);
+        inpTipoUnidadeDeMedida = findViewById(R.id.inp_layout_tipo_unidade_de_medida);
         btnSave = findViewById(R.id.btn_save);
 
-        produtoPresenter = new ProdutoPresenter(this, this);
-        ((ProdutoPresenter) produtoPresenter).addTextWatcherNomeProduto(inpNomeProduto.getEditText());
-        ((ProdutoPresenter) produtoPresenter).addTextWatcherQtdeProduto(inpQtdeProduto.getEditText());
+        unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this);
+        ((UnidadeDeMedidaPresenter) unidadeDeMedidaPresenter).addTextWatcherTipoUnidadeDeMedida(inpTipoUnidadeDeMedida.getEditText());
 
         btnSave.setOnClickListener(this);
 
@@ -61,7 +58,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
                 showProgressDialog(getResources().getString(R.string.processando));
 
-                produtoPresenter.onCreate();
+                unidadeDeMedidaPresenter.onCreate();
 
                 progressDialog.dismiss();
 

@@ -1,7 +1,4 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
-public interface IProdutoPresenter extends IModelPresenter{
-
-
-
+public interface IUnidadeDeMedidaPresenter extends IModelPresenter {
 }

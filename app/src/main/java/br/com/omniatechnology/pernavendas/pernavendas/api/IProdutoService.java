@@ -23,13 +23,13 @@ public interface IProdutoService{
     Call<List<Produto>> findAll();
 
     @GET(FIND_BY_ID)
-    Call<Produto> findById(@Query("id") Integer id);
+    Call<Produto> findById(@Query("id") Long id);
 
     @POST(SAVE)
     Call<Produto> save(@Body Produto Produto);
 
     @DELETE(DELETE)
-    Call<Boolean> delete(@Query("id") Integer id);
+    Call<Boolean> delete(@Query("id") Long id);
 
     @POST(LOGIN)
     Call<Produto> login(@Body Produto Produto);

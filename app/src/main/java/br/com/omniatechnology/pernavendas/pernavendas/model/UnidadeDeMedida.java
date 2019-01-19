@@ -1,8 +1,14 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.content.Context;
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
-public class UnidadeDeMedida implements Serializable{
+import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IUnidadeDeMedida;
+
+public class UnidadeDeMedida implements IUnidadeDeMedida, Serializable{
 
 	/**
 	 * 
@@ -72,4 +78,14 @@ public class UnidadeDeMedida implements Serializable{
 		return true;
 	}
 
+	@Override
+	public String isValid(Context context) {
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getTipo())){
+
+			retorno.append(context.getResources().getString(R.string.tipo_vazio));
+		}
+
+		return retorno.toString();
+	}
 }

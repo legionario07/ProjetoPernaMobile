@@ -10,47 +10,47 @@ import java.util.concurrent.ExecutionException;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class ProdutoPresenter implements IProdutoPresenter {
+public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
 
-    IModelView.IProdutoView produtoView;
+    IModelView.IUnidadeDeMedidaView unidadeDeMedidaView;
     private Context context;
-    Produto produto;
+    UnidadeDeMedida unidadeDeMedida;
 
-    public ProdutoPresenter() {
-        produto = new Produto();
+    public UnidadeDeMedidaPresenter() {
+        unidadeDeMedida = new UnidadeDeMedida();
     }
 
-    public ProdutoPresenter(IModelView.IProdutoView produtoView) {
-        this.produtoView = produtoView;
+    public UnidadeDeMedidaPresenter(IModelView.IUnidadeDeMedidaView unidadeDeMedidaView) {
+        this.unidadeDeMedidaView = unidadeDeMedidaView;
     }
 
-    public ProdutoPresenter(IModelView.IProdutoView produtoView, Context context) {
+    public UnidadeDeMedidaPresenter(IModelView.IUnidadeDeMedidaView unidadeDeMedidaView, Context context) {
         this();
-        this.produtoView = produtoView;
+        this.unidadeDeMedidaView = unidadeDeMedidaView;
         this.context = context;
     }
 
-
+    
     @Override
     public void onCreate() {
 
-        String retornoStr = produto.isValid(context);
+        String retornoStr = unidadeDeMedida.isValid(context);
 
         Boolean isSave = false;
 
         if (retornoStr.length() > 1)
-            produtoView.onCreateError(retornoStr);
+            unidadeDeMedidaView.onCreateError(retornoStr);
         else {
 
             GenericDAO genericDAO = new GenericDAO();
 
             try {
-                isSave = genericDAO.execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl()).get();
+                isSave = genericDAO.execute(unidadeDeMedida, ConstraintUtils.SALVAR, new UnidadeDeMedidaServiceImpl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -58,15 +58,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
             }
 
             if (isSave)
-                produtoView.onCreateSuccess();
+                unidadeDeMedidaView.onCreateSuccess();
             else
-                produtoView.onCreateError(context.getResources().getString(R.string.error_operacao));
+                unidadeDeMedidaView.onCreateError(context.getResources().getString(R.string.error_operacao));
 
         }
 
     }
 
-    public void addTextWatcherNomeProduto(final EditText editText) {
+    public void addTextWatcherTipoUnidadeDeMedida(final EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,29 +80,11 @@ public class ProdutoPresenter implements IProdutoPresenter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setNome(s.toString());
-            }
-        });
-    }
-
-    public void addTextWatcherQtdeProduto(final EditText editText) {
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                produto.setQtde(Integer.valueOf(s.toString()));
+                unidadeDeMedida.setTipo(s.toString());
                 ViewUtils.hideKeyboard(context, editText);
             }
         });
     }
+
 
 }

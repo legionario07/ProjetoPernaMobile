@@ -40,7 +40,7 @@ public class Produto implements Serializable, IProduto {
 		this();
 		this.id = id;
 	}
-	
+
 	public Produto() {
 		//Por Default o produto inicia-se como Ativo no cadastro
 		this.isAtivo = true;
@@ -175,26 +175,7 @@ public class Produto implements Serializable, IProduto {
 		}
 	}
 
-	@Override
-	public boolean create() {
-		return true;
-	}
 
-	@Override
-	public boolean delete() {
-		return true;
-	}
-
-	@Override
-	public boolean update() {
-		return true;
-	}
-
-	@Override
-	public Produto findById() {
-
-		return null;
-	}
 
     @Override
     public String isValid(Context context) {

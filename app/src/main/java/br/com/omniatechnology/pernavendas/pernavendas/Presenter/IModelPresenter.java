@@ -1,7 +1,6 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
-public interface IProdutoPresenter extends IModelPresenter{
+public interface IModelPresenter {
 
-
-
+    void onCreate();
 }

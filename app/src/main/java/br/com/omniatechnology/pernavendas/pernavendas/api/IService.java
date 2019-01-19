@@ -1,10 +1,16 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 
-public interface IService extends Serializable {
+public interface IService<T extends IModel> extends Serializable {
 
-    boolean save(IModel model);
+    IModel findById(Long id) throws IOException;
+    List<T> findAll() throws IOException;
+    boolean save(T model);
+    boolean delete(Long id) throws IOException;
+    boolean update(Long id) throws IOException;
 }

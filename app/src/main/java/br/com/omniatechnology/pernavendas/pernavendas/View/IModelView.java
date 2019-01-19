@@ -2,8 +2,8 @@ package br.com.omniatechnology.pernavendas.pernavendas.View;
 
 public interface IModelView {
 
-    void onCreateSuccess();
-    void onCreateError(String message);
+    void onMessageSuccess(String message);
+    void onMessageError(String message);
 
 
     interface IProdutoView extends IModelView{

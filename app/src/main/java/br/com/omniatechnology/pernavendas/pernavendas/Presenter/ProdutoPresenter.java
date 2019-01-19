@@ -20,9 +20,12 @@ public class ProdutoPresenter implements IProdutoPresenter {
     IModelView.IProdutoView produtoView;
     private Context context;
     Produto produto;
+    private GenericDAO genericDAO;
+    private Boolean isSave;
 
     public ProdutoPresenter() {
         produto = new Produto();
+        genericDAO = new GenericDAO();
     }
 
     public ProdutoPresenter(IModelView.IProdutoView produtoView) {
@@ -41,16 +44,16 @@ public class ProdutoPresenter implements IProdutoPresenter {
 
         String retornoStr = produto.isValid(context);
 
-        Boolean isSave = false;
+
 
         if (retornoStr.length() > 1)
-            produtoView.onCreateError(retornoStr);
+            produtoView.onMessageError(retornoStr);
         else {
 
-            GenericDAO genericDAO = new GenericDAO();
+
 
             try {
-                isSave = genericDAO.execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl()).get();
+                isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -58,11 +61,56 @@ public class ProdutoPresenter implements IProdutoPresenter {
             }
 
             if (isSave)
-                produtoView.onCreateSuccess();
+                produtoView.onMessageSuccess(context.getResources().getString(R.string.save_success));
             else
-                produtoView.onCreateError(context.getResources().getString(R.string.error_operacao));
+                produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
+
+    }
+
+    @Override
+    public void onDelete() {
+        try {
+            isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.DELETAR, new ProdutoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(isSave)
+            produtoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+        else
+            produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+    }
+
+    @Override
+    public void onUpdate() {
+
+        try {
+            isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.EDITAR, new ProdutoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(isSave)
+            produtoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+        else
+            produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+    }
+
+    @Override
+    public void findById() {
+
+    }
+
+    @Override
+    public void findAll() {
 
     }
 

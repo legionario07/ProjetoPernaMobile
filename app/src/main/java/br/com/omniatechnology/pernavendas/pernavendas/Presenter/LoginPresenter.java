@@ -63,7 +63,7 @@ public class LoginPresenter implements ILoginPresenter {
         boolean isLoginSucess = usuario.isValidLogin();
 
         if(isLoginSucess)
-            loginView.OnLoginResultSucess();
+            loginView.OnLoginResultSuccess();
         else
             loginView.OnLoginResultError();
 

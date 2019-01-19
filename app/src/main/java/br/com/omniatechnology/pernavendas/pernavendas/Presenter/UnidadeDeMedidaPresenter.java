@@ -44,13 +44,13 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
         Boolean isSave = false;
 
         if (retornoStr.length() > 1)
-            unidadeDeMedidaView.onCreateError(retornoStr);
+            unidadeDeMedidaView.onMessageError(retornoStr);
         else {
 
             GenericDAO genericDAO = new GenericDAO();
 
             try {
-                isSave = genericDAO.execute(unidadeDeMedida, ConstraintUtils.SALVAR, new UnidadeDeMedidaServiceImpl()).get();
+                isSave = (Boolean) genericDAO.execute(unidadeDeMedida, ConstraintUtils.SALVAR, new UnidadeDeMedidaServiceImpl()).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -58,11 +58,31 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
             }
 
             if (isSave)
-                unidadeDeMedidaView.onCreateSuccess();
+                unidadeDeMedidaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
             else
-                unidadeDeMedidaView.onCreateError(context.getResources().getString(R.string.error_operacao));
+                unidadeDeMedidaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
+
+    }
+
+    @Override
+    public void onDelete() {
+
+    }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    @Override
+    public void findById() {
+
+    }
+
+    @Override
+    public void findAll() {
 
     }
 

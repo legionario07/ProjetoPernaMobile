@@ -44,12 +44,12 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     }
 
     @Override
-    public void onCreateSuccess() {
-        Toast.makeText(this, getResources().getString(R.string.save_success) ,Toast.LENGTH_LONG).show();
+    public void onMessageSuccess(String message) {
+        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onCreateError(String message) {
+    public void onMessageError(String message) {
         Toast.makeText(this, message, LENGTH_LONG).show();
     }
 

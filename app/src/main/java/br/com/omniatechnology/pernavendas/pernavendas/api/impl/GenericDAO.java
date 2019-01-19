@@ -2,16 +2,14 @@ package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
 import android.os.AsyncTask;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
-import retrofit2.Retrofit;
 
-public class GenericDAO extends AsyncTask<Serializable, IService, Boolean> {
-
-    private Retrofit retrofit;
+public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> {
 
 
     public GenericDAO(){
@@ -27,25 +25,54 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Serializable... serializables) {
+    protected Serializable doInBackground(Serializable... serializables) {
 
-        IModel model = (IModel) serializables[0];
         String OPCAO = (String) serializables[1];
         IService service = (IService) serializables[2];
 
 
         if(ConstraintUtils.SALVAR.equals(OPCAO)){
-            if(service.save(model))
+            if(service.save((IModel) serializables[0]))
                 return true;
             else
                 return false;
+        }else if(ConstraintUtils.DELETAR.equals(OPCAO)){
+
+            try {
+                return service.delete((Long) serializables[0]);
+            } catch (IOException e) {
+                return false;
+            }
+
+        }else if(ConstraintUtils.EDITAR.equals(OPCAO)){
+
+            try {
+                return service.update((Long) serializables[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else if(ConstraintUtils.FIND_ALL.equals(OPCAO)){
+
+            try {
+                return (Serializable) service.findAll();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else if(ConstraintUtils.FIND_BY_ID.equals(OPCAO)){
+            try {
+                return (Serializable) service.findById((Long) serializables[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return false;
     }
 
     @Override
-    protected void onPostExecute(Boolean s) {
+    protected void onPostExecute(Serializable s) {
         super.onPostExecute(s);
     }
 }

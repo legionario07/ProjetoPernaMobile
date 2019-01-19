@@ -8,4 +8,5 @@ public class ConstraintUtils {
     public static final String DELETAR = "DELETAR";
     public static final String FIND_ALL = "FIND_ALL";
 
+    public static final String FIND_BY_ID = "FIND_BY_ID";
 }

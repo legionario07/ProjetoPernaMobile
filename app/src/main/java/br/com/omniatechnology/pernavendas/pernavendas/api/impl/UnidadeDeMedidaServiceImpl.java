@@ -54,7 +54,7 @@ public class UnidadeDeMedidaServiceImpl implements IService<UnidadeDeMedida> {
         try {
             p = service.save(unidadeDeMedida).execute().body();
         } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, "Erro ao salvar objeto");
+            Log.i(ConstraintUtils.TAG, e.getMessage());
             isSave = false;
         }
 

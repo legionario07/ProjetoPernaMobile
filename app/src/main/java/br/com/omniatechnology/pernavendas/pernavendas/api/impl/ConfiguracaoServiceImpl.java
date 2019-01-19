@@ -5,54 +5,53 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.List;
 
-import br.com.omniatechnology.pernavendas.pernavendas.api.IProdutoService;
+import br.com.omniatechnology.pernavendas.pernavendas.api.IConfiguracaoService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
-import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
 
-public class ProdutoServiceImpl implements IService<Produto> {
+public class ConfiguracaoServiceImpl implements IService<Configuracao> {
 
 
-    private IProdutoService service;
+    private IConfiguracaoService service;
     private Retrofit retrofit;
     private Boolean isSave;
-    private Produto p;
+    private Configuracao p;
 
-    public ProdutoServiceImpl() {
+    public ConfiguracaoServiceImpl() {
     }
 
 
     @Override
     public IModel findById(Long id) throws IOException {
         retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
+        service = retrofit.create(IConfiguracaoService.class);
 
         return service.findById(id).execute().body();
 
     }
 
     @Override
-    public List<Produto> findAll() throws IOException {
+    public List<Configuracao> findAll() throws IOException {
         retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
+        service = retrofit.create(IConfiguracaoService.class);
 
-        List<Produto> produtos =  service.findAll().execute().body();
+        List<Configuracao> configuracoes =  service.findAll().execute().body();
 
-        return produtos;
+        return configuracoes;
     }
 
 
-    public boolean save(Produto produto) {
+    public boolean save(Configuracao configuracao) {
 
         retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
+        service = retrofit.create(IConfiguracaoService.class);
 
         try {
-            p = service.save(produto).execute().body();
+            p = service.save(configuracao).execute().body();
         } catch (IOException e) {
             Log.i(ConstraintUtils.TAG, e.getMessage());
             isSave = false;
@@ -71,7 +70,7 @@ public class ProdutoServiceImpl implements IService<Produto> {
     @Override
     public boolean delete(Long id) throws IOException {
         retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
+        service = retrofit.create(IConfiguracaoService.class);
 
         return service.delete(id).execute().body();
 
@@ -80,7 +79,7 @@ public class ProdutoServiceImpl implements IService<Produto> {
     @Override
     public boolean update(Long id) throws IOException {
         retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
+        service = retrofit.create(IConfiguracaoService.class);
 
         return service.delete(id).execute().body();
 

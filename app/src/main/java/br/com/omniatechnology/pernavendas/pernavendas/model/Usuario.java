@@ -1,5 +1,6 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -91,7 +92,7 @@ public class Usuario implements Serializable, IUsuario {
 
 
 	@Override
-	public boolean isValidLogin() {
-		return !TextUtils.isEmpty(getUsuario());
+	public String isValid(Context context) {
+		return null;
 	}
 }

@@ -1,34 +1,35 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
-import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IPedido;
+import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IMarca;
 
-public class Perfil implements Serializable, IPedido {
+public class Marca implements Serializable, IMarca {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private Long id;
 	
+	private Long id;
 	private String nome;
 	
-	public Perfil(Long id, String nome) {
+	private Marca(Long id, String nome) {
 		this();
+		this.id = id;
 		this.nome = nome;
-		this.id = id;
 	}
 	
-	public Perfil(Long id) {
+	public Marca(Long id) {
 		this();
 		this.id = id;
 	}
 	
-	public Perfil() {
+	public Marca() {
 		
 	}
 
@@ -47,8 +48,11 @@ public class Perfil implements Serializable, IPedido {
 	public void setNome(String nome) {
 		this.nome = nome.toUpperCase().trim();
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return nome;
+	}
 
 	@Override
 	public int hashCode() {
@@ -66,7 +70,7 @@ public class Perfil implements Serializable, IPedido {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Perfil other = (Perfil) obj;
+		Marca other = (Marca) obj;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
@@ -76,13 +80,13 @@ public class Perfil implements Serializable, IPedido {
 	}
 
 	@Override
-	public String toString() {
-		return nome;
-	}
-
-
-	@Override
 	public String isValid(Context context) {
-		return null;
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getNome())){
+
+			retorno.append(context.getResources().getString(R.string.nome_vazio));
+		}
+
+		return retorno.toString();
 	}
 }

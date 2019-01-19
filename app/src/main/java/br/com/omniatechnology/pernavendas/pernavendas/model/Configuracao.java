@@ -1,8 +1,12 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 
-public class Configuracao implements Serializable {
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IConfiguracao;
+
+public class Configuracao implements Serializable, IConfiguracao {
 
 	/**
 	 * 
@@ -76,7 +80,10 @@ public class Configuracao implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
+
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
 }

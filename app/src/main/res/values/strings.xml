@@ -22,4 +22,5 @@
     <string name="processando">Processando...</string>
     <string name="aguarde">Aguarde...</string>
     <string name="concluido_sucesso">Operação Realizada com Sucesso</string>
+    <string name="total_vazio">A Quantidade não pode ser vazia</string>
 </resources>

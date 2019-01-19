@@ -1,12 +1,16 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Venda implements Serializable {
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IVenda;
+
+public class Venda implements Serializable, IVenda {
 
 	/**
 	 * 
@@ -16,7 +20,7 @@ public class Venda implements Serializable {
 	private Long id;
 	private Calendar dataVenda;
 	private BigDecimal valorTotal;
-	private List<Produto> produtos;
+	private List<Pedido> pedidos;
 	private Usuario usuario;
 	
 	public Venda(Long id) {
@@ -25,7 +29,7 @@ public class Venda implements Serializable {
 	}
 	
 	public Venda() {
-		this.produtos = new ArrayList<Produto>();
+		this.pedidos = new ArrayList<Pedido>();
 		this.usuario = new Usuario();
 		this.dataVenda = Calendar.getInstance();
 	}
@@ -48,11 +52,11 @@ public class Venda implements Serializable {
 	public void setValorTotal(BigDecimal valorTotal) {
 		this.valorTotal = valorTotal;
 	}
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	public Usuario getUsuario() {
 		return usuario;
@@ -60,7 +64,10 @@ public class Venda implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
 
+
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
 }

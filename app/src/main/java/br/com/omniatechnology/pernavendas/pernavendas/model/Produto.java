@@ -30,12 +30,10 @@ public class Produto implements Serializable, IProduto {
 	private Integer qtdeMinima;
 	private String EAN;
 	private boolean isAtivo;
-	private boolean isSubProduto;
 	private UnidadeDeMedida unidadeDeMedida;
 	private Calendar dataCadastro;
-	private Produto produtoPai;
-	private Integer qteDivisao;
-	
+	private Marca marca;
+
 	public Produto(Long id) {
 		this();
 		this.id = id;
@@ -46,6 +44,7 @@ public class Produto implements Serializable, IProduto {
 		this.isAtivo = true;
 		unidadeDeMedida = new UnidadeDeMedida();
 		this.dataCadastro = Calendar.getInstance();
+		this.marca = new Marca();
 	}
 
 	public Long getId() {
@@ -130,9 +129,7 @@ public class Produto implements Serializable, IProduto {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", valorCompra=" + valorCompra
-				+ ", valorVenda=" + valorVenda + ", qtde=" + qtde + ", qtdeMinima=" + qtdeMinima + ", EAN=" + EAN
-				+ ", isAtivo=" + isAtivo + ", unidadeDeMedida=" + unidadeDeMedida + "]";
+		return nome+ " - "+marca;
 	}
 
 	public Calendar getDataCadastro() {
@@ -143,30 +140,15 @@ public class Produto implements Serializable, IProduto {
 		this.dataCadastro = dataCadastro;
 	}
 
-	public boolean isSubProduto() {
-		return isSubProduto;
+
+	public Marca getMarca() {
+		return marca;
 	}
 
-	public void setSubProduto(boolean isSubProduto) {
-		this.isSubProduto = isSubProduto;
+	public void setMarca(Marca marca) {
+		this.marca = marca;
 	}
 
-	public Produto getProdutoPai() {
-		return produtoPai;
-	}
-
-	public void setProdutoPai(Produto produtoPai) {
-		this.produtoPai = produtoPai;
-	}
-
-	public Integer getQteDivisao() {
-		return qteDivisao;
-	}
-
-	public void setQteDivisao(Integer qteDivisao) {
-		this.qteDivisao = qteDivisao;
-	}
-	
 	public void decrementarProduto(Integer valorADecrementar) {
 		if(qtde<=valorADecrementar) {
 			qtde = 0;

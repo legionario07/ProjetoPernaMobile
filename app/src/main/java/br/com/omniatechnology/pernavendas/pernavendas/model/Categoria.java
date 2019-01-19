@@ -1,8 +1,12 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
+import android.content.Context;
+
 import java.io.Serializable;
 
-public class Categoria implements Serializable {
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.ICategoria;
+
+public class Categoria implements Serializable, ICategoria {
 
 	/**
 	 * 
@@ -73,4 +77,8 @@ public class Categoria implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String isValid(Context context) {
+		return null;
+	}
 }

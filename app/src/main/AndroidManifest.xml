@@ -27,6 +27,10 @@
         </activity>
         <activity android:name=".telas.NewProdutoActivity" />
         <activity android:name=".telas.NewUnidadeDeMedidaActivity" />
+        <activity android:name=".telas.NewCategoriaActivity" />
+        <activity android:name=".telas.NewConfiguracaoActivity" />
+        <activity android:name=".telas.NewMarcaActivity" />
+        <activity android:name=".telas.NewPerfilActivity" />
     </application>
 
 </manifest>

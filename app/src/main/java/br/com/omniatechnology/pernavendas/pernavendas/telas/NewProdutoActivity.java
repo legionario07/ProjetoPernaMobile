@@ -9,10 +9,13 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.List;
+
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -51,6 +54,16 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     @Override
     public void onMessageError(String message) {
         Toast.makeText(this, message, LENGTH_LONG).show();
+    }
+
+    @Override
+    public List<IModel> findAllSuccess() {
+        return null;
+    }
+
+    @Override
+    public List<IModel> findAllError(String message) {
+        return null;
     }
 
     @Override

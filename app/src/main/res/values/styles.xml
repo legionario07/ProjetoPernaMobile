@@ -17,4 +17,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="cadastros">
+        <item name="android:textSize">12dp</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
 </resources>

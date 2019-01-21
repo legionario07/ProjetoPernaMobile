@@ -16,10 +16,64 @@
         android:layout_height="wrap_content">
 
         <EditText
+            style="@style/cadastros"
             android:inputType="text"
-            android:padding="10dp"
             android:hint="@string/nome"
             android:id="@+id/inp_nome_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_descricao_produto"
+        android:layout_below="@id/inp_descricao_produto"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="text"
+            android:hint="@string/descricao"
+            android:id="@+id/inp_descricao_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_valor_venda_produto"
+        android:layout_below="@id/inp_valor_venda_produto"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="numberDecimal"
+            android:hint="@string/valor_venda"
+            android:id="@+id/inp_valor_venda_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_ean_produto"
+        android:layout_below="@id/inp_ean_produto"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="text"
+            android:hint="@string/ean"
+            android:id="@+id/inp_ean_produto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -35,14 +89,48 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:padding="10dp"
+            style="@style/cadastros"
             android:inputType="number"
             android:id="@+id/inp_qtde_produto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_qtde_min_produto"
+        android:layout_below="@id/inp_qtde_min_produto"
+        android:layout_marginTop="10dp"
+        android:hint="@string/quantidade_min"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="number"
+            android:id="@+id/inp_qtde_min_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
 
     </android.support.design.widget.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spnMarca"
+        style="@style/cadastros"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"></Spinner>
+
+    <Spinner
+        android:id="@+id/spnUnidadeDeMedida"
+        style="@style/cadastros"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"></Spinner>
 
     <ImageButton
         android:src="@drawable/ic_save_black_24dp"

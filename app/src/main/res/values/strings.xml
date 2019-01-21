@@ -38,4 +38,8 @@
     <string name="valor_venda">Valor Venda</string>
     <string name="ean">EAN</string>
     <string name="quantidade_min">Quantidade Mínima</string>
+    <string name="confirmar_senha">Confirmar Senha</string>
+    <string name="valor_venda_vazio">O Campo Valor de Venda não pode ser vazio</string>
+    <string name="descricao_vazio">O Campo Descrição não pode ser vazio</string>
+    <string name="inativar">Desabilitar Produto</string>
 </resources>

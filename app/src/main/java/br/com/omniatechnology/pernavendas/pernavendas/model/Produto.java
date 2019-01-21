@@ -33,6 +33,7 @@ public class Produto implements Serializable, IProduto {
 	private UnidadeDeMedida unidadeDeMedida;
 	private Calendar dataCadastro;
 	private Marca marca;
+	private Categoria categoria;
 
 	public Produto(Long id) {
 		this();
@@ -163,12 +164,22 @@ public class Produto implements Serializable, IProduto {
     public String isValid(Context context) {
 	    StringBuilder retorno = new StringBuilder();
          if(TextUtils.isEmpty(getNome())){
-
              retorno.append(context.getResources().getString(R.string.nome_vazio));
-        }
+        }else if(TextUtils.isEmpty(getDescricao())){
+             retorno.append(context.getResources().getString(R.string.descricao_vazio));
+		 }else if(TextUtils.isEmpty(getValorVenda().toString())){
+			 retorno.append(context.getResources().getString(R.string.valor_venda_vazio));
+		 }
 
         return retorno.toString();
     }
 
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
 }

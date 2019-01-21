@@ -62,23 +62,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/inp_layout_ean_produto"
-        android:layout_below="@id/inp_ean_produto"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <EditText
-            style="@style/cadastros"
-            android:inputType="text"
-            android:hint="@string/ean"
-            android:id="@+id/inp_ean_produto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/inp_layout_qtde_produto"
@@ -128,9 +112,26 @@
         android:id="@+id/spnUnidadeDeMedida"
         style="@style/cadastros"
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"></Spinner>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_ean_produto"
+        android:layout_below="@id/inp_ean_produto"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="text"
+            android:hint="@string/ean"
+            android:id="@+id/inp_ean_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </android.support.design.widget.TextInputLayout>
 
     <ImageButton
         android:src="@drawable/ic_save_black_24dp"
@@ -138,5 +139,7 @@
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+
 
 </LinearLayout>

@@ -1,9 +1,11 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.ICategoria;
 
 public class Categoria implements Serializable, ICategoria {
@@ -16,18 +18,18 @@ public class Categoria implements Serializable, ICategoria {
 	private Long id;
 	private String nome;
 	
-	private Categoria(Long id, String nome) {
+	public Categoria(Long id, String nome) {
 		this();
 		this.id = id;
 		this.nome = nome;
 	}
 	
-	private Categoria(Long id) {
+	public Categoria(Long id) {
 		this();
 		this.id = id;
 	}
 	
-	private Categoria() {
+	public Categoria() {
 		
 	}
 
@@ -79,6 +81,12 @@ public class Categoria implements Serializable, ICategoria {
 
 	@Override
 	public String isValid(Context context) {
-		return null;
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getNome())){
+
+			retorno.append(context.getResources().getString(R.string.nome_vazio_categoria));
+		}
+
+		return retorno.toString();
 	}
 }

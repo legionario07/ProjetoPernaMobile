@@ -83,8 +83,7 @@ public class Marca implements Serializable, IMarca {
 	public String isValid(Context context) {
 		StringBuilder retorno = new StringBuilder();
 		if(TextUtils.isEmpty(getNome())){
-
-			retorno.append(context.getResources().getString(R.string.nome_vazio));
+			retorno.append(context.getResources().getString(R.string.nome_vazio_marca));
 		}
 
 		return retorno.toString();

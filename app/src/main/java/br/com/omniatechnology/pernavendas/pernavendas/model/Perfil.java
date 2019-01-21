@@ -1,9 +1,11 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IPedido;
 
 public class Perfil implements Serializable, IPedido {
@@ -83,6 +85,11 @@ public class Perfil implements Serializable, IPedido {
 
 	@Override
 	public String isValid(Context context) {
-		return null;
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getNome())){
+			retorno.append(context.getResources().getString(R.string.nome_vazio_marca));
+		}
+
+		return retorno.toString();
 	}
 }

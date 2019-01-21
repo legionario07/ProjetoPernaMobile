@@ -1,9 +1,11 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IConfiguracao;
 
 public class Configuracao implements Serializable, IConfiguracao {
@@ -84,6 +86,13 @@ public class Configuracao implements Serializable, IConfiguracao {
 
 	@Override
 	public String isValid(Context context) {
-		return null;
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getPropriedade())){
+			retorno.append(context.getResources().getString(R.string.propriedade_configuracao_vazio));
+		}else if(TextUtils.isEmpty(getValor())){
+			retorno.append(context.getResources().getString(R.string.valor_configuracao_vazio));
+		}
+
+		return retorno.toString();
 	}
 }

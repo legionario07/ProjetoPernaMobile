@@ -13,6 +13,10 @@
     <string name="senha">Senha</string>
     <string name="vender">Vender</string>
     <string name="nome_vazio">O Nome do Produto não pode estar vazio</string>
+    <string name="nome_vazio_categoria">O Nome da Categoria não pode estar vazio</string>
+    <string name="nome_vazio_marca">O Nome da Marca não pode estar vazio</string>
+    <string name="propriedade_configuracao_vazio">O Campo Propriedade pode estar vazio</string>
+    <string name="valor_configuracao_vazio">O Campo Valor não pode estar vazio</string>
     <string name="tipo_vazio">O Campo Tipo não pode estar vazio</string>
     <string name="error_operacao">Não foi possível completar a operação</string>
     <string name="save_success">Salvo com Sucesso</string>
@@ -23,4 +27,11 @@
     <string name="aguarde">Aguarde...</string>
     <string name="concluido_sucesso">Operação Realizada com Sucesso</string>
     <string name="total_vazio">A Quantidade não pode ser vazia</string>
+    <string name="categoria_ex_bebidas">Categoria (Ex. Bebidas)</string>
+    <string name="configuracao">Configuração</string>
+    <string name="perfil">Perfil</string>
+    <string name="marca">Marca</string>
+    <string name="propriedade">Propriedade</string>
+    <string name="valor">Valor</string>
+    <string name="nao_possivel_dados_solicitados">Não foi possível localizar os dados solicitados</string>
 </resources>

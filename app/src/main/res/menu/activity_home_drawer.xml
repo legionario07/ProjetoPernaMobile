@@ -22,16 +22,43 @@
             android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Cadastros">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_produtos"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Produtos" />
+
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_unidades_de_medidas"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Unidades de Medidas" />
+
+
+            <item
+                android:id="@+id/nav_categorias"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Categorias" />
+            <item
+                android:id="@+id/nav_marcas"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Marca" />
+
+            <item
+                android:id="@+id/nav_usuarios"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Usuários" />
+
+            <item
+                android:id="@+id/nav_perfil"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Perfil" />
+
+            <item
+                android:id="@+id/nav_configuracao"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Configuração" />
         </menu>
     </item>
 

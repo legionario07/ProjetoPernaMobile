@@ -102,7 +102,7 @@
 
     <Spinner
         android:id="@+id/spnMarca"
-        style="@style/cadastros"
+        style="@style/cadastros.spinner"
         android:layout_width="match_parent"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
@@ -110,7 +110,7 @@
 
     <Spinner
         android:id="@+id/spnUnidadeDeMedida"
-        style="@style/cadastros"
+        style="@style/cadastros.spinner"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"></Spinner>

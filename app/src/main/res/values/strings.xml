@@ -50,4 +50,5 @@
     <string name="produto">Produto</string>
     <string name="desconto">Desconto</string>
     <string name="valor_total">Valor Total</string>
+    <string name="Vendas">Vendas</string>
 </resources>

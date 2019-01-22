@@ -32,6 +32,7 @@
         <activity android:name=".telas.NewMarcaActivity" />
         <activity android:name=".telas.NewPerfilActivity" />
         <activity android:name=".telas.ProdutosActivity" />
+        <activity android:name=".telas.CategoriasActivity" />
     </application>
 
 </manifest>

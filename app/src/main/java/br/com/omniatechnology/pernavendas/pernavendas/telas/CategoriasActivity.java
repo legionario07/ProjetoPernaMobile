@@ -5,46 +5,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ICategoriaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class ProdutosActivity extends AppCompatActivity implements IModelView.IProdutoView, View.OnClickListener {
+public class CategoriasActivity extends AppCompatActivity implements IModelView.ICategoriaView, View.OnClickListener {
 
-    private RecyclerView rcViewProdutos;
-    private ProdutosAdapter produtosAdapter;
-    IProdutoPresenter produtoPresenter;
+    private ListView lstCategoria;
+    //private CategoriasAdapter categoriasAdapter;
+    ICategoriaPresenter categoriaPresenter;
 
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.produtos_activity);
+        setContentView(R.layout.categoria_activity);
 
-        rcViewProdutos = findViewById(R.id.rcViewProdutos);
+        lstCategoria = findViewById(R.id.lstCategoria);
 
-        FloatingActionButton fabNewProduto = findViewById(R.id.fabNovoProduto);
-        fabNewProduto.setOnClickListener(this);
+        FloatingActionButton fabNewCategoria = findViewById(R.id.fabNovaCategoria);
+        fabNewCategoria.setOnClickListener(this);
 
-        produtoPresenter = new ProdutoPresenter(this, this, produtosAdapter);
-        ((ProdutoPresenter) produtoPresenter).initialize(rcViewProdutos);
+        //categoriaPresenter = new CategoriaPresenter(this, this, categoriasAdapter);
+       // ((CategoriaPresenter) categoriaPresenter).initialize(rcViewCategorias);
 
 
     }
@@ -79,9 +73,9 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
                 break;
 
-            case R.id.fabNovoProduto:
+            case R.id.fabNovaCategoria:
 
-                startActivity(new Intent(this, NewProdutoActivity.class));
+                startActivity(new Intent(this, NewCategoriaActivity.class));
 
                 break;
 

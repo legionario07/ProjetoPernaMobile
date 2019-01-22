@@ -12,6 +12,7 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder.ProdutoDiffCallback;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder.ProdutoViewHolder;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.OnItemClickListener;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 
 public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
@@ -21,10 +22,6 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
 
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-
-    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;

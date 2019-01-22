@@ -90,17 +90,37 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_categorias) {
 
-        } else if (id == R.id.nav_slideshow) {
+           // startActivity(new Intent(this, CategoriasActivity.class));
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_configuracao) {
 
-        } else if (id == R.id.nav_share) {
+           // startActivity(new Intent(this, ConfiguracoesActivity.class));
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_marcas) {
+
+            //startActivity(new Intent(this, MarcasActivity.class));
+
+        } else if (id == R.id.nav_perfil) {
+
+           // startActivity(new Intent(this, PerfilActivity.class));
+
+        } else if (id == R.id.nav_produtos) {
+
+            startActivity(new Intent(this, ProdutosActivity.class));
+
+        } else if (id == R.id.nav_unidades_de_medidas) {
+
+           // startActivity(new Intent(this, UnidadesDeMedidasActivity.class));
+
+        }else if (id == R.id.nav_usuarios) {
+
+            //startActivity(new Intent(this, UsuariosActivity.class));
+
+        }else if (id == R.id.nav_vendas) {
+
+            //startActivity(new Intent(this, VendasActivity.class));
 
         }
 

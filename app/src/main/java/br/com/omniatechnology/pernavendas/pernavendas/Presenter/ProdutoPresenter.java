@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
@@ -35,6 +37,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Produto> produtos;
+    private ProdutosAdapter produtosAdapter;
 
     public ProdutoPresenter() {
         produto = new Produto();
@@ -49,6 +52,21 @@ public class ProdutoPresenter implements IProdutoPresenter {
         this();
         this.produtoView = produtoView;
         this.context = context;
+    }
+
+    public ProdutoPresenter(IModelView.IProdutoView produtoView, Context context, ProdutosAdapter adapter) {
+        this(produtoView, context);
+        produtos = (List<Produto>) genericDAO.execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+        adapter = new ProdutosAdapter(context, produtos);
+
+        this.produtosAdapter = adapter;
+
+
+    }
+
+    public void initialize(RecyclerView recyclerView){
+        recyclerView.setAdapter(produtosAdapter);
+
     }
 
 

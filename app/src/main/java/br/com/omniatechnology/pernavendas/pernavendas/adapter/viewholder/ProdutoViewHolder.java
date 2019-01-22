@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.OnItemClickListener;
 
 
 public class ProdutoViewHolder extends RecyclerView.ViewHolder {
@@ -17,8 +18,7 @@ public class ProdutoViewHolder extends RecyclerView.ViewHolder {
     public TextView txtValorVenda;
 
 
-    public ProdutoViewHolder(@NonNull View itemView,
-                             final ProdutosAdapter.OnItemClickListener listener) {
+    public ProdutoViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
         super(itemView);
 
 

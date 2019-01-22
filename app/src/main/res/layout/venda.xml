@@ -1,113 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_height="match_parent">
 
-    <TextView
-       style="@style/titulos"
-        android:text="@string/VENDA"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
     <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inp_layout_produto"
-            android:layout_below="@id/inp_produto"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_height="wrap_content">
 
-            <EditText
-                style="@style/cadastros"
-                android:inputType="text"
-                android:hint="@string/digite_o_produto"
-                android:id="@+id/inp_produto"
+        <TextView
+            style="@style/titulos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/VENDA" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_layout_produto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/inp_produto"
+                android:layout_weight="8"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/inp_produto"
+                    style="@style/cadastros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/digite_o_produto"
+                    android:inputType="text" />
+
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/imbAdicionarProduto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/ic_search_black_24dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/item_list_view.titulos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/produto" />
+
+            <TextView
+                style="@style/item_list_view.titulos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Qtde" />
+
+            <TextView
+                style="@style/item_list_view.titulos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:text="@string/desconto" />
+
+            <TextView
+                style="@style/item_list_view.titulos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:text="@string/valor_total" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+
+            <ListView
+                android:id="@+id/lstPedidos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"></ListView>
 
-
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <ImageButton
-            android:src="@drawable/ic_search_black_24dp"
-            android:id="@+id/imbAdicionarProduto"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
-            android:paddingRight="10dp"
-            android:padding="10dp"
+            android:id="@+id/imgSalvarVenda"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:paddingEnd="10dp"
+            android:src="@drawable/ic_save_black_24dp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-
-        <TextView
-            style="@style/item_list_view.titulos"
-            android:text="@string/produto"
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/item_list_view.titulos"
-            android:text="Qtde"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/desconto"
-            style="@style/item_list_view.titulos"
-            android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/valor_total"
-            style="@style/item_list_view.titulos"
-            android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8">
-
-        <ListView
-            android:id="@+id/lstPedidos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
-
-    </LinearLayout>
-
-    <ImageButton
-        android:src="@drawable/ic_save_black_24dp"
-        style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:id="@+id/imgSalvarVenda"
-        android:paddingEnd="10dp"
-        android:layout_marginBottom="10dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabNovaCategoria"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
 
-</LinearLayout>
+</FrameLayout>

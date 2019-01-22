@@ -52,4 +52,8 @@
     <string name="valor_total">Valor Total</string>
     <string name="Vendas">Vendas</string>
     <string name="produtos">Produtos</string>
+    <string name="perfil">Perfil</string>
+    <string name="id">ID</string>
+    <string name="unidade_de_medida">Unidade De Medida</string>
+    <string name="categoria">Categoria</string>
 </resources>

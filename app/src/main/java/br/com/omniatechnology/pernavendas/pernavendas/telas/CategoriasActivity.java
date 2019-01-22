@@ -15,6 +15,7 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ICategoriaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -22,7 +23,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class CategoriasActivity extends AppCompatActivity implements IModelView.ICategoriaView, View.OnClickListener {
 
     private ListView lstCategoria;
-    //private CategoriasAdapter categoriasAdapter;
+    private CategoriasAdapter categoriasAdapter;
     ICategoriaPresenter categoriaPresenter;
 
     private ProgressDialog progressDialog;

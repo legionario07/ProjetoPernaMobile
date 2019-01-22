@@ -42,7 +42,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <ImageButton
-            android:src="@drawable/ic_save_black_24dp"
+            android:src="@drawable/ic_search_black_24dp"
             android:id="@+id/imbAdicionarProduto"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"

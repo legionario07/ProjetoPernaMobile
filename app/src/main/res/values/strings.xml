@@ -47,4 +47,7 @@
     <string name="desconto">Desconto</string>
     <string name="digite_o_produto">Digite o Nome do Produto</string>
     <string name="VENDA">VENDA</string>
+    <string name="produto">Produto</string>
+    <string name="desconto">Desconto</string>
+    <string name="valor_total">Valor Total</string>
 </resources>

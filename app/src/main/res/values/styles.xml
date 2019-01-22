@@ -35,4 +35,17 @@
         <item name="android:textSize">20dp</item>
     </style>
 
+
+    <style name="item_list_view">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="item_list_view.titulos">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+
+
 </resources>

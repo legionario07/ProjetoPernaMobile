@@ -13,6 +13,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -55,7 +56,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"></LinearLayout>
+        android:orientation="horizontal"
+        android:layout_weight="0.5">
+
+        <TextView
+            style="@style/item_list_view.titulos"
+            android:text="@string/produto"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/item_list_view.titulos"
+            android:text="Qtde"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/desconto"
+            style="@style/item_list_view.titulos"
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/valor_total"
+            style="@style/item_list_view.titulos"
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
+
+        <ListView
+            android:id="@+id/lstPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+
+    </LinearLayout>
 
     <ImageButton
         android:src="@drawable/ic_save_black_24dp"

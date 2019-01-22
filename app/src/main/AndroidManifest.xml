@@ -33,6 +33,11 @@
         <activity android:name=".telas.NewPerfilActivity" />
         <activity android:name=".telas.ProdutosActivity" />
         <activity android:name=".telas.CategoriasActivity" />
+        <activity android:name=".telas.ConfiguracoesActivity" />
+        <activity android:name=".telas.MarcasActivity" />
+        <activity android:name=".telas.PerfilActivity" />
+        <activity android:name=".telas.UsuariosActivity" />
+        <activity android:name=".telas.UnidadesDeMedidasActivity" />
     </application>
 
 </manifest>

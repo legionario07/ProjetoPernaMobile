@@ -1,5 +1,6 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -11,10 +12,17 @@ public class LoginPresenter implements ILoginPresenter {
 
     ILoginView loginView;
     Usuario usuario;
+    Context context;
 
     public LoginPresenter(ILoginView loginView) {
         this.loginView = loginView;
         usuario = new Usuario();
+    }
+
+
+    public LoginPresenter(ILoginView loginView,Context context) {
+        this(loginView);
+        this.context = context;
     }
 
     public void addUsuarioTextWatcher(EditText view){
@@ -60,9 +68,9 @@ public class LoginPresenter implements ILoginPresenter {
     public void onLogin() {
 
 
-        boolean isLoginSucess = usuario.isValidLogin();
+        String retornoStr = usuario.isValid(context);
 
-        if(isLoginSucess)
+        if(retornoStr.length()==0)
             loginView.OnLoginResultSuccess();
         else
             loginView.OnLoginResultError();

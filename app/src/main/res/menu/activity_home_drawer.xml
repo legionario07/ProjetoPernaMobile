@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_vendas"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_shopping_cart_white_24dp"
             android:title="@string/Vendas" />
     </group>
 
@@ -15,12 +15,12 @@
 
             <item
                 android:id="@+id/nav_produtos"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_list_white_24dp"
                 android:title="Produtos" />
 
             <item
                 android:id="@+id/nav_unidades_de_medidas"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_settings_ethernet_white_24dp"
                 android:title="Unidades de Medidas" />
 
 
@@ -30,22 +30,22 @@
                 android:title="Categorias" />
             <item
                 android:id="@+id/nav_marcas"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_store_mall_directory_white_24dp"
                 android:title="Marca" />
 
             <item
                 android:id="@+id/nav_usuarios"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_person_add_white_24dp"
                 android:title="Usuários" />
 
             <item
                 android:id="@+id/nav_perfil"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_person_white_24dp"
                 android:title="Perfil" />
 
             <item
                 android:id="@+id/nav_configuracao"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_settings_white_24dp"
                 android:title="Configuração" />
         </menu>
     </item>

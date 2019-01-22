@@ -30,11 +30,12 @@
                 <AutoCompleteTextView
                     android:id="@+id/inp_produto"
                     style="@style/cadastros"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
                     android:layout_height="wrap_content"
                     android:hint="@string/digite_o_produto"
                     android:inputType="text"
-                    android:textSize="14dp"
+                    android:textSize="12dp"
                     android:textStyle="bold"
                     android:ems="10"/>
 

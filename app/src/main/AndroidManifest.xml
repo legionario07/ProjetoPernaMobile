@@ -38,7 +38,7 @@
         <activity android:name=".telas.PerfilActivity" />
         <activity android:name=".telas.UsuariosActivity" />
         <activity android:name=".telas.UnidadesDeMedidasActivity" />
-        <activity android:name=".telas.NewVendaActivity" android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity android:name=".telas.NewVendaActivity" android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

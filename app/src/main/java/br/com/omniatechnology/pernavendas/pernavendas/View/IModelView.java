@@ -32,15 +32,15 @@ public interface IModelView {
 
     }
 
-    interface IUsuarioView extends IModel{
+    interface IUsuarioView extends IModelView{
 
     }
 
-    interface IPedidoView extends IModel{
+    interface IPedidoView extends IModelView{
 
     }
 
-    interface IVendaView extends IModel{
+    interface IVendaView extends IModelView{
 
     }
 

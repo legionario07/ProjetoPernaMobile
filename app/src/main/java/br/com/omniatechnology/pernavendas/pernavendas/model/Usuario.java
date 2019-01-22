@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IUsuario;
 
 public class Usuario implements Serializable, IUsuario {
@@ -93,6 +94,11 @@ public class Usuario implements Serializable, IUsuario {
 
 	@Override
 	public String isValid(Context context) {
-		return null;
+		StringBuilder retorno = new StringBuilder();
+		if(TextUtils.isEmpty(getUsuario())){
+			retorno.append(context.getResources().getString(R.string.usuario_vazio));
+		}
+
+		return retorno.toString();
 	}
 }

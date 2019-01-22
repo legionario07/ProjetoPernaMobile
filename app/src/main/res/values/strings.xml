@@ -42,4 +42,6 @@
     <string name="valor_venda_vazio">O Campo Valor de Venda não pode ser vazio</string>
     <string name="descricao_vazio">O Campo Descrição não pode ser vazio</string>
     <string name="inativar">Desabilitar Produto</string>
+    <string name="usuario_vazio">O nome do Usuário não pode estar vazio</string>
+    <string name="senhas_nao_podem_ser_diferentes">As senhas não podem ser diferentes</string>
 </resources>

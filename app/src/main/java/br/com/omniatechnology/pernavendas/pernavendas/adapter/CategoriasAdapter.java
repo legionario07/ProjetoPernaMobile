@@ -35,8 +35,7 @@ public class CategoriasAdapter extends ArrayAdapter<Categoria> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Categoria categoria = new Categoria();
-        categoria = (Categoria) this.lista.get(position);
+        Categoria categoria = this.lista.get(position);
 
         convertView = LayoutInflater.from(this.context).inflate(R.layout.item_categoria, null);
 

@@ -45,4 +45,6 @@
     <string name="usuario_vazio">O nome do Usuário não pode estar vazio</string>
     <string name="senhas_nao_podem_ser_diferentes">As senhas não podem ser diferentes</string>
     <string name="desconto">Desconto</string>
+    <string name="digite_o_produto">Digite o Nome do Produto</string>
+    <string name="VENDA">VENDA</string>
 </resources>

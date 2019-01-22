@@ -5,12 +5,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
@@ -22,6 +27,7 @@ public class MarcaPresenter implements IMarcaPresenter {
     Marca marca;
     private GenericDAO genericDAO;
     private Boolean isSave;
+    private List<Marca> marcas;
 
     public MarcaPresenter() {
         marca = new Marca();
@@ -44,13 +50,9 @@ public class MarcaPresenter implements IMarcaPresenter {
 
         String retornoStr = marca.isValid(context);
 
-
-
         if (retornoStr.length() > 1)
             marcaView.onMessageError(retornoStr);
         else {
-
-
 
             try {
                 isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.SALVAR, new MarcaServiceImpl()).get();
@@ -89,28 +91,59 @@ public class MarcaPresenter implements IMarcaPresenter {
     @Override
     public void onUpdate() {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.EDITAR, new MarcaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String retornoStr = marca.isValid(context);
 
-        if(isSave)
-            marcaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        if (retornoStr.length() > 1)
+            marcaView.onMessageError(retornoStr);
+        else {
+
+            try {
+                isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.EDITAR, new MarcaServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isSave)
+                marcaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+            else
+                marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+        }
 
     }
 
     @Override
     public void findById() {
 
+        try {
+            marca = (Marca) genericDAO.execute(marca, ConstraintUtils.FIND_BY_ID, new MarcaServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void findAll() {
+
+
+        try {
+            marcas = (List<Marca>) genericDAO.execute(marca, ConstraintUtils.FIND_ALL, new MarcaServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(marcas==null){
+            marcaView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
+        }else{
+            marcaView.findAllSuccess();
+        }
 
     }
 

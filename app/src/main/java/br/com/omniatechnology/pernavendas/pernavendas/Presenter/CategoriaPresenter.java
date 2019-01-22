@@ -49,8 +49,6 @@ public class CategoriaPresenter implements ICategoriaPresenter {
             categoriaView.onMessageError(retornoStr);
         else {
 
-
-
             try {
                 isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.SALVAR, new CategoriaServiceImpl()).get();
             } catch (ExecutionException e) {
@@ -70,6 +68,7 @@ public class CategoriaPresenter implements ICategoriaPresenter {
 
     @Override
     public void onDelete() {
+
         try {
             isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.DELETAR, new CategoriaServiceImpl()).get();
         } catch (ExecutionException e) {
@@ -88,18 +87,28 @@ public class CategoriaPresenter implements ICategoriaPresenter {
     @Override
     public void onUpdate() {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.EDITAR, new CategoriaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        if(isSave)
-            categoriaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        String retornoStr = categoria.isValid(context);
+
+        if (retornoStr.length() > 1)
+            categoriaView.onMessageError(retornoStr);
+        else {
+
+            try {
+                isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.EDITAR, new CategoriaServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            if (isSave)
+                categoriaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+            else
+                categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+        }
 
     }
 

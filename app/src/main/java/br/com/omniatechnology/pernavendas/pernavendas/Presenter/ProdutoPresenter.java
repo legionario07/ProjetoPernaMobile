@@ -34,6 +34,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
     Produto produto;
     private GenericDAO genericDAO;
     private Boolean isSave;
+    private List<Produto> produtos;
 
     public ProdutoPresenter() {
         produto = new Produto();
@@ -122,12 +123,9 @@ public class ProdutoPresenter implements IProdutoPresenter {
 
         String retornoStr = produto.isValid(context);
 
-
         if (retornoStr.length() > 1)
             produtoView.onMessageError(retornoStr);
         else {
-
-
 
             try {
                 isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl()).get();
@@ -166,30 +164,58 @@ public class ProdutoPresenter implements IProdutoPresenter {
     @Override
     public void onUpdate() {
 
+        String retornoStr = produto.isValid(context);
 
+        if (retornoStr.length() > 1)
+            produtoView.onMessageError(retornoStr);
+        else {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.EDITAR, new ProdutoServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.EDITAR, new ProdutoServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isSave)
+                produtoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+            else
+                produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
         }
-
-        if(isSave)
-            produtoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
     }
 
     @Override
     public void findById() {
 
+        try {
+            produto = (Produto) genericDAO.execute(produto, ConstraintUtils.FIND_BY_ID, new ProdutoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void findAll() {
+
+        try {
+            produtos = (List<Produto>) genericDAO.execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(produtos==null){
+            produtoView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
+        }else{
+            produtoView.findAllSuccess();
+        }
 
     }
 

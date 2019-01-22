@@ -5,12 +5,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
@@ -21,6 +26,7 @@ public class PerfilPresenter implements IPerfilPresenter {
     Perfil perfil;
     private GenericDAO genericDAO;
     private Boolean isSave;
+    private List<Perfil> perfis;
 
     public PerfilPresenter() {
         perfil = new Perfil();
@@ -43,13 +49,9 @@ public class PerfilPresenter implements IPerfilPresenter {
 
         String retornoStr = perfil.isValid(context);
 
-
-
         if (retornoStr.length() > 1)
             perfilView.onMessageError(retornoStr);
         else {
-
-
 
             try {
                 isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.SALVAR, new PerfilServiceImpl()).get();
@@ -88,28 +90,57 @@ public class PerfilPresenter implements IPerfilPresenter {
     @Override
     public void onUpdate() {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String retornoStr = perfil.isValid(context);
 
-        if(isSave)
-            perfilView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        if (retornoStr.length() > 1)
+            perfilView.onMessageError(retornoStr);
+        else {
+            try {
+                isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (isSave)
+                perfilView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+            else
+                perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+        }
 
     }
 
     @Override
     public void findById() {
 
+        try {
+            perfil = (Perfil) genericDAO.execute(perfil, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void findAll() {
+
+        try {
+            perfis = (List<Perfil>) genericDAO.execute(perfil, ConstraintUtils.FIND_ALL, new PerfilServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(perfis==null){
+            perfilView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
+        }else{
+            perfilView.findAllSuccess();
+        }
 
     }
 

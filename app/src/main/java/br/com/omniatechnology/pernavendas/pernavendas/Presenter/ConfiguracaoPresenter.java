@@ -5,12 +5,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
@@ -21,6 +24,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     Configuracao configuracao;
     private GenericDAO genericDAO;
     private Boolean isSave;
+    private List<Configuracao> configuracoes;
 
     public ConfiguracaoPresenter() {
         configuracao = new Configuracao();
@@ -46,8 +50,6 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
         if (retornoStr.length() > 1)
             configuracaoView.onMessageError(retornoStr);
         else {
-
-
 
             try {
                 isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.SALVAR, new ConfiguracaoServiceImpl()).get();
@@ -86,28 +88,59 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     @Override
     public void onUpdate() {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.EDITAR, new ConfiguracaoServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String retornoStr = configuracao.isValid(context);
 
-        if(isSave)
-            configuracaoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        if (retornoStr.length() > 1)
+            configuracaoView.onMessageError(retornoStr);
+        else {
+
+
+            try {
+                isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.EDITAR, new ConfiguracaoServiceImpl()).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            if (isSave)
+                configuracaoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
+            else
+                configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        }
 
     }
 
     @Override
     public void findById() {
 
+        try {
+            configuracao = (Configuracao) genericDAO.execute(configuracao, ConstraintUtils.FIND_BY_ID, new ConfiguracaoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void findAll() {
+
+        try {
+            configuracoes = (List<Configuracao>) genericDAO.execute(configuracao, ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl()).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(configuracoes==null){
+            configuracaoView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
+        }else{
+            configuracaoView.findAllSuccess();
+        }
 
     }
 

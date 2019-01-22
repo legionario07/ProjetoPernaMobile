@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,7 +28,9 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
     private ListView lstPedidos;
     private MarcasAdapter marcasAdapter;
+    private AutoCompleteTextView inpProduto;
     IVendaPresenter vendaPresenter;
+    String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
 
     private ProgressDialog progressDialog;
 
@@ -36,10 +40,15 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         setContentView(R.layout.venda);
 
         lstPedidos = findViewById(R.id.lstPedidos);
+        inpProduto = findViewById(R.id.inp_produto);
 
         vendaPresenter = new VendaPresenter(this, this);
        // ((MarcaPresenter) marcaPresenter).initialize(rcViewMarcas);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.select_dialog_item, fruits);
+
+        inpProduto.setAdapter(adapter);
 
     }
 

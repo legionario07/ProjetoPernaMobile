@@ -26,24 +26,19 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/inp_layout_produto"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/inp_produto"
-                android:layout_weight="9"
-                android:padding="5dp">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/inp_produto"
                     style="@style/cadastros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/digite_o_produto"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:ems="10"/>
 
 
-            </android.support.design.widget.TextInputLayout>
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Colored"

@@ -57,4 +57,5 @@
     <string name="unidade_de_medida">Unidade De Medida</string>
     <string name="categoria">Categoria</string>
     <string name="nova_venda">NOVA VENDA</string>
+    <string name="sem_pedidos">A venda necessita ter algum pedido</string>
 </resources>

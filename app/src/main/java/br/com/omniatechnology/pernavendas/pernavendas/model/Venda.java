@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IVenda;
 
 public class Venda implements Serializable, IVenda {
@@ -68,6 +70,12 @@ public class Venda implements Serializable, IVenda {
 
 	@Override
 	public String isValid(Context context) {
-		return null;
+
+		StringBuilder retorno = new StringBuilder();
+		if(getPedidos()==null || getPedidos().isEmpty()){
+			retorno.append(context.getResources().getString(R.string.sem_pedidos));
+		}
+
+		return retorno.toString();
 	}
 }

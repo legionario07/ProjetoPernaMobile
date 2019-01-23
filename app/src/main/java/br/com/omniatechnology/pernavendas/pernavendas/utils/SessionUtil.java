@@ -1,8 +1,12 @@
 package br.com.omniatechnology.pernavendas.pernavendas.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 
@@ -13,6 +17,45 @@ public class SessionUtil {
     private Usuario usuario;
     private List<Produto> produtos;
     private List<Venda> vendas;
+    private List<Categoria> categorias;
+    private List<Marca> marcas;
+    private List<UnidadeDeMedida> unidadeDeMedidas;
+
+    private SessionUtil(){
+
+        produtos = new ArrayList<>();
+        vendas = new ArrayList<>();
+        marcas = new ArrayList<>();
+        categorias = new ArrayList<>();
+        unidadeDeMedidas = new ArrayList<>();
+
+    }
+
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public List<Marca> getMarcas() {
+        return marcas;
+    }
+
+    public void setMarcas(List<Marca> marcas) {
+        this.marcas = marcas;
+    }
+
+    public List<UnidadeDeMedida> getUnidadeDeMedidas() {
+        return unidadeDeMedidas;
+    }
+
+    public void setUnidadeDeMedidas(List<UnidadeDeMedida> unidadeDeMedidas) {
+        this.unidadeDeMedidas = unidadeDeMedidas;
+    }
+
 
     public Usuario getUsuario() {
         return usuario;
@@ -38,9 +81,7 @@ public class SessionUtil {
         this.vendas = vendas;
     }
 
-    private SessionUtil(){
 
-    }
 
     public static SessionUtil getInstance(){
 

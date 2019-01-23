@@ -32,7 +32,6 @@ public class VendaPresenter implements IVendaPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Venda> vendas;
-    private String confirmarSenhaStr;
     private List<Produto> produtos;
     ArrayAdapter<Produto> adapter;
 
@@ -164,16 +163,6 @@ public class VendaPresenter implements IVendaPresenter {
             e.printStackTrace();
         }
 
-        if(vendas==null){
-            vendaView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            vendaView.findAllSuccess();
-        }
-
-    }
-
-    @Override
-    public void atualizarList(ListView view) {
 
     }
 

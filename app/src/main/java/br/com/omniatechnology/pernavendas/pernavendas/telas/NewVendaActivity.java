@@ -164,7 +164,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                    Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
                }else{
                    //Regra para abrir dialog com o produto selecionado
-                   Toast.makeText(this, produto.getNome(), Toast.LENGTH_LONG).show();
                    criarDialogCRUD();
                }
 

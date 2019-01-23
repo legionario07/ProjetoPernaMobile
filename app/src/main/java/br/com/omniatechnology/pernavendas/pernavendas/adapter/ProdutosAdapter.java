@@ -22,6 +22,10 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
 
     private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;

@@ -22,6 +22,9 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -30,6 +33,8 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     private RecyclerView rcViewProdutos;
     private ProdutosAdapter produtosAdapter;
     IProdutoPresenter produtoPresenter;
+    private List<Produto> produtos;
+    private Produto produto;
 
     private ProgressDialog progressDialog;
 
@@ -46,6 +51,32 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         produtoPresenter = new ProdutoPresenter(this, this, produtosAdapter);
         ((ProdutoPresenter) produtoPresenter).initialize(rcViewProdutos);
 
+        produtos = SessionUtil.getInstance().getProdutos();
+
+        atualizarDados();
+
+        produtosAdapter.setOnItemClickListener(new ProdutosAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                produto = produtos.get(position);
+
+                Intent intent = new Intent(getApplicationContext(), NewProdutoActivity.class);
+                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, produto);
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+    public void atualizarDados(){
+
+        if(produtosAdapter==null){
+            produtosAdapter = new ProdutosAdapter(this, produtos);
+            rcViewProdutos.setAdapter(produtosAdapter);
+        }else{
+            produtosAdapter.updateList(produtos);
+        }
 
     }
 
@@ -73,11 +104,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     public void onClick(View v) {
 
         switch (v.getId()){
-            case R.id.btn_save:
-
-
-
-                break;
 
             case R.id.fabNovoProduto:
 

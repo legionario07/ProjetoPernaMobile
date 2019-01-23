@@ -18,7 +18,7 @@ public class ProdutoViewHolder extends RecyclerView.ViewHolder {
     public TextView txtValorVenda;
 
 
-    public ProdutoViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+    public ProdutoViewHolder(@NonNull View itemView, final ProdutosAdapter.OnItemClickListener listener) {
         super(itemView);
 
 

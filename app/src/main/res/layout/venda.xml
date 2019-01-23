@@ -43,7 +43,7 @@
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:id="@+id/imbAdicionarProduto"
+                android:id="@+id/imgAdicionarProduto"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -113,12 +113,5 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabNovaCategoria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
 
 </FrameLayout>

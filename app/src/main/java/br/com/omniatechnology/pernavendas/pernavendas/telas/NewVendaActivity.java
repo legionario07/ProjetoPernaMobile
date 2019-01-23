@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private MarcasAdapter marcasAdapter;
     private AutoCompleteTextView inpProduto;
     IVendaPresenter vendaPresenter;
+    private ImageButton imgAdicionarProduto;
+    private Produto produto;
 
 
     private ProgressDialog progressDialog;
@@ -48,36 +51,44 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         lstPedidos = findViewById(R.id.lstPedidos);
         inpProduto = findViewById(R.id.inp_produto);
+        imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
 
 
-        List<Produto> produtos = new ArrayList<>();
-        Produto p = new Produto();
-        p.setNome("CASA COM PISCINA");
-        p.setQtde(2);
 
-        Produto p3 = new Produto();
-        p3.setNome("CASA SEM PISCINA");
-        p3.setQtde(2);
+        imgAdicionarProduto.setOnClickListener(this);
 
-        Produto p2 = new Produto();
-        p2.setNome("CArro COM PISCINA");
-        p2.setQtde(2);
 
-        produtos.add(p);
-        produtos.add(p2);
-        produtos.add(p3);
+//        List<Produto> produtos = new ArrayList<>();
+//        Produto p = new Produto();
+//        p.setNome("CASA COM PISCINA");
+//        p.setQtde(2);
+//
+//        Produto p3 = new Produto();
+//        p3.setNome("CASA SEM PISCINA");
+//        p3.setQtde(2);
+//
+//        Produto p2 = new Produto();
+//        p2.setNome("CArro COM PISCINA");
+//        p2.setQtde(2);
+//
+//        produtos.add(p);
+//        produtos.add(p2);
+//        produtos.add(p3);
 
 
         vendaPresenter = new VendaPresenter(this, this);
        // ((MarcaPresenter) marcaPresenter).initialize(rcViewMarcas);
 
-        ArrayAdapter<Produto> adapter = new ArrayAdapter<Produto>
-                (this, android.R.layout.select_dialog_item, produtos);
 
-        inpProduto.setAdapter(adapter);
-        inpProduto.setThreshold(1);
-        inpProduto.setTextColor(Color.RED);
 
+        ((VendaPresenter) vendaPresenter).addDataForAdapter(inpProduto);
+
+        inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                produto = (Produto) parent.getSelectedItem();
+            }
+        });
 
 
 
@@ -116,6 +127,17 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             case R.id.fabNovaMarca:
 
                 startActivity(new Intent(this, NewMarcaActivity.class));
+
+                break;
+
+
+            case R.id.imgAdicionarProduto:
+
+               if(produto==null){
+                   Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
+               }else{
+                   //Regra para abrir dialog com o produto selecionado
+               }
 
                 break;
 

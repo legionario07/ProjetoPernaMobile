@@ -56,4 +56,5 @@
     <string name="categoria">Categoria</string>
     <string name="nova_venda">NOVA VENDA</string>
     <string name="sem_pedidos">A venda necessita ter algum pedido</string>
+    <string name="selecione_produto_primeiro">Selecione um produto primeiro</string>
 </resources>

@@ -1,11 +1,13 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -13,12 +15,11 @@ import java.util.concurrent.ExecutionException;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 public class VendaPresenter implements IVendaPresenter {
 
@@ -29,6 +30,8 @@ public class VendaPresenter implements IVendaPresenter {
     private Boolean isSave;
     private List<Venda> vendas;
     private String confirmarSenhaStr;
+    private List<Produto> produtos;
+    ArrayAdapter<Produto> adapter;
 
     public VendaPresenter() {
         venda = new Venda();
@@ -45,6 +48,18 @@ public class VendaPresenter implements IVendaPresenter {
         this.context = context;
     }
 
+    public void addDataForAdapter(AutoCompleteTextView view){
+
+        produtos = SessionUtil.getInstance().getProdutos();
+
+        adapter = new ArrayAdapter<Produto>
+                (context, android.R.layout.select_dialog_item, produtos);
+
+        view.setAdapter(adapter);
+        view.setThreshold(1);
+        view.setTextColor(Color.RED);
+
+    }
 
     @Override
     public void onCreate() {

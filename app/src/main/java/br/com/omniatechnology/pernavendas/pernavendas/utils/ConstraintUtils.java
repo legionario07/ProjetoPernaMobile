@@ -9,4 +9,6 @@ public class ConstraintUtils {
     public static final String FIND_ALL = "FIND_ALL";
 
     public static final String FIND_BY_ID = "FIND_BY_ID";
+
+    public static final String PRODUTO_INTENT = "0001";
 }

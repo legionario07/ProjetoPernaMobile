@@ -53,16 +53,6 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
     }
 
     @Override
-    public List<IModel> findAllSuccess() {
-        return null;
-    }
-
-    @Override
-    public List<IModel> findAllError(String message) {
-        return null;
-    }
-
-    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {

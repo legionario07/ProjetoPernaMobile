@@ -56,16 +56,6 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
     }
 
     @Override
-    public List<IModel> findAllSuccess() {
-        return null;
-    }
-
-    @Override
-    public List<IModel> findAllError(String message) {
-        return null;
-    }
-
-    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {

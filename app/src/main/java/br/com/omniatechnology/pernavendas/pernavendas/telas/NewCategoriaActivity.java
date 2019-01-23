@@ -53,15 +53,6 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
         Toast.makeText(this, message, LENGTH_LONG).show();
     }
 
-    @Override
-    public List<IModel> findAllSuccess() {
-        return null;
-    }
-
-    @Override
-    public List<IModel> findAllError(String message) {
-        return null;
-    }
 
     @Override
     public void onClick(View v) {

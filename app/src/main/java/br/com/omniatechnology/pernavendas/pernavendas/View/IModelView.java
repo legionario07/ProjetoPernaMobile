@@ -10,8 +10,6 @@ public interface IModelView {
 
     void onMessageSuccess(String message);
     void onMessageError(String message);
-    List<IModel> findAllSuccess();
-    List<IModel> findAllError(String message);
 
 
     interface IProdutoView extends IModelView{

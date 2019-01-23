@@ -6,18 +6,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUsuarioPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UsuarioPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -28,6 +28,8 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
     TextInputLayout inpConfirmarSenha;
     Spinner spnPerfil;
     ImageButton btnSave;
+
+    private Usuario usuario;
 
     IUsuarioPresenter usuarioPresenter;
 
@@ -53,7 +55,27 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
 
         usuarioPresenter.setSpinnerPerfil(spnPerfil);
 
+        if(getIntent().getExtras().containsKey(ConstraintUtils.USUARIO_INTENT)){
+            usuario = (Usuario) getIntent().getExtras().get(ConstraintUtils.USUARIO_INTENT);
+            preencherDadosNaView();
+        }
+
     }
+
+    public void preencherDadosNaView(){
+
+        inpUsuario.getEditText().setText(usuario.getUsuario());
+        inpConfirmarSenha.getEditText().setText(usuario.getSenha());
+        inpSenha.getEditText().setText(usuario.getSenha());
+
+        for(int i = 0;i<spnPerfil.getAdapter().getCount();i++){
+            if(usuario.getPerfil().getId()==((Perfil) spnPerfil.getAdapter().getItem(i)).getId()){
+                spnPerfil.setSelection(i);
+            }
+        }
+
+    }
+
 
     @Override
     public void onMessageSuccess(String message) {

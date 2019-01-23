@@ -15,7 +15,10 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.PerfilPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IPerfilPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -25,6 +28,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
     ImageButton btnSave;
 
     IPerfilPresenter perfilPresenter;
+    private Perfil perfil;
 
     private ProgressDialog progressDialog;
 
@@ -41,7 +45,19 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
 
         btnSave.setOnClickListener(this);
 
+        if(getIntent().getExtras().containsKey(ConstraintUtils.PERFIL_INTENT)){
+            perfil = (Perfil) getIntent().getExtras().get(ConstraintUtils.PERFIL_INTENT);
+            preencherDadosNaView();
+        }
+
     }
+
+    public void preencherDadosNaView(){
+
+        inpNomePerfil.getEditText().setText(perfil.getNome());
+
+    }
+
 
     @Override
     public void onMessageSuccess(String message) {

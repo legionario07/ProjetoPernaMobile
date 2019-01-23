@@ -36,7 +36,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     private List<Produto> produtos;
     private Produto produto;
 
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

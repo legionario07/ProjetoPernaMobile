@@ -15,7 +15,10 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ConfiguracaoPres
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IConfiguracaoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -24,6 +27,8 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
     TextInputLayout inpPropriedadeConfiguracao;
     TextInputLayout inpValorConfiguracao;
     ImageButton btnSave;
+
+    private Configuracao configuracao;
 
     IConfiguracaoPresenter configuracaoPresenter;
 
@@ -44,7 +49,20 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
 
         btnSave.setOnClickListener(this);
 
+        if(getIntent().getExtras().containsKey(ConstraintUtils.CONFIGURACAO_INTENT)){
+            configuracao = (Configuracao) getIntent().getExtras().get(ConstraintUtils.CONFIGURACAO_INTENT);
+            preencherDadosNaView();
+        }
+
     }
+
+    public void preencherDadosNaView(){
+
+        inpPropriedadeConfiguracao.getEditText().setText(configuracao.getPropriedade());
+        inpValorConfiguracao.getEditText().setText(configuracao.getValor());
+
+    }
+
 
     @Override
     public void onMessageSuccess(String message) {

@@ -15,7 +15,10 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUnidadeDeMedida
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UnidadeDeMedidaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -25,6 +28,7 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
     ImageButton btnSave;
 
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
+    private UnidadeDeMedida unidadeDeMedida;
 
     private ProgressDialog progressDialog;
 
@@ -41,7 +45,19 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
 
         btnSave.setOnClickListener(this);
 
+        if(getIntent().getExtras().containsKey(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT)){
+            unidadeDeMedida = (UnidadeDeMedida) getIntent().getExtras().get(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT);
+            preencherDadosNaView();
+        }
+
     }
+
+    public void preencherDadosNaView(){
+
+        inpTipoUnidadeDeMedida.getEditText().setText(unidadeDeMedida.getTipo());
+
+    }
+
 
     @Override
     public void onMessageSuccess(String message) {

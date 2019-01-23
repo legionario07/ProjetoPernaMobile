@@ -44,6 +44,8 @@ public interface IModelView {
 
     interface IVendaView extends IModelView{
 
+
+
     }
 
     interface IUnidadeDeMedidaView extends IModelView{

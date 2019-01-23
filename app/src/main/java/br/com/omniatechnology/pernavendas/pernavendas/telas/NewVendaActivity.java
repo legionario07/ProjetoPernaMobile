@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IMarcaPresenter;
@@ -36,7 +37,9 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -49,6 +52,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private ImageButton imgAdicionarProduto;
     private Produto produto;
     private TextView txtTotal;
+    private Venda venda;
 
     private PedidosAdapter pedidosAdapter;
 
@@ -76,30 +80,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
 
         imgAdicionarProduto.setOnClickListener(this);
-
-
-        final List<Produto> produtos = new ArrayList<>();
-        Produto p = new Produto();
-        p.setNome("CASA COM PISCINA");
-        p.setDescricao("Casa");
-        p.setQtde(2);
-        p.setValorVenda(new BigDecimal("10.00"));
-
-        Produto p3 = new Produto();
-        p3.setNome("CASA SEM PISCINA");
-        p3.setDescricao("Casa");
-        p3.setQtde(2);
-        p3.setValorVenda(new BigDecimal("10.00"));
-
-        Produto p2 = new Produto();
-        p2.setNome("CArro COM PISCINA");
-        p2.setQtde(2);
-        p2.setDescricao("CARRO");
-        p2.setValorVenda(new BigDecimal("10.00"));
-
-        produtos.add(p);
-        produtos.add(p2);
-        produtos.add(p3);
 
 
         vendaPresenter = new VendaPresenter(this, this);
@@ -172,7 +152,15 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         switch (v.getId()){
             case R.id.btn_save:
 
+                showProgressDialog(getResources().getString(R.string.processando));
 
+                venda = new Venda();
+                venda.setPedidos(pedidos);
+                venda.setDataVenda(Calendar.getInstance());
+                venda.setUsuario(SessionUtil.getInstance().getUsuario());
+
+                vendaPresenter.save(venda);
+                progressDialog.dismiss();
 
                 break;
 
@@ -252,6 +240,15 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         dialog = dialogBuilder.create();
         dialog.show();
+
+    }
+
+    private void showProgressDialog(String message) {
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
 
     }
 

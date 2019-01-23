@@ -16,6 +16,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -59,6 +60,11 @@ public class VendaPresenter implements IVendaPresenter {
         view.setThreshold(1);
         view.setTextColor(Color.RED);
 
+    }
+
+    public void save(Venda venda){
+        this.venda = venda;
+        onCreate();
     }
 
     @Override

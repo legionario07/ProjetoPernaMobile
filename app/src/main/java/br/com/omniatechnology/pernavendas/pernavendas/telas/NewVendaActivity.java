@@ -44,7 +44,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
     private ListView lstPedidos;
     private List<Pedido> pedidos;
-    private MarcasAdapter marcasAdapter;
     private AutoCompleteTextView inpProduto;
     IVendaPresenter vendaPresenter;
     private ImageButton imgAdicionarProduto;
@@ -106,20 +105,13 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         vendaPresenter = new VendaPresenter(this, this);
        // ((MarcaPresenter) marcaPresenter).initialize(rcViewMarcas);
 
-        final ArrayAdapter<Produto> adapter = new ArrayAdapter<Produto>
-                (this, android.R.layout.select_dialog_item, produtos);
 
-        inpProduto.setAdapter(adapter);
-        inpProduto.setThreshold(1);
-        inpProduto.setTextColor(Color.RED);
-
-
-        //((VendaPresenter) vendaPresenter).addDataForAdapter(inpProduto);
+        ((VendaPresenter) vendaPresenter).addDataForAdapter(inpProduto);
 
         inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                produto = adapter.getItem(position);
+                produto = (Produto) inpProduto.getAdapter().getItem(position);
 
             }
         });

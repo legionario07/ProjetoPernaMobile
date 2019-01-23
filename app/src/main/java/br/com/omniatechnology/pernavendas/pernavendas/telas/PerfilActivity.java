@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IPerfilPresenter;
@@ -18,6 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -40,6 +43,15 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
         perfilPresenter = new PerfilPresenter(this, this);
 
         perfilPresenter.atualizarList(lstPerfil);
+
+        lstPerfil.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), NewPerfilActivity.class);
+                intent.putExtra(ConstraintUtils.PERFIL_INTENT, (Serializable) lstPerfil.getAdapter().getItem(position));
+                startActivity(intent);
+            }
+        });
 
 
     }

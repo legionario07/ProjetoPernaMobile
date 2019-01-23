@@ -12,4 +12,9 @@ public class ConstraintUtils {
 
     public static final String PRODUTO_INTENT = "0001";
     public static final String MARCA_INTENT = "0001";
+    public static final String CATEGORIA_INTENT = "0001";
+    public static final String PERFIL_INTENT = "0001";
+    public static final String CONFIGURACAO_INTENT = "0001";
+    public static final String UNIDADE_DE_MEDIDA_INTENT = "0001";
+    public static final String USUARIO_INTENT = "0001";
 }

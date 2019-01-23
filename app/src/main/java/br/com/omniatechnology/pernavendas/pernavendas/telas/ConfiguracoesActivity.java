@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ConfiguracaoPresenter;
@@ -18,6 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -39,6 +42,15 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
         configuracaoPresenter = new ConfiguracaoPresenter(this, this);
 
         configuracaoPresenter.atualizarList(lstConfiguracao);
+
+        lstConfiguracao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), NewConfiguracaoActivity.class);
+                intent.putExtra(ConstraintUtils.CONFIGURACAO_INTENT, (Serializable) lstConfiguracao.getAdapter().getItem(position));
+                startActivity(intent);
+            }
+        });
 
 
     }

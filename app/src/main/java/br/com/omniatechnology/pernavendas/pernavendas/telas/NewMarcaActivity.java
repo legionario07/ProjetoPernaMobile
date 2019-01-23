@@ -16,6 +16,8 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IMarcaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -27,6 +29,7 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
     IMarcaPresenter marcaPresenter;
 
     private ProgressDialog progressDialog;
+    private Marca marca;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +43,17 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
         ((MarcaPresenter) marcaPresenter).addTextWatcherNomeMarca(inpNomeMarca.getEditText());
 
         btnSave.setOnClickListener(this);
+
+        if(getIntent().getExtras().containsKey(ConstraintUtils.MARCA_INTENT)){
+            marca = (Marca) getIntent().getExtras().get(ConstraintUtils.MARCA_INTENT);
+            preencherDadosNaView();
+        }
+
+    }
+
+    public void preencherDadosNaView(){
+
+        inpNomeMarca.getEditText().setText(marca.getNome());
 
     }
 

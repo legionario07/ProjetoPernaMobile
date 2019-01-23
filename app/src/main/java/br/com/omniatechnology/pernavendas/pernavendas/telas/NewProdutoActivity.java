@@ -130,6 +130,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
             }
 
+            preencherViewsComDados();
 
 
         }

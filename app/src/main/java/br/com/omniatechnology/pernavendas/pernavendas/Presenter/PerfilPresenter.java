@@ -140,11 +140,6 @@ public class PerfilPresenter implements IPerfilPresenter {
             e.printStackTrace();
         }
 
-        if(perfis==null){
-            perfilView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            perfilView.findAllSuccess();
-        }
 
     }
 

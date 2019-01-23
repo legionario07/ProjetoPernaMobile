@@ -150,11 +150,6 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
             e.printStackTrace();
         }
 
-        if(unidadesDeMedidas==null){
-            unidadeDeMedidaView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            unidadeDeMedidaView.findAllSuccess();
-        }
 
     }
 

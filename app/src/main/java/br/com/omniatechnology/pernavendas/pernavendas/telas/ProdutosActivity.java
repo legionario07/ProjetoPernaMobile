@@ -8,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -54,18 +56,39 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
         atualizarDados();
 
-        produtosAdapter.setOnItemClickListener(new ProdutosAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                produto = produtos.get(position);
+//        produtosAdapter.setOnItemClickListener(new ProdutosAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                produto = produtos.get(position);
+//
+//                Intent intent = new Intent(getApplicationContext(), NewProdutoActivity.class);
+//                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, produto);
+//                startActivity(intent);
+//
+//            }
+//        });
 
-                Intent intent = new Intent(getApplicationContext(), NewProdutoActivity.class);
-                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, produto);
-                startActivity(intent);
+        registerForContextMenu(rcViewProdutos);
 
-            }
-        });
+    }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.menu_contextual, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_editar:
+                break;
+
+            case R.id.menu_excluir:
+
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     public void atualizarDados(){

@@ -141,11 +141,6 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
             e.printStackTrace();
         }
 
-        if(configuracoes==null){
-            configuracaoView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            configuracaoView.findAllSuccess();
-        }
 
     }
 

@@ -176,11 +176,6 @@ public class UsuarioPresenter implements IUsuarioPresenter {
             e.printStackTrace();
         }
 
-        if(usuarios==null){
-            usuarioView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            usuarioView.findAllSuccess();
-        }
 
     }
 

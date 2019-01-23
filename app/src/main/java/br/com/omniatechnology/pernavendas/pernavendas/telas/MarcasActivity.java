@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -44,16 +46,36 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
         marcaPresenter.atualizarList(lstMarca);
 
-        lstMarca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), NewMarcaActivity.class);
-                intent.putExtra(ConstraintUtils.MARCA_INTENT, (Serializable) lstMarca.getAdapter().getItem(position));
-                startActivity(intent);
-            }
-        });
+//        lstMarca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(getApplicationContext(), NewMarcaActivity.class);
+//                intent.putExtra(ConstraintUtils.MARCA_INTENT, (Serializable) lstMarca.getAdapter().getItem(position));
+//                startActivity(intent);
+//            }
+//        });
 
+        registerForContextMenu(lstMarca);
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.menu_contextual, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_editar:
+                break;
+
+            case R.id.menu_excluir:
+
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override

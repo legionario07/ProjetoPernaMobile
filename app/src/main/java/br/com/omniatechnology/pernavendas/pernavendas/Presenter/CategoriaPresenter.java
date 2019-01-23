@@ -55,10 +55,10 @@ public class CategoriaPresenter implements ICategoriaPresenter {
 
     public void atualizarList(ListView view){
 
-        BigDecimal valorTotal = new BigDecimal("0.0");
 
         if(categoriasAdapter==null){
             categorias = (List<Categoria>) genericDAO.execute(new Categoria(), ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
+
 
             categoriasAdapter = new CategoriasAdapter(context, categorias);
 
@@ -170,11 +170,6 @@ public class CategoriaPresenter implements ICategoriaPresenter {
             e.printStackTrace();
         }
 
-        if(categorias==null){
-            categoriaView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            categoriaView.findAllSuccess();
-        }
 
     }
 

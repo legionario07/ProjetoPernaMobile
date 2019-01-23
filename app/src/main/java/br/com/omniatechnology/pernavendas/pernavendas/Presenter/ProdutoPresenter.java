@@ -229,11 +229,6 @@ public class ProdutoPresenter implements IProdutoPresenter {
             e.printStackTrace();
         }
 
-        if(produtos==null){
-            produtoView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            produtoView.findAllSuccess();
-        }
 
     }
 

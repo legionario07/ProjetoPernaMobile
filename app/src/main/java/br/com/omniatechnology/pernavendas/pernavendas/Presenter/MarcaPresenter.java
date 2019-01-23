@@ -143,11 +143,6 @@ public class MarcaPresenter implements IMarcaPresenter {
             e.printStackTrace();
         }
 
-        if(marcas==null){
-            marcaView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
-        }else{
-            marcaView.findAllSuccess();
-        }
 
     }
 

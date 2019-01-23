@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.CategoriaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ICategoriaPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
@@ -23,10 +25,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class CategoriasActivity extends AppCompatActivity implements IModelView.ICategoriaView, View.OnClickListener {
 
     private ListView lstCategoria;
-    private CategoriasAdapter categoriasAdapter;
     ICategoriaPresenter categoriaPresenter;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +37,15 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
         FloatingActionButton fabNewCategoria = findViewById(R.id.fabNovaCategoria);
         fabNewCategoria.setOnClickListener(this);
 
-        //categoriaPresenter = new CategoriaPresenter(this, this, categoriasAdapter);
-       // ((CategoriaPresenter) categoriaPresenter).initialize(rcViewCategorias);
+        categoriaPresenter = new CategoriaPresenter(this, this);
 
+        categoriaPresenter.atualizarList(lstCategoria);
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,12 +66,7 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.btn_save:
-
-
-
-                break;
+        switch (v.getId()) {
 
             case R.id.fabNovaCategoria:
 
@@ -80,11 +74,10 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

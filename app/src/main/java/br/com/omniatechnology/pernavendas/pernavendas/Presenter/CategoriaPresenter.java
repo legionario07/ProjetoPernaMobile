@@ -1,18 +1,30 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 public class CategoriaPresenter implements ICategoriaPresenter {
@@ -23,6 +35,7 @@ public class CategoriaPresenter implements ICategoriaPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Categoria> categorias;
+    private CategoriasAdapter categoriasAdapter;
 
     public CategoriaPresenter() {
         categoria = new Categoria();
@@ -37,6 +50,26 @@ public class CategoriaPresenter implements ICategoriaPresenter {
         this();
         this.categoriaView = categoriaView;
         this.context = context;
+    }
+
+
+    public void atualizarList(ListView view){
+
+        BigDecimal valorTotal = new BigDecimal("0.0");
+
+        if(categoriasAdapter==null){
+            categorias = (List<Categoria>) genericDAO.execute(new Categoria(), ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
+
+            categoriasAdapter = new CategoriasAdapter(context, categorias);
+
+            view.setAdapter(categoriasAdapter);
+
+        }else{
+
+            categoriasAdapter.notifyDataSetChanged();
+
+        }
+
     }
 
 

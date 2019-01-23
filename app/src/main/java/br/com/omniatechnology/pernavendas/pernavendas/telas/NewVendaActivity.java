@@ -78,15 +78,12 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         txtTotal  =findViewById(R.id.txtTotal);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
 
-
         imgAdicionarProduto.setOnClickListener(this);
 
-
         vendaPresenter = new VendaPresenter(this, this);
-       // ((MarcaPresenter) marcaPresenter).initialize(rcViewMarcas);
-
 
         ((VendaPresenter) vendaPresenter).addDataForAdapter(inpProduto);
+
 
         inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -178,7 +175,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                }else{
                    //Regra para abrir dialog com o produto selecionado
                    Toast.makeText(this, produto.getNome(), Toast.LENGTH_LONG).show();
-                   criarDialogCRUD("SALVAR");
+                   criarDialogCRUD();
                }
 
                 break;
@@ -188,7 +185,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
     }
 
-    private void criarDialogCRUD(final String operacao) {
+    private void criarDialogCRUD() {
 
         dialogBuilder = new AlertDialog.Builder(this);
 
@@ -222,8 +219,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 pedidos.add(pedido);
 
                 atualizarListDePedidos();
-
-
 
             }
         })

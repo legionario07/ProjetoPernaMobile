@@ -4,17 +4,21 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
@@ -27,6 +31,7 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<UnidadeDeMedida> unidadesDeMedidas;
+    private UnidadesDeMedidasAdapter unidadesDeMedidasAdapter;
 
 
     public UnidadeDeMedidaPresenter() {
@@ -173,5 +178,22 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
         });
     }
 
+
+    public void atualizarList(ListView view) {
+
+
+        if (unidadesDeMedidasAdapter == null) {
+            unidadesDeMedidas = (List<UnidadeDeMedida>) genericDAO.execute(new UnidadeDeMedida(), ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
+
+            unidadesDeMedidasAdapter = new UnidadesDeMedidasAdapter(context, unidadesDeMedidas);
+
+            view.setAdapter(unidadesDeMedidasAdapter);
+
+        } else {
+
+            unidadesDeMedidasAdapter.notifyDataSetChanged();
+
+        }
+    }
 
 }

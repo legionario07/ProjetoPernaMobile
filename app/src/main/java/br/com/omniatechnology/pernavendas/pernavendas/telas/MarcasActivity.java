@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IMarcaPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.MarcaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
@@ -23,10 +24,8 @@ import static android.widget.Toast.LENGTH_LONG;
 public class MarcasActivity extends AppCompatActivity implements IModelView.IMarcaView, View.OnClickListener {
 
     private ListView lstMarca;
-    private MarcasAdapter marcasAdapter;
     IMarcaPresenter marcaPresenter;
 
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +37,16 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
         FloatingActionButton fabNewMarca = findViewById(R.id.fabNovaMarca);
         fabNewMarca.setOnClickListener(this);
 
-        //marcaPresenter = new MarcaPresenter(this, this, marcasAdapter);
-       // ((MarcaPresenter) marcaPresenter).initialize(rcViewMarcas);
+        marcaPresenter = new MarcaPresenter(this, this);
+
+        marcaPresenter.atualizarList(lstMarca);
 
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,9 +67,8 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_save:
-
 
 
                 break;
@@ -80,11 +79,10 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUnidadeDeMedidaPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UnidadeDeMedidaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
@@ -23,10 +24,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class UnidadesDeMedidasActivity extends AppCompatActivity implements IModelView.IUnidadeDeMedidaView, View.OnClickListener {
 
     private ListView lstUnidadeDeMedida;
-    private UnidadesDeMedidasAdapter unidadesDeMedidasAdapter;
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +36,15 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
         FloatingActionButton fabNewUnidadeDeMedida = findViewById(R.id.fabNovaUnidadeDeMedida);
         fabNewUnidadeDeMedida.setOnClickListener(this);
 
-        //unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this, unidadesDeMedidasAdapter);
-       // ((UnidadeDeMedidaPresenter) unidadeDeMedidaPresenter).initialize(rcViewUnidadeDeMedidas);
+        unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this);
 
+        unidadeDeMedidaPresenter.atualizarList(lstUnidadeDeMedida);
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,9 +65,8 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_save:
-
 
 
                 break;
@@ -80,11 +77,10 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

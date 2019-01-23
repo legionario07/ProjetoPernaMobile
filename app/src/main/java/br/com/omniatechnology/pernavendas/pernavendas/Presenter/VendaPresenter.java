@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
@@ -51,7 +53,7 @@ public class VendaPresenter implements IVendaPresenter {
 
     public void addDataForAdapter(AutoCompleteTextView view){
 
-        produtos = SessionUtil.getInstance().getProdutos();
+        produtos = (List<Produto>) genericDAO.execute(new Produto(), ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
 
         adapter = new ArrayAdapter<Produto>
                 (context, android.R.layout.select_dialog_item, produtos);
@@ -167,6 +169,11 @@ public class VendaPresenter implements IVendaPresenter {
         }else{
             vendaView.findAllSuccess();
         }
+
+    }
+
+    @Override
+    public void atualizarList(ListView view) {
 
     }
 

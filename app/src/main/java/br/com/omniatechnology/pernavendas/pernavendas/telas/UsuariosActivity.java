@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUsuarioPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UsuarioPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
@@ -38,15 +39,15 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
         FloatingActionButton fabNewUsuario = findViewById(R.id.fabNovoUsuario);
         fabNewUsuario.setOnClickListener(this);
 
-        //usuarioPresenter = new UsuarioPresenter(this, this, usuariosAdapter);
-       // ((UsuarioPresenter) usuarioPresenter).initialize(rcViewUsuarios);
+        usuarioPresenter = new UsuarioPresenter(this, this);
+        usuarioPresenter.atualizarList(lstUsuario);
 
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,12 +68,8 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.btn_save:
+        switch (v.getId()) {
 
-
-
-                break;
 
             case R.id.fabNovoUsuario:
 
@@ -80,11 +77,10 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
@@ -27,6 +30,7 @@ public class PerfilPresenter implements IPerfilPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Perfil> perfis;
+    private PerfisAdapter perfilsAdapter;
 
     public PerfilPresenter() {
         perfil = new Perfil();
@@ -164,4 +168,20 @@ public class PerfilPresenter implements IPerfilPresenter {
     }
 
 
+    public void atualizarList(ListView view) {
+
+
+        if (perfilsAdapter == null) {
+            perfis = (List<Perfil>) genericDAO.execute(new Perfil(), ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
+
+            perfilsAdapter = new PerfisAdapter(context, perfis);
+
+            view.setAdapter(perfilsAdapter);
+
+        } else {
+
+            perfilsAdapter.notifyDataSetChanged();
+
+        }
+    }
 }

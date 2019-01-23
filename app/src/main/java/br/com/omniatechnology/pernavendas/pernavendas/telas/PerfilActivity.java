@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IPerfilPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.PerfilPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
@@ -23,10 +24,8 @@ import static android.widget.Toast.LENGTH_LONG;
 public class PerfilActivity extends AppCompatActivity implements IModelView.IPerfilView, View.OnClickListener {
 
     private ListView lstPerfil;
-    private PerfisAdapter perfisAdapter;
     IPerfilPresenter perfilPresenter;
 
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +37,16 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
         FloatingActionButton fabNewPerfil = findViewById(R.id.fabNovoPerfil);
         fabNewPerfil.setOnClickListener(this);
 
-        //perfilPresenter = new PerfilPresenter(this, this, perfisAdapter);
-       // ((PerfilPresenter) perfilPresenter).initialize(rcViewPerfis);
+        perfilPresenter = new PerfilPresenter(this, this);
+
+        perfilPresenter.atualizarList(lstPerfil);
 
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,12 +67,7 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.btn_save:
-
-
-
-                break;
+        switch (v.getId()) {
 
             case R.id.fabNovoPerfil:
 
@@ -80,11 +75,10 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

@@ -1,5 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
+import android.widget.ListView;
+
 public interface IModelPresenter {
 
     void onCreate();
@@ -7,4 +9,5 @@ public interface IModelPresenter {
     void onUpdate();
     void findById();
     void findAll();
+
 }

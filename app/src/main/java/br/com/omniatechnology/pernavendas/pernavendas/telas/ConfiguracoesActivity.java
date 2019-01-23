@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ConfiguracaoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IConfiguracaoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
@@ -23,10 +24,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class ConfiguracoesActivity extends AppCompatActivity implements IModelView.IConfiguracaoView, View.OnClickListener {
 
     private ListView lstConfiguracao;
-    private ConfiguracoesAdapter configuracaosAdapter;
     IConfiguracaoPresenter configuracaoPresenter;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +36,16 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
         FloatingActionButton fabNewConfiguracao = findViewById(R.id.fabNovaConfiguracao);
         fabNewConfiguracao.setOnClickListener(this);
 
-        //configuracaoPresenter = new ConfiguracaoPresenter(this, this, configuracaosAdapter);
-       // ((ConfiguracaoPresenter) configuracaoPresenter).initialize(rcViewConfiguracoes);
+        configuracaoPresenter = new ConfiguracaoPresenter(this, this);
+
+        configuracaoPresenter.atualizarList(lstConfiguracao);
 
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -67,12 +66,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.btn_save:
-
-
-
-                break;
+        switch (v.getId()) {
 
             case R.id.fabNovaConfiguracao:
 
@@ -80,11 +74,10 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
                 break;
 
-                default:
+            default:
         }
 
     }
-
 
 
 }

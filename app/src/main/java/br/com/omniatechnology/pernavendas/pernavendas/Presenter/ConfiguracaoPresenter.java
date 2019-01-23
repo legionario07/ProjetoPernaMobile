@@ -4,12 +4,16 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
@@ -25,6 +29,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Configuracao> configuracoes;
+    private ConfiguracoesAdapter configuracoesAdapter;
 
     public ConfiguracaoPresenter() {
         configuracao = new Configuracao();
@@ -140,6 +145,24 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
             configuracaoView.findAllError(context.getString(R.string.nao_possivel_dados_solicitados));
         }else{
             configuracaoView.findAllSuccess();
+        }
+
+    }
+
+    public void atualizarList(ListView view){
+
+
+        if(configuracoesAdapter==null){
+            configuracoes = (List<Configuracao>) genericDAO.execute(new Configuracao(), ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl());
+
+            configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
+
+            view.setAdapter(configuracoesAdapter);
+
+        }else{
+
+            configuracoesAdapter.notifyDataSetChanged();
+
         }
 
     }

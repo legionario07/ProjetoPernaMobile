@@ -4,12 +4,15 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
@@ -28,6 +31,7 @@ public class MarcaPresenter implements IMarcaPresenter {
     private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Marca> marcas;
+    private MarcasAdapter marcasAdapter;
 
     public MarcaPresenter() {
         marca = new Marca();
@@ -147,24 +151,39 @@ public class MarcaPresenter implements IMarcaPresenter {
 
     }
 
-    public void addTextWatcherNomeMarca(final EditText editText) {
+    public void atualizarList(ListView view) {
 
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+        if (marcasAdapter == null) {
+            marcas = (List<Marca>) genericDAO.execute(new Marca(), ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            marcasAdapter = new MarcasAdapter(context, marcas);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                marca.setNome(s.toString());
-            }
-        });
+            view.setAdapter(marcasAdapter);
+
+        } else {
+
+            marcasAdapter.notifyDataSetChanged();
+
+        }
     }
+        public void addTextWatcherNomeMarca(final EditText editText){
 
+            editText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    marca.setNome(s.toString());
+                }
+            });
+        }
 
 }

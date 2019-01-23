@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -12,8 +13,11 @@ import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
@@ -32,6 +36,7 @@ public class UsuarioPresenter implements IUsuarioPresenter {
     private Boolean isSave;
     private List<Usuario> usuarios;
     private String confirmarSenhaStr;
+    private UsuariosAdapter usuariosAdapter;
 
     public UsuarioPresenter() {
         usuario = new Usuario();
@@ -236,5 +241,21 @@ public class UsuarioPresenter implements IUsuarioPresenter {
         });
     }
 
+    public void atualizarList(ListView view) {
+
+
+        if (usuariosAdapter == null) {
+            usuarios = (List<Usuario>) genericDAO.execute(new Usuario(), ConstraintUtils.FIND_ALL, new UsuarioServiceImpl());
+
+            usuariosAdapter = new UsuariosAdapter(context, usuarios);
+
+            view.setAdapter(usuariosAdapter);
+
+        } else {
+
+            usuariosAdapter.notifyDataSetChanged();
+
+        }
+    }
 
 }

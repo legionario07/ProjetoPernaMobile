@@ -55,6 +55,16 @@
             android:padding="10dp"
             android:text="LOGIN" />
 
+        <CheckBox
+            android:id="@+id/chkSalvarSenha"
+            android:text="Salvar Senha"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 

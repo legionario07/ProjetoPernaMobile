@@ -51,6 +51,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
                 return service.update((Long) serializables[0]);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
         }else if(ConstraintUtils.FIND_ALL.equals(OPCAO)){
@@ -59,6 +60,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
                 return (Serializable) service.findAll();
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
         }else if(ConstraintUtils.FIND_BY_ID.equals(OPCAO)){
@@ -66,6 +68,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
                 return (Serializable) service.findById((Long) serializables[0]);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }else if(ConstraintUtils.LOGIN.equals(OPCAO)){
             try {

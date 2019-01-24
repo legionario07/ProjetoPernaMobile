@@ -1,11 +1,14 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
@@ -15,7 +18,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class LoginPresenter implements ILoginPresenter {
+public class LoginPresenter implements ILoginPresenter, GenericDAO.OnPostProcess {
 
     ILoginView loginView;
     Usuario usuario;
@@ -25,7 +28,7 @@ public class LoginPresenter implements ILoginPresenter {
 
 
     public LoginPresenter() {
-        genericDAO = new GenericDAO();
+
     }
 
     public LoginPresenter(ILoginView loginView) {
@@ -38,6 +41,7 @@ public class LoginPresenter implements ILoginPresenter {
     public LoginPresenter(ILoginView loginView, Context context) {
         this(loginView);
         this.context = context;
+        genericDAO = new GenericDAO(context);
     }
 
     public void addUsuarioTextWatcher(final EditText view) {
@@ -105,7 +109,7 @@ public class LoginPresenter implements ILoginPresenter {
 
         if (retornoStr.length() == 0) {
             try {
-                usuario = (Usuario) genericDAO.execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl()).get();
+                genericDAO.execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
 
                 if (usuario == null) {
                     loginView.OnLoginResultError();
@@ -113,13 +117,16 @@ public class LoginPresenter implements ILoginPresenter {
                     loginView.OnLoginResultSuccess();
                 }
 
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else
             loginView.OnLoginResultError();
 
+    }
+
+    @Override
+    public void postProcess(Serializable serializable) {
+        usuario = (Usuario) serializable;
     }
 }

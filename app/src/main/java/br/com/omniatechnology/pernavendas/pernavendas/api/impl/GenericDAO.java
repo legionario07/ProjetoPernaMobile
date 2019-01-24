@@ -1,10 +1,14 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.IOException;
 import java.io.Serializable;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
@@ -12,8 +16,26 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> {
 
+    private Context context;
+    private ProgressDialog progressDialog;
+    private OnPostProcess listener;
 
     public GenericDAO(){
+
+    }
+    public GenericDAO(Context context){
+        this();
+        this.context = context;
+        
+
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(context);
+
+        progressDialog.setMessage(context.getString(R.string.processando));
+        progressDialog.setTitle(context.getString(R.string.aguarde));
+        progressDialog.show();
 
     }
 
@@ -21,7 +43,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
     protected void onPreExecute() {
         super.onPreExecute();
 
-
+        showProgressDialog();
 
     }
 
@@ -84,6 +106,15 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
 
     @Override
     protected void onPostExecute(Serializable s) {
-        super.onPostExecute(s);
+        progressDialog.dismiss();
+
+        listener.postProcess(s);
+
+
     }
+
+    public interface OnPostProcess{
+        void postProcess(Serializable serializable);
+    }
+
 }

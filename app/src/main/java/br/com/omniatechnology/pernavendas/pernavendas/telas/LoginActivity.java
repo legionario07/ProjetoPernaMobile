@@ -1,5 +1,6 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
@@ -28,6 +29,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     ILoginPresenter loginPresenter;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     }
 
-    private void verificarDadosSalvo(){
+    private void verificarDadosSalvo() {
 
         SharedPreferences prefs = getSharedPreferences(ConstraintUtils.PREFERENCES, MODE_PRIVATE);
         String login = prefs.getString("login", null);
@@ -65,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     }
 
 
-    private void atualizarDadosSalvo(){
+    private void atualizarDadosSalvo() {
 
         SharedPreferences.Editor editor = getSharedPreferences(ConstraintUtils.PREFERENCES, MODE_PRIVATE).edit();
         editor.putString("login", usuarioWrapper.getEditText().getText().toString());
@@ -78,24 +81,29 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     @Override
     public void OnLoginResultSuccess() {
         atualizarDadosSalvo();
-        Toast.makeText(this, getResources().getString(R.string.login_sucess),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.login_sucess), Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, HomeActivity.class));
 
     }
 
     @Override
     public void OnLoginResultError() {
-        Toast.makeText(this, getResources().getString(R.string.login_error),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.login_error), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_login:
+
+
                 loginPresenter.onLogin();
+
+
                 break;
 
-                default:
+            default:
         }
     }
+
 }

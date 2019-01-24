@@ -60,4 +60,7 @@
     <string name="title_activity_qrcode">QRCodeActivity</string>
     <string name="title_activity_qr_reader">QrReaderActivity</string>
     <string name="nao_possivel_ler_codigo">Não foi possível ler o código</string>
+    <string name="EAN">Código Produto</string>
+    <string name="gerar_barcode">Gerar Código de Barras</string>
+    <string name="preencher_codigo_produto">Código do Produto deve ser preenchido</string>
 </resources>

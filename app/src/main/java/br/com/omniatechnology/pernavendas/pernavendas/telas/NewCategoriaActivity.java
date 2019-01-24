@@ -45,7 +45,7 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.CATEGORIA_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.CATEGORIA_INTENT)){
             categoria = (Categoria) getIntent().getExtras().get(ConstraintUtils.CATEGORIA_INTENT);
             preencherDadosNaView();
         }

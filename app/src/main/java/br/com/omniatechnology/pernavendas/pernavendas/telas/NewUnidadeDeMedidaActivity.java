@@ -45,7 +45,7 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT)){
             unidadeDeMedida = (UnidadeDeMedida) getIntent().getExtras().get(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT);
             preencherDadosNaView();
         }

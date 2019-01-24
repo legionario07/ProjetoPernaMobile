@@ -1,17 +1,28 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
@@ -19,12 +30,11 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -41,6 +51,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     Spinner spnCategoria;
     CheckBox chkIsInativo;
     TextInputLayout inpEanProduto;
+    private ImageView imgQrCode;
+
     private Produto produto;
     ImageButton btnSave;
 
@@ -66,11 +78,17 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpValorVendaProduto = findViewById(R.id.inp_layout_valor_venda_produto);
         inpQtdeProduto = findViewById(R.id.inp_layout_qtde_produto);
         inpQtdeMinProduto = findViewById(R.id.inp_layout_qtde_min_produto);
+        inpEanProduto = findViewById(R.id.inp_layout_ean_produto);
+        imgQrCode = findViewById(R.id.imgQrCode);
+
         spnMarca = findViewById(R.id.spnMarca);
         spnCategoria = findViewById(R.id.spnCategoria);
         spnUnidadeDeMedida = findViewById(R.id.spnUnidadeDeMedida);
         chkIsInativo = findViewById(R.id.chkInativo);
         btnSave = findViewById(R.id.btn_save);
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.fabGerarBarcode);
+        floatingActionButton.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
         ((ProdutoPresenter) produtoPresenter).addTextWatcherNomeProduto(inpNomeProduto.getEditText());
@@ -78,6 +96,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         ((ProdutoPresenter) produtoPresenter).addTextWatcherQtdeMinProduto(inpQtdeMinProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherDescricaoProduto(inpDescricaoProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherValorVendaProduto(inpValorVendaProduto.getEditText());
+        ((ProdutoPresenter) produtoPresenter).addTextWatcherEanProduto(inpEanProduto.getEditText());
 
         btnSave.setOnClickListener(this);
 
@@ -102,7 +121,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         spnUnidadeDeMedida.setAdapter(adapterUnidades);
 
 
-        if (getIntent().getExtras().containsKey(ConstraintUtils.PRODUTO_INTENT)) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.PRODUTO_INTENT)) {
 
             produto = (Produto) getIntent().getExtras().get(ConstraintUtils.PRODUTO_INTENT);
 
@@ -175,9 +194,54 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
                 break;
 
+            case R.id.fabGerarBarcode:
+
+                if(inpEanProduto.getEditText().getText().length()==0){
+                    Toast.makeText(this, getString(R.string.preencher_codigo_produto),Toast.LENGTH_LONG).show();
+                }else{
+                  checarPermissao();
+                }
+
+                break;
+
             default:
         }
 
+    }
+
+    private static final int SOLICITAR_PERMISSAO = 1;
+    private void checarPermissao(){
+
+        // Verifica  o estado da permissão de WRITE_EXTERNAL_STORAGE
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // Se for diferente de PERMISSION_GRANTED, então vamos exibir a tela padrão
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, SOLICITAR_PERMISSAO);
+        } else {
+            // Senão vamos compartilhar a imagem
+            sharedImage();
+        }
+    }
+
+    private void sharedImage(){
+        // Vamos carregar a imagem em um bitmap
+        Bitmap b = QrCodeUtil.gerarQRCode(inpEanProduto.getEditText().getText().toString());
+        Intent share = new Intent(Intent.ACTION_SEND);
+        //setamos o tipo da imagem
+        share.setType("image/jpeg");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        // comprimomos a imagem
+        b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        // Gravamos a imagem
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Titulo da Imagem", null);
+        // criamos uam Uri com o endereço que a imagem foi salva
+        Uri imageUri =  Uri.parse(path);
+        // Setmaos a Uri da imagem
+        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        // chama o compartilhamento
+        startActivity(Intent.createChooser(share, "Selecione"));
     }
 
     private void getDadosDeSpinner() {

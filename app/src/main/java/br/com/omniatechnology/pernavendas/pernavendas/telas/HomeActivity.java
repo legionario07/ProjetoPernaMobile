@@ -107,8 +107,9 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(this, PerfilActivity.class));
 
         } else if (id == R.id.nav_produtos) {
-
-            startActivity(new Intent(this, ProdutosActivity.class));
+            //ALTERAR PARA PRODUTOSACTIVITY.CLASS
+           // startActivity(new Intent(this, ProdutosActivity.class));
+            startActivity(new Intent(this, NewProdutoActivity.class));
 
         } else if (id == R.id.nav_unidades_de_medidas) {
 

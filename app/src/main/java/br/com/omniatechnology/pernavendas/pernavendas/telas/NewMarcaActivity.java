@@ -44,7 +44,7 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.MARCA_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.MARCA_INTENT)){
             marca = (Marca) getIntent().getExtras().get(ConstraintUtils.MARCA_INTENT);
             preencherDadosNaView();
         }

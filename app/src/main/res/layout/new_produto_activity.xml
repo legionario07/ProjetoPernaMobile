@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll"
-    android:layout_centerInParent="true"
-    android:gravity="center"
+
     android:orientation="vertical"
     android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/inp_layout_nome_produto"
@@ -100,6 +107,25 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/inp_layout_ean_produto"
+        android:layout_below="@id/inp_ean_produto"
+        android:layout_marginTop="10dp"
+        android:hint="@string/EAN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/cadastros"
+            android:inputType="text"
+            android:id="@+id/inp_ean_produto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+    </android.support.design.widget.TextInputLayout>
+
     <Spinner
         android:id="@+id/spnMarca"
         style="@style/cadastros.spinner"
@@ -122,24 +148,6 @@
         android:layout_marginTop="10dp"
         android:layout_height="wrap_content"></Spinner>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/inp_layout_ean_produto"
-        android:layout_below="@id/inp_ean_produto"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            style="@style/cadastros"
-            android:inputType="text"
-            android:hint="@string/ean"
-            android:id="@+id/inp_ean_produto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-    </android.support.design.widget.TextInputLayout>
 
     <CheckBox
         android:visibility="gone"
@@ -155,6 +163,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imgQrCode"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabGerarBarcode"
+        android:layout_width="wrap_content"
+        android:tooltipText="@string/gerar_barcode"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/qr_code_reader" />
+
+</FrameLayout>

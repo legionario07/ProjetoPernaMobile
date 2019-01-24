@@ -49,7 +49,7 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.CONFIGURACAO_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.CONFIGURACAO_INTENT)){
             configuracao = (Configuracao) getIntent().getExtras().get(ConstraintUtils.CONFIGURACAO_INTENT);
             preencherDadosNaView();
         }

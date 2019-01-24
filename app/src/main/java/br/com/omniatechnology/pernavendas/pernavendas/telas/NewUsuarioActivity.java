@@ -55,7 +55,7 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
 
         usuarioPresenter.setSpinnerPerfil(spnPerfil);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.USUARIO_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.USUARIO_INTENT)){
             usuario = (Usuario) getIntent().getExtras().get(ConstraintUtils.USUARIO_INTENT);
             preencherDadosNaView();
         }

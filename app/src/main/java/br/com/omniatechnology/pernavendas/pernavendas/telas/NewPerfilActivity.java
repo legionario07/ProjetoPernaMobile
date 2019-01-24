@@ -45,7 +45,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras().containsKey(ConstraintUtils.PERFIL_INTENT)){
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.PERFIL_INTENT)){
             perfil = (Perfil) getIntent().getExtras().get(ConstraintUtils.PERFIL_INTENT);
             preencherDadosNaView();
         }

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -22,7 +23,9 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -31,6 +34,8 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
     private ListView lstCategoria;
     ICategoriaPresenter categoriaPresenter;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,11 +63,27 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                categoriaPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                categoriaPresenter.onDelete(((Categoria) lstCategoria.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
 
                 break;
         }
@@ -96,6 +117,17 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
         }
 
     }
+
+    private void showProgressDialog(String message){
+        progressDialog  =new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
+
+    }
+
+
 
 
 }

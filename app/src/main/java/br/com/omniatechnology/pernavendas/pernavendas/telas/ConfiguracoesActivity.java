@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -21,7 +22,10 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IConfiguracaoPre
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -30,6 +34,8 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
     private ListView lstConfiguracao;
     IConfiguracaoPresenter configuracaoPresenter;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,15 +51,6 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
         configuracaoPresenter.atualizarList(lstConfiguracao);
 
-//        lstConfiguracao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), NewConfiguracaoActivity.class);
-//                intent.putExtra(ConstraintUtils.CONFIGURACAO_INTENT, (Serializable) lstConfiguracao.getAdapter().getItem(position));
-//                startActivity(intent);
-//            }
-//        });
-
         registerForContextMenu(lstConfiguracao);
 
     }
@@ -66,11 +63,27 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                configuracaoPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                configuracaoPresenter.onDelete(((Configuracao) lstConfiguracao.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
 
                 break;
         }
@@ -102,6 +115,15 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
             default:
         }
+
+    }
+
+    private void showProgressDialog(String message){
+        progressDialog  =new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
 
     }
 

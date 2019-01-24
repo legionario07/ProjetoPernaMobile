@@ -22,14 +22,16 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class UsuariosActivity extends AppCompatActivity implements IModelView.IUsuarioView, View.OnClickListener {
-
+public class UsuariosActivity extends AppCompatActivity implements IModelView.IUsuarioView, View.OnClickListener{
     private ListView lstUsuario;
     IUsuarioPresenter usuarioPresenter;
+
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -44,16 +46,6 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
 
         usuarioPresenter = new UsuarioPresenter(this, this);
         usuarioPresenter.atualizarList(lstUsuario);
-//
-//        lstUsuario.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), NewUsuarioActivity.class);
-//                intent.putExtra(ConstraintUtils.USUARIO_INTENT, (Serializable) lstUsuario.getAdapter().getItem(position));
-//                startActivity(intent);
-//            }
-//        });
-
 
         registerForContextMenu(lstUsuario);
 
@@ -67,15 +59,42 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                usuarioPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
 
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                usuarioPresenter.onDelete(((Usuario) lstUsuario.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
+
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void showProgressDialog(String message){
+        progressDialog  =new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
+
     }
 
     @Override
@@ -104,6 +123,9 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
         }
 
     }
+
+
+
 
 
 }

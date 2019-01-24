@@ -100,7 +100,9 @@ public class CategoriaPresenter implements ICategoriaPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
+
+        categoria = new Categoria(id);
 
         try {
             isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.DELETAR, new CategoriaServiceImpl()).get();

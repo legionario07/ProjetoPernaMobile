@@ -22,6 +22,8 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -30,6 +32,8 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
     private ListView lstMarca;
     IMarcaPresenter marcaPresenter;
+
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -46,15 +50,6 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
         marcaPresenter.atualizarList(lstMarca);
 
-//        lstMarca.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), NewMarcaActivity.class);
-//                intent.putExtra(ConstraintUtils.MARCA_INTENT, (Serializable) lstMarca.getAdapter().getItem(position));
-//                startActivity(intent);
-//            }
-//        });
-
         registerForContextMenu(lstMarca);
 
     }
@@ -67,11 +62,28 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                marcaPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                marcaPresenter.onDelete(((Marca) lstMarca.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
 
                 break;
         }
@@ -103,6 +115,16 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
         }
 
     }
+
+    private void showProgressDialog(String message){
+        progressDialog  =new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
+
+    }
+
 
 
 }

@@ -21,7 +21,9 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.PerfilPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -30,6 +32,8 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
     private ListView lstPerfil;
     IPerfilPresenter perfilPresenter;
+
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -46,16 +50,6 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
         perfilPresenter.atualizarList(lstPerfil);
 
-//        lstPerfil.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), NewPerfilActivity.class);
-//                intent.putExtra(ConstraintUtils.PERFIL_INTENT, (Serializable) lstPerfil.getAdapter().getItem(position));
-//                startActivity(intent);
-//            }
-//        });
-
-
         registerForContextMenu(lstPerfil);
 
     }
@@ -68,11 +62,27 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                perfilPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                perfilPresenter.onDelete(((Perfil) lstPerfil.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
 
                 break;
         }
@@ -103,6 +113,15 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
             default:
         }
+
+    }
+
+    private void showProgressDialog(String message){
+        progressDialog  =new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
 
     }
 

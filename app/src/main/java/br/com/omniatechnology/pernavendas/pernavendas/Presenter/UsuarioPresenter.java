@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -109,7 +110,10 @@ public class UsuarioPresenter implements IUsuarioPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
+
+        usuario = new Usuario(id);
+
         try {
             isSave = (Boolean) genericDAO.execute(usuario, ConstraintUtils.DELETAR, new UsuarioServiceImpl()).get();
         } catch (ExecutionException e) {
@@ -240,6 +244,7 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
 
         if (usuariosAdapter == null) {
+
             usuarios = (List<Usuario>) genericDAO.execute(new Usuario(), ConstraintUtils.FIND_ALL, new UsuarioServiceImpl());
 
             usuariosAdapter = new UsuariosAdapter(context, usuarios);

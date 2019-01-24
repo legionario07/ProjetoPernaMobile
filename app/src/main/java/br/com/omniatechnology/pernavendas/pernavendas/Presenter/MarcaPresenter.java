@@ -76,7 +76,10 @@ public class MarcaPresenter implements IMarcaPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
+
+        marca = new Marca(id);
+
         try {
             isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.DELETAR, new MarcaServiceImpl()).get();
         } catch (ExecutionException e) {

@@ -75,7 +75,10 @@ public class PerfilPresenter implements IPerfilPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
+
+        perfil = new Perfil(id);
+
         try {
             isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.DELETAR, new PerfilServiceImpl()).get();
         } catch (ExecutionException e) {

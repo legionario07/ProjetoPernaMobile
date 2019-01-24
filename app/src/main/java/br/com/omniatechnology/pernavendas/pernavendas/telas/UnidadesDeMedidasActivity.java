@@ -22,6 +22,8 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -30,6 +32,7 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
     private ListView lstUnidadeDeMedida;
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,16 +69,35 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                unidadeDeMedidaPresenter.onUpdate();
+
+                progressDialog.dismiss();
+
                 break;
 
             case R.id.menu_excluir:
+
+                showProgressDialog(getResources().getString(R.string.processando));
+
+                unidadeDeMedidaPresenter.onDelete(((UnidadeDeMedida) lstUnidadeDeMedida.getItemAtPosition(info.position)).getId());
+
+                progressDialog.dismiss();
 
                 break;
         }
         return super.onContextItemSelected(item);
     }
+
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -90,10 +112,6 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.btn_save:
-
-
-                break;
 
             case R.id.fabNovaUnidadeDeMedida:
 
@@ -103,6 +121,15 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
             default:
         }
+
+    }
+
+    private void showProgressDialog(String message) {
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setMessage(message);
+        progressDialog.setTitle(getString(R.string.aguarde));
+        progressDialog.show();
 
     }
 

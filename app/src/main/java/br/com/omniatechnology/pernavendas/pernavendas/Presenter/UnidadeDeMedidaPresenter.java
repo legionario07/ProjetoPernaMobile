@@ -81,7 +81,9 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
+
+        unidadeDeMedida = new UnidadeDeMedida(id);
 
         try {
             isSave = (Boolean) genericDAO.execute(unidadeDeMedida, ConstraintUtils.DELETAR, new UnidadeDeMedidaServiceImpl()).get();

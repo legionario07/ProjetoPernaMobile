@@ -96,7 +96,7 @@ public class VendaPresenter implements IVendaPresenter {
     }
 
     @Override
-    public void onDelete() {
+    public void onDelete(Long id) {
 //        try {
 //            isSave = (Boolean) genericDAO.execute(venda, ConstraintUtils.DELETAR, new VendaServiceImpl()).get();
 //        } catch (ExecutionException e) {

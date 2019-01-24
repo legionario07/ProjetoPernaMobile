@@ -69,11 +69,10 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
+                Intent intent = new Intent(this,NewMarcaActivity.class);
+                intent.putExtra(ConstraintUtils.MARCA_INTENT, (Serializable) lstMarca.getItemAtPosition(info.position));
+                startActivity(intent);
 
-                marcaPresenter.onUpdate();
-
-                progressDialog.dismiss();
 
                 break;
 

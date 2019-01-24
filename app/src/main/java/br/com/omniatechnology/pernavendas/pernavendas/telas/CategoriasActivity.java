@@ -69,11 +69,9 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
-                categoriaPresenter.onUpdate();
-
-                progressDialog.dismiss();
+                Intent intent = new Intent(this,NewCategoriaActivity.class);
+                intent.putExtra(ConstraintUtils.CATEGORIA_INTENT, (Serializable) lstCategoria.getItemAtPosition(info.position));
+                startActivity(intent);
 
                 break;
 

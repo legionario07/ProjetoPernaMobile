@@ -68,11 +68,10 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
+                Intent intent = new Intent(this,NewPerfilActivity.class);
+                intent.putExtra(ConstraintUtils.PERFIL_INTENT, (Serializable) lstPerfil.getItemAtPosition(info.position));
+                startActivity(intent);
 
-                perfilPresenter.onUpdate();
-
-                progressDialog.dismiss();
 
                 break;
 

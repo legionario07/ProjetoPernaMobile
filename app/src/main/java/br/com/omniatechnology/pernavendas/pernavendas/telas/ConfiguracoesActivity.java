@@ -69,11 +69,9 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
-                configuracaoPresenter.onUpdate();
-
-                progressDialog.dismiss();
+                Intent intent = new Intent(this,NewConfiguracaoActivity.class);
+                intent.putExtra(ConstraintUtils.CONFIGURACAO_INTENT, (Serializable) lstConfiguracao.getItemAtPosition(info.position));
+                startActivity(intent);
 
                 break;
 

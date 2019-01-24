@@ -77,11 +77,9 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
-                unidadeDeMedidaPresenter.onUpdate();
-
-                progressDialog.dismiss();
+                Intent intent = new Intent(this,NewCategoriaActivity.class);
+                intent.putExtra(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT, (Serializable) lstUnidadeDeMedida.getItemAtPosition(info.position));
+                startActivity(intent);
 
                 break;
 

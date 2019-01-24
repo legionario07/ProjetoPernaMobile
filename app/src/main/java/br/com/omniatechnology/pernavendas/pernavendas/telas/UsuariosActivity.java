@@ -67,11 +67,9 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
-                usuarioPresenter.onUpdate();
-
-                progressDialog.dismiss();
+                Intent intent = new Intent(this,NewUsuarioActivity.class);
+                intent.putExtra(ConstraintUtils.USUARIO_INTENT, (Serializable) lstUsuario.getItemAtPosition(info.position));
+                startActivity(intent);
 
                 break;
 

@@ -3,6 +3,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 public class UsuarioPresenter implements IUsuarioPresenter {
 
@@ -192,6 +194,15 @@ public class UsuarioPresenter implements IUsuarioPresenter {
                 usuario.setUsuario(s.toString());
             }
         });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
     public void addTextWatcherSenha(final EditText editText) {
@@ -211,6 +222,15 @@ public class UsuarioPresenter implements IUsuarioPresenter {
                 usuario.setSenha(s.toString());
             }
         });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
     public void addTextWatcherConfirmarSenha(final EditText editText) {
@@ -228,6 +248,15 @@ public class UsuarioPresenter implements IUsuarioPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 confirmarSenhaStr = s.toString();
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }

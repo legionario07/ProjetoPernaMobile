@@ -3,6 +3,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -20,6 +21,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServi
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
 
@@ -197,6 +199,15 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 configuracao.setValor(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }

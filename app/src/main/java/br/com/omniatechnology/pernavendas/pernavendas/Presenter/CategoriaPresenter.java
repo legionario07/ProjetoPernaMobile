@@ -26,6 +26,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 public class CategoriaPresenter implements ICategoriaPresenter {
 
@@ -188,6 +189,15 @@ public class CategoriaPresenter implements ICategoriaPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 categoria.setNome(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }

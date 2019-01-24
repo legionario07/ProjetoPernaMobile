@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -250,6 +251,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
                 produto.setNome(s.toString());
             }
         });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
     public void addTextWatcherDescricaoProduto(final EditText editText) {
@@ -267,6 +277,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 produto.setDescricao(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }
@@ -288,6 +307,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
                 produto.setValorVenda(new BigDecimal(s.toString()));
             }
         });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
     public void addTextWatcherQtdeMinProduto(final EditText editText) {
@@ -305,6 +333,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 produto.setQtdeMinima(new Integer(s.toString()));
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }
@@ -327,6 +364,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
                 ViewUtils.hideKeyboard(context, editText);
             }
         });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
     public void addTextWatcherEanProduto(final EditText editText) {
@@ -344,6 +390,15 @@ public class ProdutoPresenter implements IProdutoPresenter {
             @Override
             public void afterTextChanged(Editable s) {
                 produto.setEAN(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }

@@ -3,6 +3,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -164,6 +165,15 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
             public void afterTextChanged(Editable s) {
                 unidadeDeMedida.setTipo(s.toString());
                 ViewUtils.hideKeyboard(context, editText);
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
             }
         });
     }

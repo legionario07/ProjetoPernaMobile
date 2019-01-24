@@ -72,6 +72,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
                 return new UsuarioServiceImpl().login((Usuario) serializables[0]);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
 

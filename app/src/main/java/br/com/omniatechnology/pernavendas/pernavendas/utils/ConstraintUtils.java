@@ -1,5 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.utils;
 
+import java.io.Serializable;
+
 public class ConstraintUtils {
 
     public static final String TAG = "PROJETO_PERNA";
@@ -8,6 +10,7 @@ public class ConstraintUtils {
     public static final String DELETAR = "DELETAR";
     public static final String FIND_ALL = "FIND_ALL";
 
+    public static final String LOGIN =  "LOGIN";
     public static final String FIND_BY_ID = "FIND_BY_ID";
 
     public static final String PRODUTO_INTENT = "0001";

@@ -3,11 +3,13 @@ package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IUsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IUsuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -85,6 +87,13 @@ public class UsuarioServiceImpl implements IService<Usuario> {
 
     }
 
+    public Usuario login(Usuario usuario) throws IOException{
+        retrofit = RetrofitConfig.getBuilder();
+
+        service = retrofit.create(IUsuarioService.class);
+
+        return service.login(usuario).execute().body();
+    }
 
 
 }

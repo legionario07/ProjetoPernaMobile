@@ -76,10 +76,8 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     @Override
     public void onDelete(Long id) {
 
-        configuracao = new Configuracao(id);
-
         try {
-            isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.DELETAR, new ConfiguracaoServiceImpl()).get();
+            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new ConfiguracaoServiceImpl()).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

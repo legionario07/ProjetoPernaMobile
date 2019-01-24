@@ -5,8 +5,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.concurrent.ExecutionException;
+
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 public class LoginPresenter implements ILoginPresenter {
 
@@ -14,7 +19,15 @@ public class LoginPresenter implements ILoginPresenter {
     Usuario usuario;
     Context context;
 
+    private GenericDAO genericDAO;
+
+
+    public LoginPresenter(){
+        genericDAO  = new GenericDAO();
+    }
+
     public LoginPresenter(ILoginView loginView) {
+        this();
         this.loginView = loginView;
         usuario = new Usuario();
     }
@@ -70,8 +83,22 @@ public class LoginPresenter implements ILoginPresenter {
 
         String retornoStr = usuario.isValid(context);
 
-        if(retornoStr.length()==0)
-            loginView.OnLoginResultSuccess();
+        if(retornoStr.length()==0) {
+            try {
+                usuario = (Usuario) genericDAO.execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl()).get();
+
+                if(usuario==null){
+                    loginView.OnLoginResultError();
+                }else{
+                    loginView.OnLoginResultSuccess();
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         else
             loginView.OnLoginResultError();
 

@@ -11,14 +11,10 @@ import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
@@ -77,10 +73,8 @@ public class PerfilPresenter implements IPerfilPresenter {
     @Override
     public void onDelete(Long id) {
 
-        perfil = new Perfil(id);
-
         try {
-            isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.DELETAR, new PerfilServiceImpl()).get();
+            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new PerfilServiceImpl()).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

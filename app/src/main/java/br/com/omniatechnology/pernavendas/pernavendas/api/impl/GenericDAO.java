@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> {
@@ -63,6 +64,12 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
         }else if(ConstraintUtils.FIND_BY_ID.equals(OPCAO)){
             try {
                 return (Serializable) service.findById((Long) serializables[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if(ConstraintUtils.LOGIN.equals(OPCAO)){
+            try {
+                return new UsuarioServiceImpl().login((Usuario) serializables[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }

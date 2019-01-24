@@ -165,10 +165,8 @@ public class ProdutoPresenter implements IProdutoPresenter {
     @Override
     public void onDelete(Long id) {
 
-        produto = new Produto(id);
-
         try {
-            isSave = (Boolean) genericDAO.execute(produto, ConstraintUtils.DELETAR, new ProdutoServiceImpl()).get();
+            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new ProdutoServiceImpl()).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

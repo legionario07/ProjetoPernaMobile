@@ -11,14 +11,9 @@ import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
@@ -83,10 +78,8 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
     @Override
     public void onDelete(Long id) {
 
-        unidadeDeMedida = new UnidadeDeMedida(id);
-
         try {
-            isSave = (Boolean) genericDAO.execute(unidadeDeMedida, ConstraintUtils.DELETAR, new UnidadeDeMedidaServiceImpl()).get();
+            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new UnidadeDeMedidaServiceImpl()).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

@@ -101,6 +101,8 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
                 usuarioPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

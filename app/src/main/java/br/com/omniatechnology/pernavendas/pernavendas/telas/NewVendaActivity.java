@@ -157,11 +157,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 vendaPresenter.save(venda);
                 progressDialog.dismiss();
 
-                break;
-
-            case R.id.fabNovaMarca:
-
-                startActivity(new Intent(this, NewMarcaActivity.class));
+                onBackPressed();
 
                 break;
 

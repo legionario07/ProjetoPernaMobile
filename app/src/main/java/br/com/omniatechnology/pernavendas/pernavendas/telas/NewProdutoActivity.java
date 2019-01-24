@@ -194,6 +194,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
                 produtoPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
             case R.id.fabGerarBarcode:

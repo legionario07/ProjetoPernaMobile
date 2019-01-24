@@ -82,6 +82,8 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
 
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

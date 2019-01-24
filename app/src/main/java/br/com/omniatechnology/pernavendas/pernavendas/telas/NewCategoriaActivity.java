@@ -80,6 +80,8 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
                 categoriaPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

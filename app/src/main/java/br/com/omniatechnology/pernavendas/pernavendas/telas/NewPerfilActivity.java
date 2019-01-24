@@ -81,6 +81,8 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
                 perfilPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

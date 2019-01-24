@@ -79,6 +79,8 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
                 marcaPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

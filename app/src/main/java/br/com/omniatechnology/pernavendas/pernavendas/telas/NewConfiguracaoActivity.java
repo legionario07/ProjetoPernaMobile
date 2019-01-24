@@ -85,6 +85,8 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
                 configuracaoPresenter.onCreate();
                 progressDialog.dismiss();
 
+                onBackPressed();
+
                 break;
 
                 default:

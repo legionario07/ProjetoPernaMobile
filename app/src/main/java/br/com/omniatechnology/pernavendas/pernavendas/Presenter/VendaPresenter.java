@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -185,6 +186,18 @@ public class VendaPresenter implements IVendaPresenter {
         });
     }
 
+    public Produto verificarProdutoPorEAN(String ean){
+
+        for(Produto p : produtos){
+
+            if(p.getEAN().equals(ean)){
+                return p;
+            }
+
+        }
+
+        return null;
+    }
 
 
 }

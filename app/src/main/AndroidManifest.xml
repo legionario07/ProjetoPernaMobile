@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.omniatechnology.pernavendas.pernavendas">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,22 +12,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".telas.QRCodeActivity"
+            android:label="@string/title_activity_qrcode"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity android:name=".telas.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".telas.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".telas.NewProdutoActivity" />
         <activity android:name=".telas.NewUnidadeDeMedidaActivity" />
-        <activity android:name=".telas.NewCategoriaActivity" />"
+        <activity android:name=".telas.NewCategoriaActivity" />
         <activity android:name=".telas.NewConfiguracaoActivity" />
         <activity android:name=".telas.NewMarcaActivity" />
         <activity android:name=".telas.NewPerfilActivity" />
@@ -38,7 +42,9 @@
         <activity android:name=".telas.PerfilActivity" />
         <activity android:name=".telas.UsuariosActivity" />
         <activity android:name=".telas.UnidadesDeMedidasActivity" />
-        <activity android:name=".telas.NewVendaActivity" android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".telas.NewVendaActivity"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

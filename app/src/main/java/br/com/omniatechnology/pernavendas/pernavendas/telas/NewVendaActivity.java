@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +42,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -68,6 +72,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private TextInputLayout inpLayoutQuantidade;
     private TextInputLayout inpLayoutDesconto;
 
+    private ImageButton imgQrCode;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +83,10 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inpProduto = findViewById(R.id.inp_produto);
         txtTotal  =findViewById(R.id.txtTotal);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
+        imgQrCode  =findViewById(R.id.imgLerQrCode);
 
         imgAdicionarProduto.setOnClickListener(this);
+        imgQrCode.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
 
@@ -169,6 +177,12 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
                 break;
 
+            case R.id.imgLerQrCode:
+
+                QrCodeUtil.lerQRCode(this);
+
+                break;
+
                 default:
         }
 
@@ -237,6 +251,33 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(result != null){
+
+            if(result.getContents()!=null){
+                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+
+                produto = ((VendaPresenter) vendaPresenter).verificarProdutoPorEAN(result.getContents());
+
+                if(produto==null){
+                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo),Toast.LENGTH_LONG).show();
+                }else{
+                    criarDialogCRUD();
+                }
+
+            }else{
+                Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 
 }

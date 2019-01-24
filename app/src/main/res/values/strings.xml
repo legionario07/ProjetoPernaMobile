@@ -57,4 +57,7 @@
     <string name="nova_venda">NOVA VENDA</string>
     <string name="sem_pedidos">A venda necessita ter algum pedido</string>
     <string name="selecione_produto_primeiro">Selecione um produto primeiro</string>
+    <string name="title_activity_qrcode">QRCodeActivity</string>
+    <string name="title_activity_qr_reader">QrReaderActivity</string>
+    <string name="nao_possivel_ler_codigo">Não foi possível ler o código</string>
 </resources>

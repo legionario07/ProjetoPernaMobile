@@ -52,6 +52,17 @@
                 android:padding="5dp"
                 android:src="@drawable/ic_search_black_24dp" />
 
+            <ImageButton
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:id="@+id/imgLerQrCode"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:src="@drawable/qr_code_reader" />
+
         </LinearLayout>
 
         <LinearLayout

@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:background="@android:color/holo_blue_light"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".telas.HomeActivity"
     tools:showIn="@layout/app_bar_home">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"/>
 
    <LinearLayout
       android:layout_centerInParent="true"
        android:orientation="vertical"
        android:gravity="center"
-       android:background="@android:color/transparent"
+       android:background="@android:color/holo_blue_light"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+       android:layout_height="0dp"
+       android:layout_weight="2">
 
        <Button
 
            android:text="@string/vender"
+           android:background="@android:color/holo_blue_light"
            android:id="@+id/img_vendas"
            android:textStyle="bold"
            android:drawableStart="@drawable/baseline_shopping_cart_black_48"
@@ -28,4 +38,10 @@
 
 
    </LinearLayout>
-</RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"/>
+
+</LinearLayout>

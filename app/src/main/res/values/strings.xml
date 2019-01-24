@@ -63,4 +63,6 @@
     <string name="EAN">Código Produto</string>
     <string name="gerar_barcode">Gerar Código de Barras</string>
     <string name="preencher_codigo_produto">Código do Produto deve ser preenchido</string>
+    <string name="Selecione">Selecione</string>
+    <string name="QrCode">QrCode</string>
 </resources>

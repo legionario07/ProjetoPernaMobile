@@ -59,6 +59,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     IProdutoPresenter produtoPresenter;
 
     private ProgressDialog progressDialog;
+    private static final int SOLICITAR_PERMISSAO = 1;
+
 
     private List<Marca> marcas;
     private List<UnidadeDeMedida> unidadesDeMedidas;
@@ -209,39 +211,27 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
     }
 
-    private static final int SOLICITAR_PERMISSAO = 1;
     private void checarPermissao(){
 
-        // Verifica  o estado da permissão de WRITE_EXTERNAL_STORAGE
         int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            // Se for diferente de PERMISSION_GRANTED, então vamos exibir a tela padrão
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, SOLICITAR_PERMISSAO);
         } else {
-            // Senão vamos compartilhar a imagem
             sharedImage();
         }
     }
 
     private void sharedImage(){
-        // Vamos carregar a imagem em um bitmap
         Bitmap b = QrCodeUtil.gerarQRCode(inpEanProduto.getEditText().getText().toString());
         Intent share = new Intent(Intent.ACTION_SEND);
-        //setamos o tipo da imagem
         share.setType("image/jpeg");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        // comprimomos a imagem
         b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        // Gravamos a imagem
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Titulo da Imagem", null);
-        // criamos uam Uri com o endereço que a imagem foi salva
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, getString(R.string.QrCode), null);
         Uri imageUri =  Uri.parse(path);
-        // Setmaos a Uri da imagem
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
-        // chama o compartilhamento
-        startActivity(Intent.createChooser(share, "Selecione"));
+        startActivity(Intent.createChooser(share, getString(R.string.Selecione)));
     }
 
     private void getDadosDeSpinner() {

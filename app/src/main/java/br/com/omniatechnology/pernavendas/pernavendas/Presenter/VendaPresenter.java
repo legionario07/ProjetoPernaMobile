@@ -67,7 +67,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
         this.autoCompleteProdutos = autoCompleteProdutos;
 
-        new GenericDAO(context, this).execute(new Produto(), ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+        findAllProdutos();
 
         autoCompleteProdutos.setThreshold(1);
         autoCompleteProdutos.setTextColor(Color.RED);
@@ -94,7 +94,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
     }
 
-    public void atualizarListPedidos(ListView view) {
+    public void atualizarListaPedidos(ListView view) {
 
         this.lstPedidos = view;
 
@@ -132,8 +132,12 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
+        pedidos.remove(id);
+
+        pedidosAdapter.notifyDataSetChanged();
 
     }
+
 
     @Override
     public void onUpdate() {

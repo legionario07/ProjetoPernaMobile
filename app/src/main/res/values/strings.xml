@@ -69,4 +69,5 @@
     <string name="logout">Logout</string>
     <string name="qtde">Qtde</string>
     <string name="data_venda">Data</string>
+    <string name="adicionar_produto">Adicionar Produto</string>
 </resources>

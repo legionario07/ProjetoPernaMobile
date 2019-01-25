@@ -50,7 +50,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"
-                android:src="@drawable/ic_search_black_24dp" />
+                android:src="@drawable/ic_add_black_24dp" />
 
             <ImageButton
                 style="@style/Widget.AppCompat.Button.Colored"

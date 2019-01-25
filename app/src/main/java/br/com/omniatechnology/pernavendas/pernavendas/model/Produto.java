@@ -130,7 +130,7 @@ public class Produto implements Serializable, IProduto {
 
 	@Override
 	public String toString() {
-		return nome+ " - "+marca;
+		return nome+ " - "+descricao;
 	}
 
 

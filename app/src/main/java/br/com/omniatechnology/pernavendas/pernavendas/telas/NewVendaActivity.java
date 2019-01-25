@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +35,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
@@ -45,6 +49,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private AutoCompleteTextView inpProduto;
     IVendaPresenter vendaPresenter;
     private ImageButton imgAdicionarProduto;
+    private ImageButton imgSalvarVenda;
     private Produto produto;
     private TextView txtTotal;
     private Venda venda;
@@ -77,9 +82,11 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inpProduto = findViewById(R.id.inp_produto);
         txtTotal  =findViewById(R.id.txtTotal);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
+        imgSalvarVenda = findViewById(R.id.imgSalvarVenda);
         imgQrCode  =findViewById(R.id.imgLerQrCode);
 
         imgAdicionarProduto.setOnClickListener(this);
+        imgSalvarVenda.setOnClickListener(this);
         imgQrCode.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
@@ -95,10 +102,40 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             }
         });
 
+
         atualizarListDePedidos();
+
+        registerForContextMenu(lstPedidos);
+
 
 
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.menu_contextual_excluir, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_excluir:
+
+                pedidos.remove(info.position);
+                atualizarListDePedidos();
+
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
 
 
     public void atualizarListDePedidos(){
@@ -144,7 +181,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         }
 
         switch (v.getId()){
-            case R.id.btn_save:
+            case R.id.imgSalvarVenda:
 
                 venda = new Venda();
                 venda.setPedidos(pedidos);
@@ -185,6 +222,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.new_pedido, null);
         dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle(R.string.adicionar_produto);
 
         txtNomeProduto = dialogView.findViewById(R.id.txtNomeProduto);
         txtDescricaoProduto = dialogView.findViewById(R.id.txtDescricaoProduto);

@@ -31,7 +31,7 @@ public class Produto implements Serializable, IProduto {
 	private String ean;
 	private boolean isAtivo;
 	private UnidadeDeMedida unidadeDeMedida;
-	private Calendar dataCadastro;
+	private Long dataCadastro;
 	private Marca marca;
 	private Categoria categoria;
 
@@ -44,7 +44,7 @@ public class Produto implements Serializable, IProduto {
 		//Por Default o produto inicia-se como Ativo no cadastro
 		this.isAtivo = true;
 		unidadeDeMedida = new UnidadeDeMedida();
-		this.dataCadastro = Calendar.getInstance();
+		this.dataCadastro = Calendar.getInstance().getTimeInMillis();
 		this.marca = new Marca();
 	}
 
@@ -133,14 +133,6 @@ public class Produto implements Serializable, IProduto {
 		return nome+ " - "+marca;
 	}
 
-	public Calendar getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(Calendar dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
-
 
 	public Marca getMarca() {
 		return marca;
@@ -181,5 +173,13 @@ public class Produto implements Serializable, IProduto {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Long getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Long dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 }

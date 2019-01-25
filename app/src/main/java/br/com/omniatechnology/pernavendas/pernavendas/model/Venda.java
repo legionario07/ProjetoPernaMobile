@@ -20,7 +20,7 @@ public class Venda implements Serializable, IVenda {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-	private Calendar dataVenda;
+	private Long dataVenda;
 	private BigDecimal valorTotal;
 	private List<Pedido> pedidos;
 	private Usuario usuario;
@@ -33,7 +33,7 @@ public class Venda implements Serializable, IVenda {
 	public Venda() {
 		this.pedidos = new ArrayList<Pedido>();
 		this.usuario = new Usuario();
-		this.dataVenda = Calendar.getInstance();
+		this.dataVenda = Calendar.getInstance().getTimeInMillis();
 	}
 	
 	public Long getId() {
@@ -41,12 +41,6 @@ public class Venda implements Serializable, IVenda {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public Calendar getDataVenda() {
-		return dataVenda;
-	}
-	public void setDataVenda(Calendar dataVenda) {
-		this.dataVenda = dataVenda;
 	}
 	public BigDecimal getValorTotal() {
 		return valorTotal;
@@ -77,5 +71,13 @@ public class Venda implements Serializable, IVenda {
 		}
 
 		return retorno.toString();
+	}
+
+	public Long getDataVenda() {
+		return dataVenda;
+	}
+
+	public void setDataVenda(Long dataVenda) {
+		this.dataVenda = dataVenda;
 	}
 }

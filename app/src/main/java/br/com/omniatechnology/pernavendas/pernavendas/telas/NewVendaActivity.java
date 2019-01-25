@@ -137,7 +137,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
                 venda = new Venda();
                 venda.setPedidos(pedidos);
-                venda.setDataVenda(Calendar.getInstance());
                 venda.setUsuario(SessionUtil.getInstance().getUsuario());
 
                 vendaPresenter.save(venda);

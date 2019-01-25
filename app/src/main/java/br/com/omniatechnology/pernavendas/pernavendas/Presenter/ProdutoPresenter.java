@@ -72,7 +72,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
 
     }
-    
+
     public void setSpinnerMarca(Spinner spinner){
 
         this.spnMarca = spinner;

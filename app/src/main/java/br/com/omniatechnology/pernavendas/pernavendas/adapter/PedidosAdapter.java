@@ -1,4 +1,4 @@
-package br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder;
+package br.com.omniatechnology.pernavendas.pernavendas.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

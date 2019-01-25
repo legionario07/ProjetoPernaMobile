@@ -1,20 +1,15 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -29,19 +24,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IMarcaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IVendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder.PedidosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
@@ -64,8 +54,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private AlertDialog alert;
     private AlertDialog dialog;
     private AlertDialog.Builder dialogBuilder;
-
-    private ProgressDialog progressDialog;
 
     private TextView txtNomeProduto;
     private TextView txtDescricaoProduto;
@@ -147,17 +135,13 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 venda = new Venda();
                 venda.setPedidos(pedidos);
                 venda.setDataVenda(Calendar.getInstance());
                 venda.setUsuario(SessionUtil.getInstance().getUsuario());
 
                 vendaPresenter.save(venda);
-                progressDialog.dismiss();
 
-                onBackPressed();
 
                 break;
 
@@ -234,15 +218,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         dialog = dialogBuilder.create();
         dialog.show();
-
-    }
-
-    private void showProgressDialog(String message) {
-        progressDialog = new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
 
     }
 

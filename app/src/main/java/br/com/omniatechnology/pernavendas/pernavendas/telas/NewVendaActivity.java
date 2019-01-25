@@ -165,6 +165,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -186,6 +187,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 venda = new Venda();
                 venda.setPedidos(pedidos);
                 venda.setUsuario(SessionUtil.getInstance().getUsuario());
+                venda.setValorTotal(new BigDecimal(txtTotal.getText().toString()));
 
                 vendaPresenter.save(venda);
 

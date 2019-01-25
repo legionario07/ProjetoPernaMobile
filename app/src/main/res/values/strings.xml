@@ -67,4 +67,6 @@
     <string name="QrCode">QrCode</string>
     <string name="confirmacao_senha">A Confirmação da senha deve ser igual a senha</string>
     <string name="logout">Logout</string>
+    <string name="qtde">Qtde</string>
+    <string name="data_venda">Data</string>
 </resources>

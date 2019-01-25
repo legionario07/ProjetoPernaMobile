@@ -10,22 +10,21 @@
         android:orientation="vertical">
 
 
-    <TextView
-        style="@style/titulos"
-        android:text="@string/produtos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        <TextView
+            style="@style/titulos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/produtos" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcViewProdutos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcViewProdutos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7">
 
 
-
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 

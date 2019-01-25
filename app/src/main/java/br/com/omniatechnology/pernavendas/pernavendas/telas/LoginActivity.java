@@ -16,6 +16,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ILoginPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.LoginPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
 public class LoginActivity extends AppCompatActivity implements ILoginView, View.OnClickListener {
 
@@ -33,6 +34,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        if (!VerificaConexaoStrategy.verificarConexao(this)) {
+            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            finish();
+        }
 
         btn_login = findViewById(R.id.btn_login);
         chkSalvarSenha = findViewById(R.id.chkSalvarSenha);

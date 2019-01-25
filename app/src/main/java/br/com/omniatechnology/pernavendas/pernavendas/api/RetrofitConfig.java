@@ -13,8 +13,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitConfig {
 
-    //public static final String BASE_URL = "http://192.168.1.85:8080/";
-    public static final String BASE_URL = "http://omniatechnology.com.br/perna/";
+    public static final String BASE_URL = "http://192.168.1.85:8080/";
+    //public static final String BASE_URL = "http://omniatechnology.com.br/perna/";
 
     public static Retrofit getBuilder(){
         return new Retrofit.Builder()

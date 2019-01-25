@@ -7,11 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 
 
@@ -39,15 +43,29 @@ public class VendasAdapter extends ArrayAdapter<Venda> {
 
         convertView = LayoutInflater.from(this.context).inflate(R.layout.item_venda, null);
 
-//        TextView txtItemNomeProduto = (TextView) convertView.findViewById(R.id.txtItemNomeProduto);
-//        TextView txtItemQtdeProduto = (TextView) convertView.findViewById(R.id.txtItemQtdeProduto);
-//        TextView txtItemDesconto = (TextView) convertView.findViewById(R.id.txtItemDesconto);
-//        TextView txtItemValor = (TextView) convertView.findViewById(R.id.txtItemValor);
-//
-//        txtItemNomeProduto.setText(venda.getProduto().getNome());
-//        txtItemQtdeProduto.setText(venda.getTotal().toString());
-//        txtItemDesconto.setText(venda.getDesconto().toString());
-//        txtItemValor.setText(venda.getValorTotal().toString());
+        TextView txtUsuario = (TextView) convertView.findViewById(R.id.txtUsuario);
+        TextView txtQtdePedidos = (TextView) convertView.findViewById(R.id.txtQtdePedidos);
+        TextView txtValorVenda = (TextView) convertView.findViewById(R.id.txtValorVenda);
+        TextView txtDesconto = (TextView) convertView.findViewById(R.id.txtDesconto);
+        TextView txtDataVenda = (TextView) convertView.findViewById(R.id.txtDataVenda);
+
+        txtUsuario.setText(venda.getUsuario().getUsuario());
+        txtQtdePedidos.setText(String.valueOf(venda.getPedidos().size()));
+        txtValorVenda.setText(venda.getValorTotal().toString());
+
+        BigDecimal desconto = BigDecimal.ZERO;
+        for(Pedido p : venda.getPedidos()){
+            desconto = desconto.add(p.getDesconto());
+        }
+
+        txtDesconto.setText(desconto.toString());
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(venda.getDataVenda());
+
+        SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy");
+
+        txtDataVenda.setText(sdt.format(c.getTime()));
 
         return convertView;
     }

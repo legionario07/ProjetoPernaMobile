@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_produtos) {
             //ALTERAR PARA PRODUTOSACTIVITY.CLASS
            // startActivity(new Intent(this, ProdutosActivity.class));
-            startActivity(new Intent(this, NewProdutoActivity.class));
+            startActivity(new Intent(this, ProdutosActivity.class));
 
         } else if (id == R.id.nav_unidades_de_medidas) {
 

@@ -79,7 +79,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         onCreate();
     }
 
-    public void atualizarListVenda(ListView view) {
+    public void atualizarListaVenda(ListView view) {
 
         this.lstVenda = view;
 

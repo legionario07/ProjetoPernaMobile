@@ -34,6 +34,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -66,6 +67,11 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.venda);
+
+        if (!VerificaConexaoStrategy.verificarConexao(this)) {
+            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            finishAffinity();
+        }
 
         lstPedidos = findViewById(R.id.lstPedidos);
         inpProduto = findViewById(R.id.inp_produto);
@@ -131,6 +137,11 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
     @Override
     public void onClick(View v) {
+
+        if (!VerificaConexaoStrategy.verificarConexao(this)) {
+            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            finishAffinity();
+        }
 
         switch (v.getId()){
             case R.id.btn_save:

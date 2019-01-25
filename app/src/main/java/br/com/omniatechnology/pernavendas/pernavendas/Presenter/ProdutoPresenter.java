@@ -63,14 +63,6 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         this.context = context;
     }
 
-    public ProdutoPresenter(IModelView.IProdutoView produtoView, Context context, ProdutosAdapter adapter) {
-        this(produtoView, context);
-        adapter = new ProdutosAdapter(context, produtos);
-
-        this.produtosAdapter = adapter;
-
-
-    }
 
     public void initializeSpinner(Spinner spnMarca, Spinner spnCategoria, Spinner spnUnidadeDeMedida) {
         this.spnUnidadeDeMedida = spnUnidadeDeMedida;
@@ -414,6 +406,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                     findAll();
                 break;
             case FIND_ALL:
+
 
                 if (produtos != null) {
                     produtos.clear();

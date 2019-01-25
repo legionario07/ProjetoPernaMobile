@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -32,7 +34,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     private RecyclerView rcViewProdutos;
     private ProdutosAdapter produtosAdapter;
     IProdutoPresenter produtoPresenter;
-    private List<Produto> produtos;
 
 
     @Override
@@ -40,12 +41,22 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.produtos_activity);
 
+        if (!VerificaConexaoStrategy.verificarConexao(this)) {
+            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            finishAffinity();
+        }
+
         rcViewProdutos = findViewById(R.id.rcViewProdutos);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        rcViewProdutos.setLayoutManager(layoutManager);
 
         FloatingActionButton fabNewProduto = findViewById(R.id.fabNovoProduto);
         fabNewProduto.setOnClickListener(this);
 
-        produtoPresenter = new ProdutoPresenter(this, this, produtosAdapter);
+        produtoPresenter = new ProdutoPresenter(this, this);
         ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos);
 
         registerForContextMenu(rcViewProdutos);
@@ -81,16 +92,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         return super.onContextItemSelected(item);
     }
 
-    public void atualizarDados(){
-
-        if(produtosAdapter==null){
-            produtosAdapter = new ProdutosAdapter(this, produtos);
-            rcViewProdutos.setAdapter(produtosAdapter);
-        }else{
-            produtosAdapter.updateList(produtos);
-        }
-
-    }
 
     @Override
     public void onMessageSuccess(String message) {

@@ -30,7 +30,6 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
     ICategoriaPresenter categoriaPresenter;
 
     private Categoria categoria;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +60,7 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -75,12 +75,7 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 categoriaPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
@@ -88,14 +83,4 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
         }
 
     }
-
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
-    }
-
 }

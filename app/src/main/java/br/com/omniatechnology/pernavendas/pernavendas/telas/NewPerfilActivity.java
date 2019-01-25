@@ -30,8 +30,6 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
     IPerfilPresenter perfilPresenter;
     private Perfil perfil;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +60,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -76,12 +75,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 perfilPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
@@ -90,13 +84,5 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
-    }
 
 }

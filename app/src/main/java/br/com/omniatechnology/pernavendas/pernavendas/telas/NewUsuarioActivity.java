@@ -79,6 +79,7 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override

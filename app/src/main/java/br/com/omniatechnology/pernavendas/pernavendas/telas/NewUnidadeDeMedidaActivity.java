@@ -30,8 +30,6 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
     private UnidadeDeMedida unidadeDeMedida;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +60,7 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -76,27 +75,12 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 unidadeDeMedidaPresenter.onCreate();
-
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
                 default:
         }
-
-    }
-
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
 
     }
 

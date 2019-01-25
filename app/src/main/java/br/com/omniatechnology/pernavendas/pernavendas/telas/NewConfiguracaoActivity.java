@@ -32,8 +32,6 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
 
     IConfiguracaoPresenter configuracaoPresenter;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +65,7 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -81,25 +80,12 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
                 configuracaoPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
                 default:
         }
-
-    }
-
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
 
     }
 

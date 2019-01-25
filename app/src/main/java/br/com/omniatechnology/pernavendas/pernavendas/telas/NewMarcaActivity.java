@@ -28,7 +28,6 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
 
     IMarcaPresenter marcaPresenter;
 
-    private ProgressDialog progressDialog;
     private Marca marca;
 
     @Override
@@ -60,6 +59,7 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -74,26 +74,12 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 marcaPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
                 default:
         }
-
-    }
-
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
 
     }
 

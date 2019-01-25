@@ -102,25 +102,10 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
         btnSave.setOnClickListener(this);
 
-//        produtoPresenter.setSpinnerCategoria(spnCategoria);
-//        produtoPresenter.setSpinnerMarca(spnMarca);
-//        produtoPresenter.setSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+        produtoPresenter.setSpinnerCategoria(spnCategoria);
+        produtoPresenter.setSpinnerMarca(spnMarca);
+        produtoPresenter.setSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
 
-        categorias = SessionUtil.getInstance().getCategorias();
-        marcas = SessionUtil.getInstance().getMarcas();
-        unidadesDeMedidas = SessionUtil.getInstance().getUnidadeDeMedidas();
-
-        adapterCategorias = new ArrayAdapter(this, android.R.layout.simple_spinner_item, categorias);
-        adapterCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnCategoria.setAdapter(adapterCategorias);
-
-        adapterMarcas = new ArrayAdapter(this, android.R.layout.simple_spinner_item, marcas);
-        adapterMarcas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnMarca.setAdapter(adapterMarcas);
-
-        adapterUnidades = new ArrayAdapter(this, android.R.layout.simple_spinner_item, unidadesDeMedidas);
-        adapterUnidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnUnidadeDeMedida.setAdapter(adapterUnidades);
 
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.PRODUTO_INTENT)) {
@@ -173,6 +158,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        onBackPressed();
     }
 
     @Override
@@ -187,14 +173,9 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         switch (v.getId()) {
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 getDadosDeSpinner();
 
                 produtoPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
@@ -241,15 +222,6 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         produtoPresenter.getDadoSpinnerCategoria(spnCategoria);
         produtoPresenter.getDadoSpinnerMarca(spnMarca);
         produtoPresenter.getDadoSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
-
-    }
-
-    private void showProgressDialog(String message) {
-        progressDialog = new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
 
     }
 

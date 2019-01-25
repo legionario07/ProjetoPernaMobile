@@ -32,6 +32,8 @@
            android:background="@android:color/holo_blue_light"
            android:id="@+id/img_vendas"
            android:textStyle="bold"
+           android:paddingRight="20dp"
+           android:paddingLeft="10dp"
            android:drawableStart="@drawable/baseline_shopping_cart_black_48"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content" />

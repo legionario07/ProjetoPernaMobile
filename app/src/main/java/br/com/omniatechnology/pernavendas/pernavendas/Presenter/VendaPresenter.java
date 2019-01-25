@@ -24,6 +24,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImp
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
@@ -162,6 +163,11 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
+    }
+
+    @Override
+    public void setItem(IModel model) {
+        this.venda = (Venda) model;
     }
 
     public void findAllPedidos() {

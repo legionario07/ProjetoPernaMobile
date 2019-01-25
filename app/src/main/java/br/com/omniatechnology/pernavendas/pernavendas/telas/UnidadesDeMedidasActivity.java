@@ -68,7 +68,8 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
             case R.id.menu_editar:
 
                 Intent intent = new Intent(this,NewUnidadeDeMedidaActivity.class);
-                intent.putExtra(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT, (Serializable) lstUnidadeDeMedida.getItemAtPosition(info.position));
+                UnidadeDeMedida unidadeDeMedida = (UnidadeDeMedida) lstUnidadeDeMedida.getItemAtPosition(info.position);
+                intent.putExtra(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT, unidadeDeMedida);
                 startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;

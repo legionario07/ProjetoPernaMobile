@@ -182,6 +182,11 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
         }
     }
 
+    @Override
+    public void setItem(IModel model) {
+        this.usuario = (Usuario) model;
+    }
+
     public void addTextWatcherUsuario(final EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {

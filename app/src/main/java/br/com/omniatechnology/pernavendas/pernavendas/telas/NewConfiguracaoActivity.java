@@ -58,6 +58,7 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
 
         inpPropriedadeConfiguracao.getEditText().setText(configuracao.getPropriedade());
         inpValorConfiguracao.getEditText().setText(configuracao.getValor());
+        configuracaoPresenter.setItem(configuracao);
 
     }
 

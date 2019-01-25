@@ -53,6 +53,7 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
     public void preencherDadosNaView(){
 
         inpTipoUnidadeDeMedida.getEditText().setText(unidadeDeMedida.getTipo());
+        unidadeDeMedidaPresenter.setItem(unidadeDeMedida);
 
     }
 

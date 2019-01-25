@@ -54,6 +54,7 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
     public void preencherDadosNaView(){
 
         inpNomeCategoria.getEditText().setText(categoria.getNome());
+        categoriaPresenter.setItem(categoria);
 
     }
 

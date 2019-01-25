@@ -221,6 +221,11 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         }
     }
 
+    @Override
+    public void setItem(IModel model) {
+        this.produto = (Produto) model;
+    }
+
     public void addTextWatcherNomeProduto(final EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {

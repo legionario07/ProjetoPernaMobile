@@ -53,6 +53,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
     public void preencherDadosNaView(){
 
         inpNomePerfil.getEditText().setText(perfil.getNome());
+        perfilPresenter.setItem(perfil);
 
     }
 

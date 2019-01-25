@@ -149,6 +149,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpQtdeMinProduto.getEditText().setText(produto.getQtdeMinima().toString());
         chkIsInativo.setChecked(!produto.isAtivo());
 
+        produtoPresenter.setItem(produto);
+
     }
 
     @Override

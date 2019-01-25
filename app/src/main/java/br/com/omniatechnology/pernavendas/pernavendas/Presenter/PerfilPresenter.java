@@ -20,6 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceI
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
@@ -143,6 +144,11 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
         }
 
 
+    }
+
+    @Override
+    public void setItem(IModel model) {
+        this.perfil = (Perfil) model;
     }
 
     public void addTextWatcherNomePerfil(final EditText editText) {

@@ -53,6 +53,7 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
     public void preencherDadosNaView(){
 
         inpNomeMarca.getEditText().setText(marca.getNome());
+        marcaPresenter.setItem(marca);
 
     }
 

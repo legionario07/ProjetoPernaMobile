@@ -21,6 +21,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -146,7 +147,13 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
-        public void addTextWatcherNomeMarca(final EditText editText){
+
+    @Override
+    public void setItem(IModel model) {
+        this.marca = (Marca) model;
+    }
+
+    public void addTextWatcherNomeMarca(final EditText editText){
 
             editText.addTextChangedListener(new TextWatcher() {
                 @Override

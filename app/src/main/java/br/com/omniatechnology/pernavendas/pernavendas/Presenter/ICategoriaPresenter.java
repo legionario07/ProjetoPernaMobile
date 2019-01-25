@@ -7,4 +7,5 @@ public interface ICategoriaPresenter extends IModelPresenter{
 
     void atualizarList(ListView view);
 
+
 }

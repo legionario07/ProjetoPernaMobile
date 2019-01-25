@@ -67,6 +67,8 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
         inpConfirmarSenha.getEditText().setText(usuario.getSenha());
         inpSenha.getEditText().setText(usuario.getSenha());
 
+        usuarioPresenter.setItem(usuario);
+
         for(int i = 0;i<spnPerfil.getAdapter().getCount();i++){
             if(usuario.getPerfil().getId()==((Perfil) spnPerfil.getAdapter().getItem(i)).getId()){
                 spnPerfil.setSelection(i);

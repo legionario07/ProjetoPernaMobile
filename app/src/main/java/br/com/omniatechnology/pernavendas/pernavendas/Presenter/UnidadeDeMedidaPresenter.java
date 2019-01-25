@@ -21,6 +21,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -68,6 +69,12 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
         }
 
     }
+
+    @Override
+    public void setItem(IModel model) {
+        this.unidadeDeMedida = (UnidadeDeMedida) model;
+    }
+
 
     @Override
     public void onCreate() {

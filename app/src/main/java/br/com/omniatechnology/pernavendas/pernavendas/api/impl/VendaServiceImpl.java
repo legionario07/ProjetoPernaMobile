@@ -76,15 +76,6 @@ public class VendaServiceImpl implements IService<Venda> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IVendaService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
 
 
 }

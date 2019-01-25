@@ -28,7 +28,7 @@ public class Produto implements Serializable, IProduto {
 	private BigDecimal valorVenda;
 	private Integer qtde;
 	private Integer qtdeMinima;
-	private String EAN;
+	private String ean;
 	private boolean isAtivo;
 	private UnidadeDeMedida unidadeDeMedida;
 	private Calendar dataCadastro;
@@ -104,12 +104,12 @@ public class Produto implements Serializable, IProduto {
 		this.qtdeMinima = qtdeMinima;
 	}
 
-	public String getEAN() {
-		return EAN;
+	public String getEan() {
+		return ean;
 	}
 
-	public void setEAN(String eAN) {
-		EAN = eAN;
+	public void setEan(String eAN) {
+		ean = eAN;
 	}
 
 	public boolean isAtivo() {

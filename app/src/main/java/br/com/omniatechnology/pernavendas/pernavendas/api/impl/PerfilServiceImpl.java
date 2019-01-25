@@ -76,15 +76,6 @@ public class PerfilServiceImpl implements IService<Perfil> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IPerfilService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
 
 
 }

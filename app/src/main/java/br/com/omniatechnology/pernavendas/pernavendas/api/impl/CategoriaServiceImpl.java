@@ -76,15 +76,6 @@ public class CategoriaServiceImpl implements IService<Categoria> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(ICategoriaService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
 
 
 }

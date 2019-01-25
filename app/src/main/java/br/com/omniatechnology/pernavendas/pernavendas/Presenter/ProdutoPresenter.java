@@ -41,13 +41,13 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
     private Boolean isSave;
     private List<Produto> produtos;
     private ProdutosAdapter produtosAdapter;
-    
+
     private RecyclerView view;
     private OperationType operationType;
     private Spinner spnMarca;
     private Spinner spnCategoria;
     private Spinner spnUnidadeDeMedida;
-    
+
 
     public ProdutoPresenter() {
         produto = new Produto();
@@ -65,7 +65,6 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     public ProdutoPresenter(IModelView.IProdutoView produtoView, Context context, ProdutosAdapter adapter) {
         this(produtoView, context);
-        //produtos = (List<Produto>) genericDAO.execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
         adapter = new ProdutosAdapter(context, produtos);
 
         this.produtosAdapter = adapter;
@@ -73,9 +72,13 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     }
 
-    public void setSpinnerMarca(Spinner spinner){
+    public void initializeSpinner(Spinner spnMarca, Spinner spnCategoria, Spinner spnUnidadeDeMedida) {
+        this.spnUnidadeDeMedida = spnUnidadeDeMedida;
+        this.spnCategoria = spnCategoria;
+        this.spnMarca = spnMarca;
+    }
 
-        this.spnMarca = spinner;
+    public void setSpinnerMarca() {
 
         operationType = OperationType.FIND_ALL_MARCA;
         try {
@@ -83,14 +86,12 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-        
+
     }
 
-    public void setSpinnerUnidadeDeMedida(Spinner spinner){
+    public void setSpinnerUnidadeDeMedida() {
 
-        this.spnUnidadeDeMedida = spinner;
-
-        operationType = OperationType.FIND_ALL_MARCA;
+        operationType = OperationType.FIND_ALL_UNIDADE_DE_MEDIDA;
         try {
             new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
         } catch (Exception e) {
@@ -100,11 +101,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     }
 
-    public void setSpinnerCategoria(Spinner spinner){
+    public void setSpinnerCategoria() {
 
-        this.spnCategoria = spinner;
-
-        operationType = OperationType.FIND_ALL_MARCA;
+        operationType = OperationType.FIND_ALL_CATEGORIA;
         try {
             new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
         } catch (Exception e) {
@@ -113,19 +112,19 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     }
 
-    public void getDadoSpinnerMarca(Spinner spinner){
+    public void getDadoSpinnerMarca(Spinner spinner) {
         produto.setMarca((Marca) getDadosDeSpinner(spinner));
     }
 
-    public void getDadoSpinnerCategoria(Spinner spinner){
+    public void getDadoSpinnerCategoria(Spinner spinner) {
         produto.setCategoria((Categoria) getDadosDeSpinner(spinner));
     }
 
-    public void getDadoSpinnerUnidadeDeMedida(Spinner spinner){
+    public void getDadoSpinnerUnidadeDeMedida(Spinner spinner) {
         produto.setUnidadeDeMedida((UnidadeDeMedida) getDadosDeSpinner(spinner));
     }
 
-    private IModel getDadosDeSpinner(Spinner spinner){
+    private IModel getDadosDeSpinner(Spinner spinner) {
         return (IModel) spinner.getSelectedItem();
     }
 
@@ -171,7 +170,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ProdutoServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
@@ -189,7 +188,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         else {
             try {
                 new GenericDAO(context, this).execute(produto, ConstraintUtils.EDITAR, new ProdutoServiceImpl());
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
@@ -205,7 +204,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_BY_ID, new ProdutoServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
@@ -217,7 +216,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
@@ -377,7 +376,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setEAN(s.toString());
+                produto.setEan(s.toString());
             }
         });
 
@@ -394,8 +393,10 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
     @Override
     public void onPostProcess(Serializable serializable) {
 
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
+        switch (operationType) {
+            case SAVE:
+            case UPDATE:
+            case DELETE:
 
                 isSave = (Boolean) serializable;
 
@@ -404,23 +405,23 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 else
                     produtoView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
-                if(operationType == OperationType.DELETE)
+                if (operationType == OperationType.DELETE)
                     findAll();
                 break;
             case FIND_ALL:
 
-                if(produtos!=null){
+                if (produtos != null) {
                     produtos.clear();
                     produtos.addAll((List<Produto>) serializable);
-                }else {
+                } else {
                     produtos = (List<Produto>) serializable;
                 }
 
-                if(produtosAdapter == null) {
+                if (produtosAdapter == null) {
                     produtosAdapter = new ProdutosAdapter(context, produtos);
 
                     view.setAdapter(produtosAdapter);
-                }else{
+                } else {
                     produtosAdapter.notifyDataSetChanged();
                 }
 
@@ -440,6 +441,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 arrayMarcas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnMarca.setAdapter(arrayMarcas);
 
+                setSpinnerUnidadeDeMedida();
                 break;
             case FIND_ALL_UNIDADE_DE_MEDIDA:
 
@@ -448,6 +450,8 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 ArrayAdapter arrayUnidadeDeMedida = new ArrayAdapter(context, android.R.layout.simple_spinner_item, unidadeDeMedidas);
                 arrayUnidadeDeMedida.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnUnidadeDeMedida.setAdapter(arrayUnidadeDeMedida);
+
+                setSpinnerCategoria();
 
                 break;
 

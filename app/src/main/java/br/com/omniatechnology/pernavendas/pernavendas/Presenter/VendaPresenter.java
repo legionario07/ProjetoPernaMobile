@@ -210,7 +210,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
         for (Produto p : produtos) {
 
-            if (p.getEAN().equals(ean)) {
+            if (p.getEan().equals(ean)) {
                 return p;
             }
 

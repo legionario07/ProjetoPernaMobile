@@ -76,15 +76,6 @@ public class ConfiguracaoServiceImpl implements IService<Configuracao> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IConfiguracaoService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
 
 
 }

@@ -58,7 +58,6 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
     IProdutoPresenter produtoPresenter;
 
-    private ProgressDialog progressDialog;
     private static final int SOLICITAR_PERMISSAO = 1;
 
 
@@ -66,9 +65,6 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     private List<UnidadeDeMedida> unidadesDeMedidas;
     private List<Categoria> categorias;
 
-    private ArrayAdapter<Marca> adapterMarcas;
-    private ArrayAdapter<UnidadeDeMedida> adapterUnidades;
-    private ArrayAdapter<Categoria> adapterCategorias;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,12 +95,12 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         ((ProdutoPresenter) produtoPresenter).addTextWatcherDescricaoProduto(inpDescricaoProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherValorVendaProduto(inpValorVendaProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherEanProduto(inpEanProduto.getEditText());
+        ((ProdutoPresenter) produtoPresenter).initializeSpinner(spnMarca,spnCategoria,spnUnidadeDeMedida);
 
         btnSave.setOnClickListener(this);
 
-        produtoPresenter.setSpinnerCategoria(spnCategoria);
-        produtoPresenter.setSpinnerMarca(spnMarca);
-        produtoPresenter.setSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+        //Todos os spnner serao inicializados dentro desse metodo
+        produtoPresenter.setSpinnerMarca();
 
 
 

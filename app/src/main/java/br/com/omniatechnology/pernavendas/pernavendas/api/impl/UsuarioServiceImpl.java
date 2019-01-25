@@ -78,14 +78,6 @@ public class UsuarioServiceImpl implements IService<Usuario> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IUsuarioService.class);
-
-        return service.delete(id).execute().body();
-
-    }
 
     public Usuario login(Usuario usuario) throws IOException{
         retrofit = RetrofitConfig.getBuilder();

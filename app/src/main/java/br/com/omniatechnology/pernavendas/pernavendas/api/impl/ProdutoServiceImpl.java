@@ -1,8 +1,10 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
 import android.util.Log;
+import android.util.Patterns;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IProdutoService;
@@ -17,6 +19,7 @@ import retrofit2.Retrofit;
 public class ProdutoServiceImpl implements IService<Produto> {
 
 
+    private static final String PATTERN_YYYY_MM_DD = "yyyy-MM-dd";
     private IProdutoService service;
     private Retrofit retrofit;
     private Boolean isSave;
@@ -48,8 +51,12 @@ public class ProdutoServiceImpl implements IService<Produto> {
 
     public boolean save(Produto produto) {
 
-        retrofit = RetrofitConfig.getBuilder();
+        retrofit = RetrofitConfig.getBuilderData(PATTERN_YYYY_MM_DD);
         service = retrofit.create(IProdutoService.class);
+
+        if(produto.getDataCadastro()==null){
+            produto.setDataCadastro(Calendar.getInstance());
+        }
 
         try {
             p = service.save(produto).execute().body();
@@ -77,14 +84,6 @@ public class ProdutoServiceImpl implements IService<Produto> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
-
-        return service.delete(id).execute().body();
-
-    }
 
 
 

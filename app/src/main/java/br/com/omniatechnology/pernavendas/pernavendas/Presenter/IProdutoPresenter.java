@@ -8,9 +8,9 @@ public interface IProdutoPresenter extends IModelPresenter{
     void getDadoSpinnerCategoria(Spinner spinner);
     void getDadoSpinnerUnidadeDeMedida(Spinner spinner);
 
-    void setSpinnerCategoria(Spinner spinner);
-    void setSpinnerMarca(Spinner spinner);
-    void setSpinnerUnidadeDeMedida(Spinner spinner);
+    void setSpinnerCategoria();
+    void setSpinnerMarca();
+    void setSpinnerUnidadeDeMedida();
 
 
 }

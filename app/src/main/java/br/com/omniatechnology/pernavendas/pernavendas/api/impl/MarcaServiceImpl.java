@@ -77,15 +77,6 @@ public class MarcaServiceImpl implements IService<Marca> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IMarcaService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
 
 
 }

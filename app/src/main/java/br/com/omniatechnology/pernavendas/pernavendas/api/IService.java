@@ -12,5 +12,4 @@ public interface IService<T extends IModel> extends Serializable {
     List<T> findAll() throws IOException;
     boolean save(T model);
     boolean delete(Long id) throws IOException;
-    boolean update(Long id) throws IOException;
 }

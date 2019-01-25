@@ -62,7 +62,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
         IService service = (IService) serializables[2];
 
 
-        if(ConstraintUtils.SALVAR.equals(OPCAO)){
+        if(ConstraintUtils.SALVAR.equals(OPCAO) || ConstraintUtils.EDITAR.equals(OPCAO)){
             if(service.save((IModel) serializables[0]))
                 return true;
             else
@@ -73,15 +73,6 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
                 return service.delete((Long) serializables[0]);
             } catch (IOException e) {
                 return false;
-            }
-
-        }else if(ConstraintUtils.EDITAR.equals(OPCAO)){
-
-            try {
-                return service.update((Long) serializables[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
             }
 
         }else if(ConstraintUtils.FIND_ALL.equals(OPCAO)){

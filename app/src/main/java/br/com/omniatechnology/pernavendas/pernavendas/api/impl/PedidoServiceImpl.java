@@ -76,15 +76,5 @@ public class PedidoServiceImpl implements IService<Pedido> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IPedidoService.class);
-
-        return service.delete(id).execute().body();
-
-    }
-
-
 
 }

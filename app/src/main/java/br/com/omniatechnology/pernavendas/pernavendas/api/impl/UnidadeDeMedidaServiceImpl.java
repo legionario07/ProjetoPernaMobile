@@ -77,15 +77,6 @@ public class UnidadeDeMedidaServiceImpl implements IService<UnidadeDeMedida> {
 
     }
 
-    @Override
-    public boolean update(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IUnidadeDeMedidaService.class);
-        
-        return service.delete(id).execute().body();
-
-    }
-    
 
 
 }

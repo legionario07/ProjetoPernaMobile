@@ -40,13 +40,14 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         usuarioWrapper = findViewById(R.id.usuarioWrapper);
         senhaWrapper = findViewById(R.id.senhaWrapper);
 
-        verificarDadosSalvo();
-
         loginPresenter = new LoginPresenter(this, this);
         ((LoginPresenter) loginPresenter).addSenhaTextWatcher(senhaWrapper.getEditText());
         ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(usuarioWrapper.getEditText());
 
         btn_login.setOnClickListener(this);
+
+        verificarDadosSalvo();
+
 
     }
 
@@ -61,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
             usuarioWrapper.getEditText().setText(login);
             senhaWrapper.getEditText().setText(senha);
             chkSalvarSenha.setChecked(isChecked);
+
         }
 
     }
@@ -95,7 +97,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-
 
                 loginPresenter.onLogin();
 

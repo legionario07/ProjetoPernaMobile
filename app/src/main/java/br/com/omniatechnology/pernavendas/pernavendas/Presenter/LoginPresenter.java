@@ -76,12 +76,12 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
         view.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                Log.i(ConstraintUtils.TAG, "beforeTextChanged: ");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                Log.i(ConstraintUtils.TAG, "beforeTextChanged: ");
             }
 
             @Override

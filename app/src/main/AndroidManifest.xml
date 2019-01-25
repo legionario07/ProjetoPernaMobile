@@ -47,6 +47,7 @@
             android:name=".telas.NewVendaActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".telas.NewUsuarioActivity" />
+        <activity android:name=".telas.VendasActivity" />
     </application>
 
 </manifest>

@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            finish();
+            finishAffinity();
         }
 
         return super.onOptionsItemSelected(item);

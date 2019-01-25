@@ -54,10 +54,6 @@ public class ProdutoServiceImpl implements IService<Produto> {
         retrofit = RetrofitConfig.getBuilderData(PATTERN_YYYY_MM_DD);
         service = retrofit.create(IProdutoService.class);
 
-        if(produto.getDataCadastro()==null){
-            produto.setDataCadastro(Calendar.getInstance());
-        }
-
         try {
             p = service.save(produto).execute().body();
         } catch (IOException e) {

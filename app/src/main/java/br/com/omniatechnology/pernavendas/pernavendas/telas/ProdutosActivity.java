@@ -66,7 +66,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         switch (item.getItemId()) {
             case R.id.menu_editar:
 
-                Intent intent = new Intent(this,NewCategoriaActivity.class);
+                Intent intent = new Intent(this,NewProdutoActivity.class);
                 intent.putExtra(ConstraintUtils.PRODUTO_INTENT, (Serializable) produtosAdapter.getItem(info.position));
                 startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 

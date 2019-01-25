@@ -45,7 +45,7 @@ public class UnidadeDeMedida implements IUnidadeDeMedida, Serializable{
 	}
 
 	public void setTipo(String tipo) {
-		this.tipo = tipo;
+		this.tipo = tipo.toUpperCase().trim();
 	}
 
 	@Override

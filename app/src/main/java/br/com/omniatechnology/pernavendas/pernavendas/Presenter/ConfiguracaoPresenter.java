@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
@@ -141,6 +143,11 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
         }
 
 
+    }
+
+    @Override
+    public void setItem(IModel model) {
+        this.configuracao = (Configuracao) model;
     }
 
     public void addTextWatcherPropriedadeConfiguracao(final EditText editText) {

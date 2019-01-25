@@ -19,6 +19,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
@@ -62,6 +63,10 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
 
         }
 
+    }
+
+    public void setItem(IModel model){
+        this.categoria = (Categoria) model;
     }
 
     @Override

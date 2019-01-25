@@ -65,4 +65,6 @@
     <string name="preencher_codigo_produto">Código do Produto deve ser preenchido</string>
     <string name="Selecione">Selecione</string>
     <string name="QrCode">QrCode</string>
+    <string name="confirmacao_senha">A Confirmação da senha deve ser igual a senha</string>
+    <string name="logout">Logout</string>
 </resources>

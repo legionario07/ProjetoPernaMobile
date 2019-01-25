@@ -33,7 +33,6 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
 
     IUsuarioPresenter usuarioPresenter;
 
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,14 +93,8 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
         switch (v.getId()){
             case R.id.btn_save:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 getDadosDeSpinner();
-
                 usuarioPresenter.onCreate();
-                progressDialog.dismiss();
-
-                onBackPressed();
 
                 break;
 
@@ -116,13 +109,5 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
-    }
 
 }

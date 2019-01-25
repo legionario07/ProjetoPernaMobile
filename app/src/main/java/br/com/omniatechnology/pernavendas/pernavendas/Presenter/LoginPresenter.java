@@ -18,6 +18,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImp
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 public class LoginPresenter implements ILoginPresenter, ITaskProcess {
@@ -25,8 +26,6 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
     ILoginView loginView;
     Usuario usuario;
     Context context;
-
-    private GenericDAO genericDAO;
 
 
     public LoginPresenter() {
@@ -43,7 +42,6 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
     public LoginPresenter(ILoginView loginView, Context context) {
         this(loginView);
         this.context = context;
-        genericDAO = new GenericDAO(context, this);
     }
 
     public void addUsuarioTextWatcher(final EditText view) {
@@ -68,7 +66,7 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (false == hasFocus) {
-                  ViewUtils.hideKeyboard(context, view);
+                    ViewUtils.hideKeyboard(context, view);
                 }
             }
         });
@@ -111,26 +109,29 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
 
         if (retornoStr.length() == 0) {
             try {
-                genericDAO.execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
+                new GenericDAO(context, this).execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else
+        } else {
             loginView.OnLoginResultError();
 
+            usuario = new Usuario();
+        }
     }
 
 
     @Override
     public void onPostProcess(Serializable serializable) {
-        Log.i("LOG", "postProcess: ");
         usuario = (Usuario) serializable;
 
-        if (usuario != null) {
+        if (usuario == null) {
             loginView.OnLoginResultError();
+            usuario = new Usuario();
         } else {
             loginView.OnLoginResultSuccess();
+            SessionUtil.getInstance().setUsuario(usuario);
         }
     }
 }

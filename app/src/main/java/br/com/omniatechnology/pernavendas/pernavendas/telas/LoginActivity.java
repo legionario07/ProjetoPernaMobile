@@ -29,8 +29,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     ILoginPresenter loginPresenter;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +43,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         verificarDadosSalvo();
 
         loginPresenter = new LoginPresenter(this, this);
-        ((LoginPresenter) loginPresenter).addSenhaTextWatcher(usuarioWrapper.getEditText());
-        ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(senhaWrapper.getEditText());
+        ((LoginPresenter) loginPresenter).addSenhaTextWatcher(senhaWrapper.getEditText());
+        ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(usuarioWrapper.getEditText());
 
         btn_login.setOnClickListener(this);
 
@@ -89,6 +87,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     @Override
     public void OnLoginResultError() {
         Toast.makeText(this, getResources().getString(R.string.login_error), Toast.LENGTH_LONG).show();
+        usuarioWrapper.getEditText().getText().clear();
+        senhaWrapper.getEditText().getText().clear();
     }
 
     @Override

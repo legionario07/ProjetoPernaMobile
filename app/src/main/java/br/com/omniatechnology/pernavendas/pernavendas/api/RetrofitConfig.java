@@ -18,7 +18,7 @@ public class RetrofitConfig {
     public static Retrofit getBuilder(){
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 

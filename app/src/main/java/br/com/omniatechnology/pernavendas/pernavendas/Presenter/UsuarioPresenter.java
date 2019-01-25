@@ -3,41 +3,50 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class UsuarioPresenter implements IUsuarioPresenter {
+public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
 
     IModelView.IUsuarioView usuarioView;
     private Context context;
     Usuario usuario;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Usuario> usuarios;
     private String confirmarSenhaStr;
     private UsuariosAdapter usuariosAdapter;
 
+    private ListView view;
+    private OperationType operationType;
+    private Spinner spnPerfil;
+
     public UsuarioPresenter() {
         usuario = new Usuario();
-        genericDAO = new GenericDAO();
     }
 
     public UsuarioPresenter(IModelView.IUsuarioView usuarioView) {
@@ -50,56 +59,58 @@ public class UsuarioPresenter implements IUsuarioPresenter {
         this.context = context;
     }
 
-    public void setSpinnerPerfil(Spinner spinner){
+    public void setSpinnerPerfil(Spinner spinner) {
 
-        List<Perfil> perfis = null;
+        this.spnPerfil = spinner;
+
+        operationType = OperationType.FIND_ALL_PERFIL;
         try {
-            perfis = (List<Perfil>) genericDAO.execute(false, ConstraintUtils.FIND_ALL, new PerfilServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-        ArrayAdapter arrayPerfis = new ArrayAdapter(context, android.R.layout.simple_spinner_item, perfis);
-        arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayPerfis);
 
 
     }
 
-    public void getDadosSpinnerPerfil(Spinner spinner){
+    public void getDadosSpinnerPerfil(Spinner spinner) {
         usuario.setPerfil((Perfil) getDadosDeSpinner(spinner));
     }
 
-    private IModel getDadosDeSpinner(Spinner spinner){
+    private IModel getDadosDeSpinner(Spinner spinner) {
         return (IModel) spinner.getSelectedItem();
+    }
+
+    public void atualizarList(ListView view) {
+
+        this.view = view;
+
+        if (usuariosAdapter == null) {
+            findAll();
+
+        } else {
+
+            usuariosAdapter.notifyDataSetChanged();
+
+        }
+
     }
 
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = usuario.isValid(context);
-        
-        if(!usuario.getSenha().equals(confirmarSenhaStr)){
-            retornoStr = context.getString(R.string.senhas_nao_podem_ser_diferentes);
-        }
 
         if (retornoStr.length() > 1)
             usuarioView.onMessageError(retornoStr);
         else {
 
             try {
-                isSave = (Boolean) genericDAO.execute(usuario, ConstraintUtils.SALVAR, new UsuarioServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(usuario, ConstraintUtils.SALVAR, new UsuarioServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                usuarioView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                usuarioView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -108,42 +119,32 @@ public class UsuarioPresenter implements IUsuarioPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new UsuarioServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            usuarioView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            usuarioView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new UsuarioServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
 
+        operationType = OperationType.UPDATE;
+
         String retornoStr = usuario.isValid(context);
 
         if (retornoStr.length() > 1)
             usuarioView.onMessageError(retornoStr);
         else {
-
             try {
-                isSave = (Boolean) genericDAO.execute(usuario, ConstraintUtils.EDITAR, new UsuarioServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(usuario, ConstraintUtils.EDITAR, new UsuarioServiceImpl());
+            } catch (Exception e) {
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
-            if (isSave)
-                usuarioView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                usuarioView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -152,29 +153,25 @@ public class UsuarioPresenter implements IUsuarioPresenter {
     @Override
     public void findById() {
 
-        try {
-            usuario = (Usuario) genericDAO.execute(usuario, ConstraintUtils.FIND_BY_ID, new UsuarioServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.FIND_BY_ID;
 
+        try {
+            new GenericDAO(context, this).execute(usuario, ConstraintUtils.FIND_BY_ID, new UsuarioServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
     @Override
     public void findAll() {
 
+        operationType = OperationType.FIND_ALL;
 
         try {
-            usuarios = (List<Usuario>) genericDAO.execute(usuario, ConstraintUtils.FIND_ALL, new UsuarioServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(usuario, ConstraintUtils.FIND_ALL, new UsuarioServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-
-
     }
 
     public void addTextWatcherUsuario(final EditText editText) {
@@ -261,22 +258,63 @@ public class UsuarioPresenter implements IUsuarioPresenter {
         });
     }
 
-    public void atualizarList(ListView view) {
 
+    @Override
+    public void onPostProcess(Serializable serializable) {
 
-        if (usuariosAdapter == null) {
+        switch (operationType) {
+            case SAVE:
+            case UPDATE:
+            case DELETE:
 
-            usuarios = (List<Usuario>) genericDAO.execute(new Usuario(), ConstraintUtils.FIND_ALL, new UsuarioServiceImpl());
+                isSave = (Boolean) serializable;
 
-            usuariosAdapter = new UsuariosAdapter(context, usuarios);
+                if (isSave)
+                    usuarioView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    usuarioView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
-            view.setAdapter(usuariosAdapter);
+                if (operationType == OperationType.DELETE)
+                    findAll();
+                break;
+            case FIND_ALL:
 
-        } else {
+                if (usuarios != null) {
+                    usuarios.clear();
+                    usuarios.addAll((List<Usuario>) serializable);
+                } else {
+                    usuarios = (List<Usuario>) serializable;
+                }
 
-            usuariosAdapter.notifyDataSetChanged();
+                if (usuariosAdapter == null) {
+                    usuariosAdapter = new UsuariosAdapter(context, usuarios);
 
+                    view.setAdapter(usuariosAdapter);
+                } else {
+                    usuariosAdapter.notifyDataSetChanged();
+                }
+
+                usuariosAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_BY_ID:
+
+                break;
+
+            case FIND_ALL_PERFIL:
+
+                List<Perfil> perfis = (List<Perfil>) serializable;
+
+                ArrayAdapter arrayPerfis = new ArrayAdapter(context, android.R.layout.simple_spinner_item, perfis);
+                arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnPerfil.setAdapter(arrayPerfis);
+
+                break;
+            default:
         }
+
     }
+
 
 }

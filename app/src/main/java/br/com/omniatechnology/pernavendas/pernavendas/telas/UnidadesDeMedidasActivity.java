@@ -32,7 +32,6 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
     private ListView lstUnidadeDeMedida;
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,15 +46,6 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
         unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this);
 
         unidadeDeMedidaPresenter.atualizarList(lstUnidadeDeMedida);
-
-//        lstUnidadeDeMedida.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), NewUnidadeDeMedidaActivity.class);
-//                intent.putExtra(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT, (Serializable) lstUnidadeDeMedida.getAdapter().getItem(position));
-//                startActivity(intent);
-//            }
-//        });
 
         registerForContextMenu(lstUnidadeDeMedida);
 
@@ -79,17 +69,13 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
                 Intent intent = new Intent(this,NewCategoriaActivity.class);
                 intent.putExtra(ConstraintUtils.UNIDADE_DE_MEDIDA_INTENT, (Serializable) lstUnidadeDeMedida.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 unidadeDeMedidaPresenter.onDelete(((UnidadeDeMedida) lstUnidadeDeMedida.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
@@ -113,7 +99,7 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
             case R.id.fabNovaUnidadeDeMedida:
 
-                startActivity(new Intent(this, NewUnidadeDeMedidaActivity.class));
+                startActivityForResult(new Intent(this, NewUnidadeDeMedidaActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -122,14 +108,16 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
     }
 
-    private void showProgressDialog(String message) {
-        progressDialog = new ProgressDialog(this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            unidadeDeMedidaPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
+
 
 
 }

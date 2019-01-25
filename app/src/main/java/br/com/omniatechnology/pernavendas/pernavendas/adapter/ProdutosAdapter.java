@@ -77,7 +77,7 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
 
     // Método responsável por inserir um novo usuário na lista
     //e notificar que há novos itens.
-    private void insertItem(Produto produto) {
+    public void insertItem(Produto produto) {
         produtos.add(produto);
         notifyItemInserted(getItemCount());
     }
@@ -88,6 +88,10 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
         diffResult.dispatchUpdatesTo(this);
     }
 
+    public Produto getItem(int position)
+    {
+        return produtos.get(position);
+    }
 
 
 }

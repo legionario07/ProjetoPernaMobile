@@ -31,8 +31,6 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
     private ListView lstUsuario;
     IUsuarioPresenter usuarioPresenter;
 
-    private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,31 +67,19 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
 
                 Intent intent = new Intent(this,NewUsuarioActivity.class);
                 intent.putExtra(ConstraintUtils.USUARIO_INTENT, (Serializable) lstUsuario.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 usuarioPresenter.onDelete(((Usuario) lstUsuario.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
         return super.onContextItemSelected(item);
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
-
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
-    }
 
     @Override
     public void onMessageSuccess(String message) {
@@ -113,13 +99,24 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
 
             case R.id.fabNovoUsuario:
 
-                startActivity(new Intent(this, NewUsuarioActivity.class));
+                startActivityForResult(new Intent(this, NewUsuarioActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
             default:
         }
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            usuarioPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

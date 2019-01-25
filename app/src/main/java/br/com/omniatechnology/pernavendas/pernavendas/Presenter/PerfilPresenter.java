@@ -29,7 +29,6 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     IModelView.IPerfilView perfilView;
     private Context context;
     Perfil perfil;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Perfil> perfis;
     private PerfisAdapter perfilsAdapter;
@@ -50,6 +49,19 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
         this();
         this.perfilView = perfilView;
         this.context = context;
+    }
+
+    public void atualizarList(ListView view) {
+
+        this.view = view;
+
+        if (perfilsAdapter == null) {
+            findAll();
+        } else {
+
+            perfilsAdapter.notifyDataSetChanged();
+
+        }
     }
 
 
@@ -162,18 +174,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     }
 
 
-    public void atualizarList(ListView view) {
 
-        this.view = view;
-
-        if (perfilsAdapter == null) {
-            findAll();
-        } else {
-
-            perfilsAdapter.notifyDataSetChanged();
-
-        }
-    }
 
     @Override
     public void onPostProcess(Serializable serializable) {

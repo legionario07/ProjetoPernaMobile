@@ -3,36 +3,44 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.UnidadesDeMedidasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
+public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITaskProcess {
 
     IModelView.IUnidadeDeMedidaView unidadeDeMedidaView;
     private Context context;
     UnidadeDeMedida unidadeDeMedida;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<UnidadeDeMedida> unidadesDeMedidas;
     private UnidadesDeMedidasAdapter unidadesDeMedidasAdapter;
 
+    private ListView view;
+    private OperationType operationType;
+
 
     public UnidadeDeMedidaPresenter() {
         unidadeDeMedida = new UnidadeDeMedida();
-        genericDAO = new GenericDAO();
     }
 
     public UnidadeDeMedidaPresenter(IModelView.IUnidadeDeMedidaView unidadeDeMedidaView) {
@@ -45,32 +53,37 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
         this.context = context;
     }
 
-    
+
+    public void atualizarList(ListView view) {
+
+        this.view = view;
+
+        if (unidadesDeMedidasAdapter == null) {
+            findAll();
+
+        } else {
+
+            unidadesDeMedidasAdapter.notifyDataSetChanged();
+
+        }
+
+    }
+
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = unidadeDeMedida.isValid(context);
-
-        Boolean isSave = false;
 
         if (retornoStr.length() > 1)
             unidadeDeMedidaView.onMessageError(retornoStr);
         else {
 
-            GenericDAO genericDAO = new GenericDAO();
-
             try {
-                isSave = (Boolean) genericDAO.execute(unidadeDeMedida, ConstraintUtils.SALVAR, new UnidadeDeMedidaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(unidadeDeMedida, ConstraintUtils.SALVAR, new UnidadeDeMedidaServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                unidadeDeMedidaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                unidadeDeMedidaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -79,44 +92,32 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new UnidadeDeMedidaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            unidadeDeMedidaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            unidadeDeMedidaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new UnidadeDeMedidaServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
 
-        String retornoStr = unidadeDeMedida.isValid(context);
+        operationType = OperationType.UPDATE;
 
-        Boolean isSave = false;
+        String retornoStr = unidadeDeMedida.isValid(context);
 
         if (retornoStr.length() > 1)
             unidadeDeMedidaView.onMessageError(retornoStr);
         else {
-
             try {
-                isSave = (Boolean) genericDAO.execute(unidadeDeMedida, ConstraintUtils.EDITAR, new UnidadeDeMedidaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(unidadeDeMedida, ConstraintUtils.EDITAR, new UnidadeDeMedidaServiceImpl());
+            } catch (Exception e) {
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
-            if (isSave)
-                unidadeDeMedidaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                unidadeDeMedidaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -125,28 +126,25 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
     @Override
     public void findById() {
 
-        try {
-            unidadeDeMedida = (UnidadeDeMedida) genericDAO.execute(unidadeDeMedida, ConstraintUtils.FIND_BY_ID, new UnidadeDeMedidaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.FIND_BY_ID;
 
+        try {
+            new GenericDAO(context, this).execute(unidadeDeMedida, ConstraintUtils.FIND_BY_ID, new UnidadeDeMedidaServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
     @Override
     public void findAll() {
 
+        operationType = OperationType.FIND_ALL;
+
         try {
-            unidadesDeMedidas = (List<UnidadeDeMedida>) genericDAO.execute(unidadeDeMedida, ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(unidadeDeMedida, ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-
-
     }
 
     public void addTextWatcherTipoUnidadeDeMedida(final EditText editText) {
@@ -178,22 +176,53 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter {
         });
     }
 
+    @Override
+    public void onPostProcess(Serializable serializable) {
 
-    public void atualizarList(ListView view) {
+        switch (operationType) {
+            case SAVE:
+            case UPDATE:
+            case DELETE:
 
+                isSave = (Boolean) serializable;
 
-        if (unidadesDeMedidasAdapter == null) {
-            unidadesDeMedidas = (List<UnidadeDeMedida>) genericDAO.execute(new UnidadeDeMedida(), ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
+                if (isSave)
+                    unidadeDeMedidaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    unidadeDeMedidaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
-            unidadesDeMedidasAdapter = new UnidadesDeMedidasAdapter(context, unidadesDeMedidas);
+                if (operationType == OperationType.DELETE)
+                    findAll();
+                break;
+            case FIND_ALL:
 
-            view.setAdapter(unidadesDeMedidasAdapter);
+                if (unidadesDeMedidas != null) {
+                    unidadesDeMedidas.clear();
+                    unidadesDeMedidas.addAll((List<UnidadeDeMedida>) serializable);
+                } else {
+                    unidadesDeMedidas = (List<UnidadeDeMedida>) serializable;
+                }
 
-        } else {
+                if (unidadesDeMedidasAdapter == null) {
+                    unidadesDeMedidasAdapter = new UnidadesDeMedidasAdapter(context, unidadesDeMedidas);
 
-            unidadesDeMedidasAdapter.notifyDataSetChanged();
+                    view.setAdapter(unidadesDeMedidasAdapter);
+                } else {
+                    unidadesDeMedidasAdapter.notifyDataSetChanged();
+                }
 
+                unidadesDeMedidasAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_BY_ID:
+
+                break;
+
+            default:
         }
+
     }
+
 
 }

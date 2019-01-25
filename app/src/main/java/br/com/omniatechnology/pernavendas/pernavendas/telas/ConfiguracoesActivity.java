@@ -35,8 +35,6 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
     private ListView lstConfiguracao;
     IConfiguracaoPresenter configuracaoPresenter;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,17 +69,13 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
                 Intent intent = new Intent(this,NewConfiguracaoActivity.class);
                 intent.putExtra(ConstraintUtils.CONFIGURACAO_INTENT, (Serializable) lstConfiguracao.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 configuracaoPresenter.onDelete(((Configuracao) lstConfiguracao.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
@@ -107,7 +101,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
             case R.id.fabNovaConfiguracao:
 
-                startActivity(new Intent(this, NewConfiguracaoActivity.class));
+                startActivityForResult(new Intent(this, NewConfiguracaoActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -116,13 +110,14 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            configuracaoPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

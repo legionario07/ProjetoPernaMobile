@@ -33,8 +33,6 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
     private ListView lstMarca;
     IMarcaPresenter marcaPresenter;
 
-    private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,18 +69,14 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
                 Intent intent = new Intent(this,NewMarcaActivity.class);
                 intent.putExtra(ConstraintUtils.MARCA_INTENT, (Serializable) lstMarca.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 marcaPresenter.onDelete(((Marca) lstMarca.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
@@ -106,7 +100,7 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
             case R.id.fabNovaMarca:
 
-                startActivity(new Intent(this, NewMarcaActivity.class));
+                startActivityForResult(new Intent(this, NewMarcaActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -115,15 +109,14 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            marcaPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
-
-
 
 }

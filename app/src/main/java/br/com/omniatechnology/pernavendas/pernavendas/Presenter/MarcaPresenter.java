@@ -3,35 +3,43 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class MarcaPresenter implements IMarcaPresenter {
+public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
 
     IModelView.IMarcaView marcaView;
     private Context context;
     Marca marca;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Marca> marcas;
     private MarcasAdapter marcasAdapter;
+    
+    private ListView view;
+    private OperationType operationType;
 
     public MarcaPresenter() {
         marca = new Marca();
-        genericDAO = new GenericDAO();
     }
 
     public MarcaPresenter(IModelView.IMarcaView marcaView) {
@@ -45,9 +53,26 @@ public class MarcaPresenter implements IMarcaPresenter {
     }
 
 
+
+    public void atualizarList(ListView view){
+
+        this.view = view;
+
+        if(marcasAdapter==null){
+            findAll();
+
+        }else{
+
+            marcasAdapter.notifyDataSetChanged();
+
+        }
+
+    }
+
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = marca.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -55,17 +80,10 @@ public class MarcaPresenter implements IMarcaPresenter {
         else {
 
             try {
-                isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.SALVAR, new MarcaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(marca, ConstraintUtils.SALVAR, new MarcaServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                marcaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -74,42 +92,32 @@ public class MarcaPresenter implements IMarcaPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new MarcaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            marcaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new MarcaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
 
+        operationType = OperationType.UPDATE;
+
         String retornoStr = marca.isValid(context);
 
         if (retornoStr.length() > 1)
             marcaView.onMessageError(retornoStr);
         else {
-
             try {
-                isSave = (Boolean) genericDAO.execute(marca, ConstraintUtils.EDITAR, new MarcaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(marca, ConstraintUtils.EDITAR, new MarcaServiceImpl());
+            }catch (Exception e){
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
-            if (isSave)
-                marcaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -118,45 +126,24 @@ public class MarcaPresenter implements IMarcaPresenter {
     @Override
     public void findById() {
 
-        try {
-            marca = (Marca) genericDAO.execute(marca, ConstraintUtils.FIND_BY_ID, new MarcaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.FIND_BY_ID;
 
+        try {
+            new GenericDAO(context, this).execute(marca, ConstraintUtils.FIND_BY_ID, new MarcaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
     @Override
     public void findAll() {
 
+        operationType = OperationType.FIND_ALL;
 
         try {
-            marcas = (List<Marca>) genericDAO.execute(marca, ConstraintUtils.FIND_ALL, new MarcaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void atualizarList(ListView view) {
-
-
-        if (marcasAdapter == null) {
-            marcas = (List<Marca>) genericDAO.execute(new Marca(), ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
-
-            marcasAdapter = new MarcasAdapter(context, marcas);
-
-            view.setAdapter(marcasAdapter);
-
-        } else {
-
-            marcasAdapter.notifyDataSetChanged();
-
+            new GenericDAO(context, this).execute(marca, ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
         public void addTextWatcherNomeMarca(final EditText editText){
@@ -186,5 +173,51 @@ public class MarcaPresenter implements IMarcaPresenter {
                 }
             });
         }
+
+    @Override
+    public void onPostProcess(Serializable serializable) {
+
+        switch (operationType){
+            case SAVE: case UPDATE: case DELETE:
+
+                isSave = (Boolean) serializable;
+
+                if (isSave)
+                    marcaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+                if(operationType == OperationType.DELETE)
+                    findAll();
+                break;
+            case FIND_ALL:
+
+                if(marcas!=null){
+                    marcas.clear();
+                    marcas.addAll((List<Marca>) serializable);
+                }else {
+                    marcas = (List<Marca>) serializable;
+                }
+
+                if(marcasAdapter == null) {
+                    marcasAdapter = new MarcasAdapter(context, marcas);
+
+                    view.setAdapter(marcasAdapter);
+                }else{
+                    marcasAdapter.notifyDataSetChanged();
+                }
+
+                marcasAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_BY_ID:
+
+                break;
+
+            default:
+        }
+
+    }
 
 }

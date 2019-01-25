@@ -1,46 +1,41 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.viewholder.PedidosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class CategoriaPresenter implements ICategoriaPresenter {
+public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
 
     IModelView.ICategoriaView categoriaView;
     private Context context;
     Categoria categoria;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Categoria> categorias;
     private CategoriasAdapter categoriasAdapter;
+    private OperationType operationType;
+    
+    private ListView view;
 
     public CategoriaPresenter() {
         categoria = new Categoria();
-        genericDAO = new GenericDAO();
     }
 
     public CategoriaPresenter(IModelView.ICategoriaView categoriaView) {
@@ -56,14 +51,10 @@ public class CategoriaPresenter implements ICategoriaPresenter {
 
     public void atualizarList(ListView view){
 
+        this.view = view;
 
         if(categoriasAdapter==null){
-            categorias = (List<Categoria>) genericDAO.execute(new Categoria(), ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
-
-
-            categoriasAdapter = new CategoriasAdapter(context, categorias);
-
-            view.setAdapter(categoriasAdapter);
+            findAll();
 
         }else{
 
@@ -73,10 +64,10 @@ public class CategoriaPresenter implements ICategoriaPresenter {
 
     }
 
-
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = categoria.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -84,17 +75,10 @@ public class CategoriaPresenter implements ICategoriaPresenter {
         else {
 
             try {
-                isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.SALVAR, new CategoriaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(categoria, ConstraintUtils.SALVAR, new CategoriaServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                categoriaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -103,44 +87,32 @@ public class CategoriaPresenter implements ICategoriaPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new CategoriaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            categoriaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new CategoriaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
 
+        operationType = OperationType.UPDATE;
 
         String retornoStr = categoria.isValid(context);
 
         if (retornoStr.length() > 1)
             categoriaView.onMessageError(retornoStr);
         else {
-
             try {
-                isSave = (Boolean) genericDAO.execute(categoria, ConstraintUtils.EDITAR, new CategoriaServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(categoria, ConstraintUtils.EDITAR, new CategoriaServiceImpl());
+            }catch (Exception e){
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
-
-            if (isSave)
-                categoriaView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -149,29 +121,25 @@ public class CategoriaPresenter implements ICategoriaPresenter {
     @Override
     public void findById() {
 
+        operationType = OperationType.FIND_BY_ID;
+
         try {
-            categoria = (Categoria) genericDAO.execute(categoria, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(categoria, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-
-
-
     }
 
     @Override
     public void findAll() {
+
+        operationType = OperationType.FIND_ALL;
+
         try {
-            categorias = (List<Categoria>) genericDAO.execute(categoria, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(categoria, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
-
-
     }
 
     public void addTextWatcherNomeCategoria(final EditText editText) {
@@ -202,5 +170,50 @@ public class CategoriaPresenter implements ICategoriaPresenter {
         });
     }
 
+    @Override
+    public void onPostProcess(Serializable serializable) {
+
+        switch (operationType){
+            case SAVE: case UPDATE: case DELETE:
+
+                isSave = (Boolean) serializable;
+
+                if (isSave)
+                    categoriaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+                if(operationType == OperationType.DELETE)
+                    findAll();
+                break;
+            case FIND_ALL:
+
+                if(categorias!=null){
+                    categorias.clear();
+                    categorias.addAll((List<Categoria>) serializable);
+                }else {
+                    categorias = (List<Categoria>) serializable;
+                }
+
+                if(categoriasAdapter == null) {
+                    categoriasAdapter = new CategoriasAdapter(context, categorias);
+
+                    view.setAdapter(categoriasAdapter);
+                }else{
+                    categoriasAdapter.notifyDataSetChanged();
+                }
+
+                categoriasAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_BY_ID:
+
+                break;
+
+            default:
+        }
+
+    }
 
 }

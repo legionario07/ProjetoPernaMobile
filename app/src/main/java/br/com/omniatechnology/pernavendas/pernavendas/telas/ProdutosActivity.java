@@ -1,21 +1,18 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
@@ -23,7 +20,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
@@ -36,7 +33,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     private ProdutosAdapter produtosAdapter;
     IProdutoPresenter produtoPresenter;
     private List<Produto> produtos;
-    private Produto produto;
 
 
     @Override
@@ -50,23 +46,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this, produtosAdapter);
-        ((ProdutoPresenter) produtoPresenter).initialize(rcViewProdutos);
-
-        produtos = SessionUtil.getInstance().getProdutos();
-
-        atualizarDados();
-
-//        produtosAdapter.setOnItemClickListener(new ProdutosAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//                produto = produtos.get(position);
-//
-//                Intent intent = new Intent(getApplicationContext(), NewProdutoActivity.class);
-//                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, produto);
-//                startActivity(intent);
-//
-//            }
-//        });
+        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos);
 
         registerForContextMenu(rcViewProdutos);
 
@@ -80,11 +60,21 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
         switch (item.getItemId()) {
             case R.id.menu_editar:
+
+                Intent intent = new Intent(this,NewCategoriaActivity.class);
+                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, (Serializable) produtosAdapter.getItem(info.position));
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
+
                 break;
 
             case R.id.menu_excluir:
+
+                produtoPresenter.onDelete((produtosAdapter.getItem(info.position)).getId());
 
                 break;
         }
@@ -120,7 +110,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
             case R.id.fabNovoProduto:
 
-                startActivity(new Intent(this, NewProdutoActivity.class));
+                startActivityForResult(new Intent(this, NewProdutoActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -129,6 +119,15 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            produtoPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 
 }

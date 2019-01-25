@@ -3,39 +3,39 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
+public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProcess {
 
     IModelView.IConfiguracaoView configuracaoView;
     private Context context;
     Configuracao configuracao;
-    private GenericDAO genericDAO;
     private Boolean isSave;
     private List<Configuracao> configuracoes;
     private ConfiguracoesAdapter configuracoesAdapter;
+    
+    private ListView view;
+    private OperationType operationType;
 
     public ConfiguracaoPresenter() {
         configuracao = new Configuracao();
-        genericDAO = new GenericDAO();
     }
 
     public ConfiguracaoPresenter(IModelView.IConfiguracaoView configuracaoView) {
@@ -48,10 +48,25 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
         this.context = context;
     }
 
+    public void atualizarList(ListView view){
+
+        this.view = view;
+
+        if(configuracoesAdapter==null){
+            findAll();
+
+        }else{
+
+            configuracoesAdapter.notifyDataSetChanged();
+
+        }
+
+    }
 
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = configuracao.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -59,17 +74,10 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
         else {
 
             try {
-                isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.SALVAR, new ConfiguracaoServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(configuracao, ConstraintUtils.SALVAR, new ConfiguracaoServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                configuracaoView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -78,44 +86,33 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new ConfiguracaoServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            configuracaoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ConfiguracaoServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
 
+        operationType = OperationType.UPDATE;
+
         String retornoStr = configuracao.isValid(context);
 
         if (retornoStr.length() > 1)
             configuracaoView.onMessageError(retornoStr);
         else {
-
-
             try {
-                isSave = (Boolean) genericDAO.execute(configuracao, ConstraintUtils.EDITAR, new ConfiguracaoServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(configuracao, ConstraintUtils.EDITAR, new ConfiguracaoServiceImpl());
+            }catch (Exception e){
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
 
-            if (isSave)
-                configuracaoView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
         }
 
     }
@@ -123,45 +120,26 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
     @Override
     public void findById() {
 
-        try {
-            configuracao = (Configuracao) genericDAO.execute(configuracao, ConstraintUtils.FIND_BY_ID, new ConfiguracaoServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.FIND_BY_ID;
 
+        try {
+            new GenericDAO(context, this).execute(configuracao, ConstraintUtils.FIND_BY_ID, new ConfiguracaoServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
     @Override
     public void findAll() {
 
+        operationType = OperationType.FIND_ALL;
+
         try {
-            configuracoes = (List<Configuracao>) genericDAO.execute(configuracao, ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(configuracao, ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
-
-    }
-
-    public void atualizarList(ListView view){
-
-
-        if(configuracoesAdapter==null){
-            configuracoes = (List<Configuracao>) genericDAO.execute(new Configuracao(), ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl());
-
-            configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
-
-            view.setAdapter(configuracoesAdapter);
-
-        }else{
-
-            configuracoesAdapter.notifyDataSetChanged();
-
-        }
 
     }
 
@@ -212,5 +190,50 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
         });
     }
 
+    @Override
+    public void onPostProcess(Serializable serializable) {
+
+        switch (operationType){
+            case SAVE: case UPDATE: case DELETE:
+
+                isSave = (Boolean) serializable;
+
+                if (isSave)
+                    configuracaoView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+                if(operationType == OperationType.DELETE)
+                    findAll();
+                break;
+            case FIND_ALL:
+
+                if(configuracoes!=null){
+                    configuracoes.clear();
+                    configuracoes.addAll((List<Configuracao>) serializable);
+                }else {
+                    configuracoes = (List<Configuracao>) serializable;
+                }
+
+                if(configuracoesAdapter == null) {
+                    configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
+
+                    view.setAdapter(configuracoesAdapter);
+                }else{
+                    configuracoesAdapter.notifyDataSetChanged();
+                }
+
+                configuracoesAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_BY_ID:
+
+                break;
+
+            default:
+        }
+
+    }
 
 }

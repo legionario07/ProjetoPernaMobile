@@ -85,7 +85,6 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        perfilPresenter.atualizarList(lstPerfil);
     }
 
     @Override

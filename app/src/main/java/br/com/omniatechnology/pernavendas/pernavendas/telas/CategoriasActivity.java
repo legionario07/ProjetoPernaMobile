@@ -35,8 +35,6 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
     private ListView lstCategoria;
     ICategoriaPresenter categoriaPresenter;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,17 +69,13 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
                 Intent intent = new Intent(this,NewCategoriaActivity.class);
                 intent.putExtra(ConstraintUtils.CATEGORIA_INTENT, (Serializable) lstCategoria.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 categoriaPresenter.onDelete(((Categoria) lstCategoria.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
@@ -107,7 +101,7 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
             case R.id.fabNovaCategoria:
 
-                startActivity(new Intent(this, NewCategoriaActivity.class));
+                startActivityForResult(new Intent(this, NewCategoriaActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -116,16 +110,15 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
 
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            categoriaPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
-
-
-
 
 }

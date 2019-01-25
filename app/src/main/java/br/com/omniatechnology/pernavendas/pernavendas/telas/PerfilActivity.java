@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,9 +33,6 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
     private ListView lstPerfil;
     IPerfilPresenter perfilPresenter;
-
-    private ProgressDialog progressDialog;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,18 +68,14 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
                 Intent intent = new Intent(this,NewPerfilActivity.class);
                 intent.putExtra(ConstraintUtils.PERFIL_INTENT, (Serializable) lstPerfil.getItemAtPosition(info.position));
-                startActivity(intent);
+                startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
 
                 break;
 
             case R.id.menu_excluir:
 
-                showProgressDialog(getResources().getString(R.string.processando));
-
                 perfilPresenter.onDelete(((Perfil) lstPerfil.getItemAtPosition(info.position)).getId());
-
-                progressDialog.dismiss();
 
                 break;
         }
@@ -91,6 +85,7 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        perfilPresenter.atualizarList(lstPerfil);
     }
 
     @Override
@@ -106,7 +101,7 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
             case R.id.fabNovoPerfil:
 
-                startActivity(new Intent(this, NewPerfilActivity.class));
+                startActivityForResult(new Intent(this, NewPerfilActivity.class), ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
@@ -115,14 +110,14 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
     }
 
-    private void showProgressDialog(String message){
-        progressDialog  =new ProgressDialog(this);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        progressDialog.setMessage(message);
-        progressDialog.setTitle(getString(R.string.aguarde));
-        progressDialog.show();
-
+        if(requestCode==ConstraintUtils.IDENTIFICATION_ACTIVITY){
+            perfilPresenter.findAll();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
-
 
 }

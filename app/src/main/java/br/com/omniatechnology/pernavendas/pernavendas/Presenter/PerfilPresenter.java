@@ -3,24 +3,28 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class PerfilPresenter implements IPerfilPresenter {
+public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
     IModelView.IPerfilView perfilView;
     private Context context;
@@ -29,10 +33,13 @@ public class PerfilPresenter implements IPerfilPresenter {
     private Boolean isSave;
     private List<Perfil> perfis;
     private PerfisAdapter perfilsAdapter;
+    private ListView view;
+
+    private OperationType operationType;
 
     public PerfilPresenter() {
         perfil = new Perfil();
-        genericDAO = new GenericDAO();
+
     }
 
     public PerfilPresenter(IModelView.IPerfilView perfilView) {
@@ -49,6 +56,7 @@ public class PerfilPresenter implements IPerfilPresenter {
     @Override
     public void onCreate() {
 
+        operationType = OperationType.SAVE;
         String retornoStr = perfil.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -56,17 +64,10 @@ public class PerfilPresenter implements IPerfilPresenter {
         else {
 
             try {
-                isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.SALVAR, new PerfilServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(perfil, ConstraintUtils.SALVAR, new PerfilServiceImpl());
+            } catch (Exception e) {
+                Log.i(ConstraintUtils.TAG, e.getMessage());
             }
-
-            if (isSave)
-                perfilView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-            else
-                perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -75,23 +76,20 @@ public class PerfilPresenter implements IPerfilPresenter {
     @Override
     public void onDelete(Long id) {
 
-        try {
-            isSave = (Boolean) genericDAO.execute(id, ConstraintUtils.DELETAR, new PerfilServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.DELETE;
 
-        if(isSave)
-            perfilView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-        else
-            perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        try {
+            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new PerfilServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
 
     }
 
     @Override
     public void onUpdate() {
+
+        operationType = OperationType.UPDATE;
 
         String retornoStr = perfil.isValid(context);
 
@@ -99,17 +97,11 @@ public class PerfilPresenter implements IPerfilPresenter {
             perfilView.onMessageError(retornoStr);
         else {
             try {
-                isSave = (Boolean) genericDAO.execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl()).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                new GenericDAO(context, this).execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl());
+            }catch (Exception e){
+                Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
-            if (isSave)
-                perfilView.onMessageSuccess(context.getResources().getString(R.string.concluido_sucesso));
-            else
-                perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
         }
 
@@ -118,25 +110,24 @@ public class PerfilPresenter implements IPerfilPresenter {
     @Override
     public void findById() {
 
-        try {
-            perfil = (Perfil) genericDAO.execute(perfil, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        operationType = OperationType.FIND_BY_ID;
 
+        try {
+            new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
     @Override
     public void findAll() {
 
+        operationType = OperationType.FIND_ALL;
+
         try {
-            perfis = (List<Perfil>) genericDAO.execute(perfil, ConstraintUtils.FIND_ALL, new PerfilServiceImpl()).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
+        }catch (Exception e){
+            Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
 
@@ -173,18 +164,60 @@ public class PerfilPresenter implements IPerfilPresenter {
 
     public void atualizarList(ListView view) {
 
+        this.view = view;
 
         if (perfilsAdapter == null) {
-            perfis = (List<Perfil>) genericDAO.execute(new Perfil(), ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
-
-            perfilsAdapter = new PerfisAdapter(context, perfis);
-
-            view.setAdapter(perfilsAdapter);
-
+            findAll();
         } else {
 
             perfilsAdapter.notifyDataSetChanged();
 
         }
+    }
+
+    @Override
+    public void onPostProcess(Serializable serializable) {
+
+        switch (operationType){
+            case SAVE: case UPDATE: case DELETE:
+
+                isSave = (Boolean) serializable;
+
+                if (isSave)
+                    perfilView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+                else
+                    perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
+
+                if(operationType == OperationType.DELETE)
+                    findAll();
+            break;
+            case FIND_ALL:
+
+                    if(perfis!=null){
+                        perfis.clear();
+                        perfis.addAll((List<Perfil>) serializable);
+                    }else {
+                        perfis = (List<Perfil>) serializable;
+                    }
+
+                    if(perfilsAdapter == null) {
+                        perfilsAdapter = new PerfisAdapter(context, perfis);
+
+                        view.setAdapter(perfilsAdapter);
+                    }else{
+                        perfilsAdapter.notifyDataSetChanged();
+                    }
+
+                    perfilsAdapter.notifyDataSetChanged();
+
+                    break;
+
+            case FIND_BY_ID:
+
+                break;
+
+                default:
+        }
+
     }
 }

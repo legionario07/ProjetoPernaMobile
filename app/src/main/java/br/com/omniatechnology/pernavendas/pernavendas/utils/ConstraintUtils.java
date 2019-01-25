@@ -21,4 +21,5 @@ public class ConstraintUtils {
     public static final String UNIDADE_DE_MEDIDA_INTENT = "0001";
     public static final String USUARIO_INTENT = "0001";
     public static final String PREFERENCES = "PREFERENCES_APP";
+    public static final int IDENTIFICATION_ACTIVITY = 1 ;
 }

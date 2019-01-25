@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -18,7 +19,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
 
     private Context context;
     private ProgressDialog progressDialog;
-    private OnPostProcess listener;
+    private ITaskProcess listener;
 
     public GenericDAO(){
 
@@ -27,6 +28,13 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
         this();
         this.context = context;
         
+
+    }
+
+    public GenericDAO(Context context, ITaskProcess listener){
+        this(context);
+        this.listener = listener;
+
 
     }
 
@@ -108,13 +116,10 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
     protected void onPostExecute(Serializable s) {
         progressDialog.dismiss();
 
-        listener.postProcess(s);
+        listener.onPostProcess(s);
 
 
     }
 
-    public interface OnPostProcess{
-        void postProcess(Serializable serializable);
-    }
 
 }

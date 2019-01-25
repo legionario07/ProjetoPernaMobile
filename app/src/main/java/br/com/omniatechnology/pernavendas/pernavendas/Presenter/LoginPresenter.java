@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,11 +15,12 @@ import java.util.concurrent.ExecutionException;
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
-public class LoginPresenter implements ILoginPresenter, GenericDAO.OnPostProcess {
+public class LoginPresenter implements ILoginPresenter, ITaskProcess {
 
     ILoginView loginView;
     Usuario usuario;
@@ -41,7 +43,7 @@ public class LoginPresenter implements ILoginPresenter, GenericDAO.OnPostProcess
     public LoginPresenter(ILoginView loginView, Context context) {
         this(loginView);
         this.context = context;
-        genericDAO = new GenericDAO(context);
+        genericDAO = new GenericDAO(context, this);
     }
 
     public void addUsuarioTextWatcher(final EditText view) {
@@ -111,12 +113,6 @@ public class LoginPresenter implements ILoginPresenter, GenericDAO.OnPostProcess
             try {
                 genericDAO.execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
 
-                if (usuario == null) {
-                    loginView.OnLoginResultError();
-                } else {
-                    loginView.OnLoginResultSuccess();
-                }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -125,8 +121,16 @@ public class LoginPresenter implements ILoginPresenter, GenericDAO.OnPostProcess
 
     }
 
+
     @Override
-    public void postProcess(Serializable serializable) {
+    public void onPostProcess(Serializable serializable) {
+        Log.i("LOG", "postProcess: ");
         usuario = (Usuario) serializable;
+
+        if (usuario != null) {
+            loginView.OnLoginResultError();
+        } else {
+            loginView.OnLoginResultSuccess();
+        }
     }
 }

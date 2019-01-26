@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     Button imgVendas;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,23 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        menu = navigationView.getMenu();
+
+        inativarMenu();
+
+    }
+
+    private void inativarMenu() {
+
+        if(SessionUtil.getInstance().getUsuario().getPerfil().getId()!=1){
+            menu.getItem(0).setVisible(false); //Vendas
+            menu.getItem(1).getSubMenu().getItem(4).setVisible(false); //Usuarios
+        }
+
+            menu.getItem(1).getSubMenu().getItem(5).setVisible(false); //Perfil
+            menu.getItem(1).getSubMenu().getItem(6).setVisible(false); //Configurações
+
     }
 
     @Override

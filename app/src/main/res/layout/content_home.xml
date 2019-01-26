@@ -29,7 +29,7 @@
        <Button
 
            android:text="@string/vender"
-           android:background="@android:color/darker_gray"
+           android:background="#d5d5d5"
            android:id="@+id/img_vendas"
            android:textStyle="bold"
            android:gravity="center"

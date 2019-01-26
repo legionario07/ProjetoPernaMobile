@@ -102,7 +102,7 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
         operationType = OperationType.SAVE;
         String retornoStr = usuario.isValid(context);
 
-        if(usuario.getSenha()!=confirmarSenhaStr){
+        if(!usuario.getSenha().equals(confirmarSenhaStr)){
             retornoStr = context.getString(R.string.confirmacao_senha);
         }
 
@@ -140,7 +140,7 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
 
         String retornoStr = usuario.isValid(context);
 
-        if(usuario.getSenha()!=confirmarSenhaStr){
+        if(!usuario.getSenha().equals(confirmarSenhaStr)){
             retornoStr = context.getString(R.string.confirmacao_senha);
         }
 

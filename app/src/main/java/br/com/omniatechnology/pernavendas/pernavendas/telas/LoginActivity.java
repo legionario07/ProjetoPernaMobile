@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ILoginPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.LoginPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.AppUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
 
     TextInputLayout usuarioWrapper;
     TextInputLayout senhaWrapper;
+    TextView txtVersionCode;
 
     ILoginPresenter loginPresenter;
 
@@ -34,6 +37,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        txtVersionCode = findViewById(R.id.txtVersion);
+        String versionCode = "Version: " + AppUtil.versionName(this);
+        txtVersionCode.setText(versionCode);
 
         if (!VerificaConexaoStrategy.verificarConexao(this)) {
             Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();

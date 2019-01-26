@@ -21,7 +21,7 @@
       android:layout_centerInParent="true"
        android:orientation="vertical"
        android:gravity="center"
-       android:background="@android:color/holo_blue_dark"
+       android:background="@android:color/darker_gray"
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="2">
@@ -29,7 +29,7 @@
        <Button
 
            android:text="@string/vender"
-           android:background="@android:color/holo_blue_light"
+           android:background="@android:color/darker_gray"
            android:id="@+id/img_vendas"
            android:textStyle="bold"
            android:gravity="center"

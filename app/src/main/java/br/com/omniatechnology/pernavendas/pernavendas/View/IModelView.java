@@ -24,6 +24,10 @@ public interface IModelView {
 
     }
 
+    interface IComboView extends IModelView{
+
+    }
+
     interface IConfiguracaoView extends IModelView{
 
     }

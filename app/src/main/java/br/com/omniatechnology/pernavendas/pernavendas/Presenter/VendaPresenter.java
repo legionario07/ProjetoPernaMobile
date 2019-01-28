@@ -18,13 +18,16 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PedidoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
@@ -37,9 +40,9 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
     Venda venda;
     private Boolean isSave;
     private List<Venda> vendas;
-    private List<Produto> produtos;
+    private List<Mercadoria> produtos;
     private List<Pedido> pedidos;
-    ArrayAdapter<Produto> adapter;
+    ArrayAdapter<Mercadoria> adapter;
     private PedidosAdapter pedidosAdapter;
     private VendasAdapter vendasAdapter;
 
@@ -196,6 +199,17 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         }
     }
 
+    public void findAllCombos() {
+
+        operationType = OperationType.FIND_ALL_COMBOS;
+
+        try {
+            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
+    }
+
 
     public void addTextWatcherVenda(final EditText editText) {
 
@@ -216,12 +230,18 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         });
     }
 
-    public Produto verificarProdutoPorEAN(String ean) {
+    public Mercadoria verificarProdutoPorEAN(String ean) {
 
-        for (Produto p : produtos) {
+        for (Mercadoria p : produtos) {
 
-            if (p.getEan().equals(ean)) {
-                return p;
+            if(p instanceof Produto) {
+                if (((Produto) p ).getEan().equals(ean)) {
+                    return p;
+                }
+            }else{
+                if(((Combo) p ).getEan().equals(ean)){
+                    return p;
+                }
             }
 
         }
@@ -280,13 +300,23 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
             case FIND_ALL_PRODUTO:
 
-                produtos = (List<Produto>) serializable;
+                produtos = (List<Mercadoria>) serializable;
+
+
+
+
+
+                break;
+
+            case FIND_ALL_COMBOS:
+
+                produtos.addAll((List<Mercadoria>) serializable);
 
                 if (produtos == null) {
                     produtos = new ArrayList<>();
                 }
 
-                adapter = new ArrayAdapter<Produto>
+                adapter = new ArrayAdapter<Mercadoria>
                         (context, android.R.layout.select_dialog_item, produtos);
 
                 autoCompleteProdutos.setAdapter(adapter);

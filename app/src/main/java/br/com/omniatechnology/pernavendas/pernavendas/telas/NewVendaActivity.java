@@ -32,6 +32,8 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
@@ -50,7 +52,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     IVendaPresenter vendaPresenter;
     private ImageButton imgAdicionarProduto;
     private ImageButton imgSalvarVenda;
-    private Produto produto;
+    private Mercadoria produto;
     private TextView txtTotal;
     private Venda venda;
 
@@ -231,8 +233,13 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inpLayoutQuantidade = dialogView.findViewById(R.id.inp_layout_quantidade);
         inpLayoutDesconto = dialogView.findViewById(R.id.inp_layout_desconto);
 
-        txtNomeProduto.setText(produto.getNome());
-        txtDescricaoProduto.setText(produto.getDescricao());
+        if(produto instanceof Produto) {
+            txtNomeProduto.setText(((Produto) produto ).getNome());
+            txtDescricaoProduto.setText(((Produto) produto ).getDescricao());
+        }else{
+            txtNomeProduto.setText(((Combo) produto ).getNome());
+            txtDescricaoProduto.setText(((Combo) produto ).getDescricao());
+        }
         inpLayoutQuantidade.getEditText().setText("1");
         inpLayoutDesconto.getEditText().setText("0");
 

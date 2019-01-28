@@ -23,6 +23,7 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
     private String descricao;
     private List<Produto> produtos;
     private BigDecimal preco;
+    private String ean;
 
     public Combo(Long id) {
         this();
@@ -92,4 +93,11 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
     }
 
 
+    public String getEan() {
+        return ean;
+    }
+
+    public void setEan(String ean) {
+        this.ean = ean;
+    }
 }

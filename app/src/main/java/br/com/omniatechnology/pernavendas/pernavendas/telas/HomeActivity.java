@@ -54,11 +54,11 @@ public class HomeActivity extends AppCompatActivity
 
         if(SessionUtil.getInstance().getUsuario().getPerfil().getId()!=1){
             menu.getItem(0).setVisible(false); //Vendas
-            menu.getItem(1).getSubMenu().getItem(4).setVisible(false); //Usuarios
+            menu.getItem(1).getSubMenu().getItem(5).setVisible(false); //Usuarios
         }
 
-            menu.getItem(1).getSubMenu().getItem(5).setVisible(false); //Perfil
-            menu.getItem(1).getSubMenu().getItem(6).setVisible(false); //Configurações
+            menu.getItem(1).getSubMenu().getItem(6).setVisible(false); //Perfil
+            menu.getItem(1).getSubMenu().getItem(7).setVisible(false); //Configurações
 
     }
 
@@ -107,6 +107,10 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_configuracao) {
 
            startActivity(new Intent(this, ConfiguracoesActivity.class));
+
+        } else if (id == R.id.nav_combos) {
+
+            startActivity(new Intent(this, CombosActivity.class));
 
         } else if (id == R.id.nav_marcas) {
 

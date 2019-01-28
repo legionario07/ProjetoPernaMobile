@@ -19,6 +19,11 @@
                 android:title="Produtos" />
 
             <item
+                android:id="@+id/nav_combos"
+                android:icon="@drawable/ic_library_add_black_24dp"
+                android:title="@string/combos" />
+
+            <item
                 android:id="@+id/nav_unidades_de_medidas"
                 android:icon="@drawable/ic_settings_ethernet_white_24dp"
                 android:title="Unidades de Medidas" />

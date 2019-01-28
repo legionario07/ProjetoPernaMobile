@@ -72,4 +72,7 @@
     <string name="adicionar_produto">Adicionar Produto</string>
     <string name="combo">Combo</string>
     <string name="total_itens">Total Itens</string>
+    <string name="novo_combo">Novo Combo</string>
+    <string name="preco_combo">Preço Combo</string>
+    <string name="nome_combo">Nome do Combo</string>
 </resources>

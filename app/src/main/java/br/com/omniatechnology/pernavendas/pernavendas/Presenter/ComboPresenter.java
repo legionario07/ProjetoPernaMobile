@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -161,7 +162,35 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                combo.setNome(s.toString());
+                combo.setPreco(new BigDecimal(s.toString()));
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
+    }
+
+    public void addTextWatcherPrecoVenda(final EditText editText) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                combo.setPreco(new BigDecimal(s.toString()));
             }
         });
 

@@ -36,13 +36,17 @@ public class CombosAdapter extends ArrayAdapter<Combo> {
 
         Combo combo = this.lista.get(position);
 
-//        convertView = LayoutInflater.from(this.context).inflate(R.layout.item_combo, null);
-//
-//        TextView txtComboID = (TextView) convertView.findViewById(R.id.txtComboID);
-//        TextView txtComboNome = (TextView) convertView.findViewById(R.id.txtComboNome);
-//
-//        txtComboID.setText(combo.getId().toString());
-//        txtComboNome.setText(combo.getNome());
+          convertView = LayoutInflater.from(this.context).inflate(R.layout.item_combo, null);
+
+        TextView txtComboID = (TextView) convertView.findViewById(R.id.txtComboID);
+        TextView txtComboNome = (TextView) convertView.findViewById(R.id.txtComboNome);
+        TextView txtComboTotalItens = (TextView) convertView.findViewById(R.id.txtComboTotalItens);
+        TextView txtComboValor = (TextView) convertView.findViewById(R.id.txtComboValor);
+
+        txtComboID.setText(combo.getId().toString());
+        txtComboNome.setText(combo.getNome());
+        txtComboTotalItens.setText(String.valueOf(combo.getProdutos().size()));
+        txtComboValor.setText(combo.getPreco().toString());
 
         return convertView;
     }

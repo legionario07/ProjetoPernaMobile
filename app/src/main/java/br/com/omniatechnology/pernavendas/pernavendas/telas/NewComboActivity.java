@@ -39,8 +39,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         btnSave.setOnClickListener(this);
 
-        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.CATEGORIA_INTENT)){
-            combo = (Combo) getIntent().getExtras().get(ConstraintUtils.CATEGORIA_INTENT);
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)){
+            combo = (Combo) getIntent().getExtras().get(ConstraintUtils.COMBO_INTENT);
             preencherDadosNaView();
         }
 

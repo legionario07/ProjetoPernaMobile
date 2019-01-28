@@ -61,7 +61,7 @@ public class CombosActivity extends AppCompatActivity implements IModelView.ICom
             case R.id.menu_editar:
 
                 Intent intent = new Intent(this,NewComboActivity.class);
-                intent.putExtra(ConstraintUtils.CATEGORIA_INTENT, (Serializable) lstCombo.getItemAtPosition(info.position));
+                intent.putExtra(ConstraintUtils.COMBO_INTENT, (Serializable) lstCombo.getItemAtPosition(info.position));
                 startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;

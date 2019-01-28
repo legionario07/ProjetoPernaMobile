@@ -2,7 +2,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.api;
 
 import java.util.List;
 
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -12,26 +12,26 @@ import retrofit2.http.Query;
 
 public interface IComboService {
 
-    String BASE_URL_CATEGORIAS = "categorias/";
-    String FIND_BY_ID = BASE_URL_CATEGORIAS + "findById";
-    String SAVE = BASE_URL_CATEGORIAS + "save";
-    String DELETE = BASE_URL_CATEGORIAS + "delete";
-    String LOGIN = BASE_URL_CATEGORIAS + "login";
+    String BASE_URL_COMBOS = "combos/";
+    String FIND_BY_ID = BASE_URL_COMBOS + "findById";
+    String SAVE = BASE_URL_COMBOS + "save";
+    String DELETE = BASE_URL_COMBOS + "delete";
+    String LOGIN = BASE_URL_COMBOS + "login";
 
 
-    @GET(BASE_URL_CATEGORIAS)
-    Call<List<Categoria>> findAll();
+    @GET(BASE_URL_COMBOS)
+    Call<List<Combo>> findAll();
 
     @GET(FIND_BY_ID)
-    Call<Categoria> findById(@Query("id") Long id);
+    Call<Combo> findById(@Query("id") Long id);
 
     @POST(SAVE)
-    Call<Categoria> save(@Body Categoria categoria);
+    Call<Combo> save(@Body Combo combo);
 
     @DELETE(DELETE)
     Call<Boolean> delete(@Query("id") Long id);
 
     @POST(LOGIN)
-    Call<Categoria> login(@Body Categoria categoria);
+    Call<Combo> login(@Body Combo combo);
 
 }

@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -50,9 +51,13 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     Spinner spnUnidadeDeMedida;
     Spinner spnCategoria;
     CheckBox chkIsInativo;
+    CheckBox chbIsSubProduto;
     TextInputLayout inpEanProduto;
     TextInputLayout inpEanPaiProduto;
+    TextInputLayout inpQtdeSubProduto;
     private ImageView imgQrCode;
+
+    private LinearLayout ll;
 
     private Produto produto;
     ImageButton btnSave;
@@ -79,12 +84,16 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpQtdeMinProduto = findViewById(R.id.inp_layout_qtde_min_produto);
         inpEanProduto = findViewById(R.id.inp_layout_ean_produto);
         inpEanPaiProduto = findViewById(R.id.inp_layout_ean_pai_produto);
+        inpQtdeSubProduto = findViewById(R.id.inp_layout_qtde_sub_produto);
         imgQrCode = findViewById(R.id.imgQrCode);
+
+        ll = findViewById(R.id.ll);
 
         spnMarca = findViewById(R.id.spnMarca);
         spnCategoria = findViewById(R.id.spnCategoria);
         spnUnidadeDeMedida = findViewById(R.id.spnUnidadeDeMedida);
         chkIsInativo = findViewById(R.id.chkInativo);
+        chbIsSubProduto= findViewById(R.id.chbIsSubProduto);
         btnSave = findViewById(R.id.btn_save);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.fabGerarBarcode);
@@ -98,9 +107,11 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         ((ProdutoPresenter) produtoPresenter).addTextWatcherValorVendaProduto(inpValorVendaProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherEanProduto(inpEanProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherEanPaiProduto(inpEanPaiProduto.getEditText());
+        ((ProdutoPresenter) produtoPresenter).addTextWatcherQtdeSubProduto(inpQtdeSubProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).initializeSpinner(spnMarca,spnCategoria,spnUnidadeDeMedida);
 
         btnSave.setOnClickListener(this);
+        chbIsSubProduto.setOnClickListener(this);
 
         //Todos os spnner serao inicializados dentro desse metodo
         produtoPresenter.setSpinnerMarca();
@@ -152,6 +163,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpQtdeMinProduto.getEditText().setText(produto.getQtdeMinima().toString());
         inpEanProduto.getEditText().setText(produto.getEan());
         inpEanPaiProduto.getEditText().setText(produto.getEanPai());
+        inpQtdeSubProduto.getEditText().setText(produto.getQtdeSubProduto());
+        chbIsSubProduto.setChecked(produto.getSubProduto());
         chkIsInativo.setChecked(!produto.isAtivo());
 
         produtoPresenter.setItem(produto);
@@ -177,6 +190,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
             case R.id.btn_save:
 
                 getDadosDeSpinner();
+                ((ProdutoPresenter) produtoPresenter).getDadosForCheckboxAtivo(chkIsInativo);
+                ((ProdutoPresenter) produtoPresenter).getDadosForCheckboxSubProduto(chkIsInativo);
 
                 produtoPresenter.onCreate();
 
@@ -188,6 +203,16 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
                     Toast.makeText(this, getString(R.string.preencher_codigo_produto),Toast.LENGTH_LONG).show();
                 }else{
                   checarPermissao();
+                }
+
+                break;
+
+            case R.id.chbIsSubProduto:
+
+                if(chbIsSubProduto.isChecked()){
+                    ll.setVisibility(View.VISIBLE);
+                }else{
+                    ll.setVisibility(View.GONE);
                 }
 
                 break;

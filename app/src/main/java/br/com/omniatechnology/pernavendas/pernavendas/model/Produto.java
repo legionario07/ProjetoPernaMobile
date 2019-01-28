@@ -16,179 +16,198 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IProduto;
 
 public class Produto extends Mercadoria implements Serializable, IProduto {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private Long id;
-	private String nome;
-	private String descricao;
-	private BigDecimal valorCompra;
-	private BigDecimal valorVenda;
-	private Integer qtde;
-	private Integer qtdeMinima;
-	private String ean;
-	private boolean isAtivo;
-	private UnidadeDeMedida unidadeDeMedida;
-	private Long dataCadastro;
-	private Marca marca;
-	private Categoria categoria;
-	private String eanPai;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public Produto(Long id) {
-		this();
-		this.id = id;
-	}
+    private Long id;
+    private String nome;
+    private String descricao;
+    private BigDecimal valorCompra;
+    private BigDecimal valorVenda;
+    private Integer qtde;
+    private Integer qtdeMinima;
+    private String ean;
+    private boolean isAtivo;
+    private UnidadeDeMedida unidadeDeMedida;
+    private Long dataCadastro;
+    private Marca marca;
+    private Categoria categoria;
+    private String eanPai;
+    private Boolean isSubProduto;
+    private Integer qtdeSubProduto;
 
-	public Produto() {
-		//Por Default o produto inicia-se como Ativo no cadastro
-		this.isAtivo = true;
-		unidadeDeMedida = new UnidadeDeMedida();
-		this.dataCadastro = Calendar.getInstance().getTimeInMillis();
-		this.marca = new Marca();
-	}
+    public Produto(Long id) {
+        this();
+        this.id = id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Produto() {
+        //Por Default o produto inicia-se como Ativo no cadastro
+        this.isAtivo = true;
+        unidadeDeMedida = new UnidadeDeMedida();
+        this.dataCadastro = Calendar.getInstance().getTimeInMillis();
+        this.marca = new Marca();
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome.toUpperCase().trim();
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public void setNome(String nome) {
+        this.nome = nome.toUpperCase().trim();
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao.toUpperCase().trim();
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public BigDecimal getValorCompra() {
-		return valorCompra;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao.toUpperCase().trim();
+    }
 
-	public void setValorCompra(BigDecimal valorCompra) {
-		this.valorCompra = valorCompra;
-	}
+    public BigDecimal getValorCompra() {
+        return valorCompra;
+    }
 
-	public BigDecimal getValorVenda() {
-		return valorVenda;
-	}
+    public void setValorCompra(BigDecimal valorCompra) {
+        this.valorCompra = valorCompra;
+    }
 
-	public void setValorVenda(BigDecimal valorVenda) {
-		this.valorVenda = valorVenda;
-	}
+    public BigDecimal getValorVenda() {
+        return valorVenda;
+    }
 
-	public Integer getQtde() {
-		return qtde;
-	}
+    public void setValorVenda(BigDecimal valorVenda) {
+        this.valorVenda = valorVenda;
+    }
 
-	public void setQtde(Integer qtde) {
-		this.qtde = qtde;
-	}
+    public Integer getQtde() {
+        return qtde;
+    }
 
-	public Integer getQtdeMinima() {
-		return qtdeMinima;
-	}
+    public void setQtde(Integer qtde) {
+        this.qtde = qtde;
+    }
 
-	public void setQtdeMinima(Integer qtdeMinima) {
-		this.qtdeMinima = qtdeMinima;
-	}
+    public Integer getQtdeMinima() {
+        return qtdeMinima;
+    }
 
-	public String getEan() {
-		return ean;
-	}
+    public void setQtdeMinima(Integer qtdeMinima) {
+        this.qtdeMinima = qtdeMinima;
+    }
 
-	public void setEan(String eAN) {
-		ean = eAN;
-	}
+    public String getEan() {
+        return ean;
+    }
 
-	public boolean isAtivo() {
-		return isAtivo;
-	}
+    public void setEan(String eAN) {
+        ean = eAN;
+    }
 
-	public void setAtivo(boolean isAtivo) {
-		this.isAtivo = isAtivo;
-	}
+    public boolean isAtivo() {
+        return isAtivo;
+    }
 
-	public UnidadeDeMedida getUnidadeDeMedida() {
-		return unidadeDeMedida;
-	}
+    public void setAtivo(boolean isAtivo) {
+        this.isAtivo = isAtivo;
+    }
 
-	public void setUnidadeDeMedida(UnidadeDeMedida unidadeDeMedida) {
-		this.unidadeDeMedida = unidadeDeMedida;
-	}
+    public UnidadeDeMedida getUnidadeDeMedida() {
+        return unidadeDeMedida;
+    }
 
-	@Override
-	public String toString() {
-		return nome+ " - "+descricao;
-	}
+    public void setUnidadeDeMedida(UnidadeDeMedida unidadeDeMedida) {
+        this.unidadeDeMedida = unidadeDeMedida;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " - " + descricao;
+    }
 
 
-	public Marca getMarca() {
-		return marca;
-	}
+    public Marca getMarca() {
+        return marca;
+    }
 
-	public void setMarca(Marca marca) {
-		this.marca = marca;
-	}
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
 
-	public void decrementarProduto(Integer valorADecrementar) {
-		if(qtde<=valorADecrementar) {
-			qtde = 0;
-		}else {
-			qtde = qtde - valorADecrementar;
-		}
-	}
-
+    public void decrementarProduto(Integer valorADecrementar) {
+        if (qtde <= valorADecrementar) {
+            qtde = 0;
+        } else {
+            qtde = qtde - valorADecrementar;
+        }
+    }
 
 
     @Override
     public String isValid(Context context) {
-	    StringBuilder retorno = new StringBuilder();
-         if(TextUtils.isEmpty(getNome())){
-             retorno.append(context.getResources().getString(R.string.nome_vazio));
-        }else if(TextUtils.isEmpty(getDescricao())){
-             retorno.append(context.getResources().getString(R.string.descricao_vazio));
-		 }else if(TextUtils.isEmpty(getValorVenda().toString())){
-			 retorno.append(context.getResources().getString(R.string.valor_venda_vazio));
-		 }
+        StringBuilder retorno = new StringBuilder();
+        if (TextUtils.isEmpty(getNome())) {
+            retorno.append(context.getResources().getString(R.string.nome_vazio));
+        } else if (TextUtils.isEmpty(getDescricao())) {
+            retorno.append(context.getResources().getString(R.string.descricao_vazio));
+        } else if (TextUtils.isEmpty(getValorVenda().toString())) {
+            retorno.append(context.getResources().getString(R.string.valor_venda_vazio));
+        }else if(getSubProduto() && TextUtils.isEmpty(getEanPai())){
+            retorno.append(context.getResources().getString(R.string.se_sub_produto_deve_haver_ean_pai));
+        }
 
         return retorno.toString();
     }
 
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
-	public Long getDataCadastro() {
-		return dataCadastro;
-	}
+    public Long getDataCadastro() {
+        return dataCadastro;
+    }
 
-	public void setDataCadastro(Long dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
+    public void setDataCadastro(Long dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
-	public String getEanPai() {
-		return eanPai;
-	}
+    public String getEanPai() {
+        return eanPai;
+    }
 
-	public void setEanPai(String eanPai) {
-		this.eanPai = eanPai;
-	}
+    public void setEanPai(String eanPai) {
+        this.eanPai = eanPai;
+    }
+
+    public Boolean getSubProduto() {
+        return isSubProduto;
+    }
+
+    public void setSubProduto(Boolean subProduto) {
+        isSubProduto = subProduto;
+    }
+
+    public Integer getQtdeSubProduto() {
+        return qtdeSubProduto;
+    }
+
+    public void setQtdeSubProduto(Integer qtdeSubProduto) {
+        this.qtdeSubProduto = qtdeSubProduto;
+    }
 }

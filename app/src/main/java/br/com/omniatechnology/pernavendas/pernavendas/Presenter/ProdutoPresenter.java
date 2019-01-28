@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -415,6 +416,34 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         });
     }
 
+    public void addTextWatcherQtdeSubProduto(final EditText editText) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                produto.setQtdeSubProduto(Integer.valueOf(s.toString()));
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
+    }
+
     @Override
     public void onPostProcess(Serializable serializable) {
 
@@ -496,4 +525,11 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     }
 
+    public void getDadosForCheckboxAtivo(CheckBox checkBox) {
+        produto.setAtivo(checkBox.isChecked());
+    }
+
+    public void getDadosForCheckboxSubProduto(CheckBox checkBox) {
+        produto.setSubProduto(checkBox.isChecked());
+    }
 }

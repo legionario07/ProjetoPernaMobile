@@ -76,4 +76,5 @@
     <string name="preco_combo">Preço Combo</string>
     <string name="nome_combo">Nome do Combo</string>
     <string name="combos">Combos</string>
+    <string name="codigo_produto">Código do Produto</string>
 </resources>

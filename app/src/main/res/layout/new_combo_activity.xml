@@ -130,6 +130,39 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#e6e6e6"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="@string/codigo_produto"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/inpEanCombo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="6"
+                android:hint="@string/codigo_produto"
+                android:inputType="text" />
+
+
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

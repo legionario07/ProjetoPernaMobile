@@ -39,6 +39,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     private ListView lstProdutos;
     private EditText inpPrecoVenda;
     private EditText inpNomeCombo;
+    private EditText inpEanCombo;
 
     private ImageButton imgAdicionarProduto;
     private ImageButton imgLerQrCode;
@@ -65,10 +66,12 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
         inpPrecoVenda = findViewById(R.id.inpPrecoVenda);
         inpNomeCombo = findViewById(R.id.inpNomeCombo);
+        inpEanCombo = findViewById(R.id.inpNomeCombo);
 
         comboPresenter = new ComboPresenter(this, this);
         ((ComboPresenter) comboPresenter).addTextWatcherNomeCombo(inpNomeCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
+        ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
 
         btnSave.setOnClickListener(this);
 

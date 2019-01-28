@@ -34,6 +34,7 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
 	private Long dataCadastro;
 	private Marca marca;
 	private Categoria categoria;
+	private String eanPai;
 
 	public Produto(Long id) {
 		this();
@@ -181,5 +182,13 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
 
 	public void setDataCadastro(Long dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public String getEanPai() {
+		return eanPai;
+	}
+
+	public void setEanPai(String eanPai) {
+		this.eanPai = eanPai;
 	}
 }

@@ -126,6 +126,25 @@
 
     </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inp_layout_ean_pai_produto"
+            android:layout_below="@id/inp_ean_pai_produto"
+            android:layout_marginTop="10dp"
+            android:hint="@string/codigo_ean_pai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                style="@style/cadastros"
+                android:inputType="text"
+                android:id="@+id/inp_ean_pai_produto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </android.support.design.widget.TextInputLayout>
+
     <Spinner
         android:id="@+id/spnMarca"
         style="@style/cadastros.spinner"

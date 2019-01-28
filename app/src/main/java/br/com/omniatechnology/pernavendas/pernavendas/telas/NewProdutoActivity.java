@@ -51,6 +51,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     Spinner spnCategoria;
     CheckBox chkIsInativo;
     TextInputLayout inpEanProduto;
+    TextInputLayout inpEanPaiProduto;
     private ImageView imgQrCode;
 
     private Produto produto;
@@ -77,6 +78,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpQtdeProduto = findViewById(R.id.inp_layout_qtde_produto);
         inpQtdeMinProduto = findViewById(R.id.inp_layout_qtde_min_produto);
         inpEanProduto = findViewById(R.id.inp_layout_ean_produto);
+        inpEanPaiProduto = findViewById(R.id.inp_layout_ean_pai_produto);
         imgQrCode = findViewById(R.id.imgQrCode);
 
         spnMarca = findViewById(R.id.spnMarca);
@@ -95,6 +97,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         ((ProdutoPresenter) produtoPresenter).addTextWatcherDescricaoProduto(inpDescricaoProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherValorVendaProduto(inpValorVendaProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).addTextWatcherEanProduto(inpEanProduto.getEditText());
+        ((ProdutoPresenter) produtoPresenter).addTextWatcherEanPaiProduto(inpEanPaiProduto.getEditText());
         ((ProdutoPresenter) produtoPresenter).initializeSpinner(spnMarca,spnCategoria,spnUnidadeDeMedida);
 
         btnSave.setOnClickListener(this);
@@ -147,6 +150,8 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpValorVendaProduto.getEditText().setText(produto.getValorVenda().toString());
         inpQtdeProduto.getEditText().setText(produto.getQtde().toString());
         inpQtdeMinProduto.getEditText().setText(produto.getQtdeMinima().toString());
+        inpEanProduto.getEditText().setText(produto.getEan());
+        inpEanPaiProduto.getEditText().setText(produto.getEanPai());
         chkIsInativo.setChecked(!produto.isAtivo());
 
         produtoPresenter.setItem(produto);

@@ -14,7 +14,7 @@ import java.util.Calendar;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IProduto;
 
-public class Produto implements Serializable, IProduto {
+public class Produto extends Mercadoria implements Serializable, IProduto {
 
 	/**
 	 * 

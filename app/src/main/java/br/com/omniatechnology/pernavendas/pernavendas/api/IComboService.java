@@ -31,7 +31,5 @@ public interface IComboService {
     @DELETE(DELETE)
     Call<Boolean> delete(@Query("id") Long id);
 
-    @POST(LOGIN)
-    Call<Combo> login(@Body Combo combo);
 
 }

@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 
 
 /**
@@ -43,7 +46,13 @@ public class PedidosAdapter extends ArrayAdapter<Pedido> {
         TextView txtItemDesconto = (TextView) convertView.findViewById(R.id.txtItemDesconto);
         TextView txtItemValor = (TextView) convertView.findViewById(R.id.txtItemValor);
 
-        txtItemNomeProduto.setText(pedido.getProduto().getNome());
+
+        if(pedido.getProduto() instanceof Produto){
+            txtItemNomeProduto.setText(((Produto) pedido.getProduto() ).getNome());
+        }else{
+            txtItemNomeProduto.setText(((Combo) pedido.getProduto() ).getNome());
+        }
+
         txtItemQtdeProduto.setText(pedido.getTotal().toString());
         txtItemDesconto.setText(pedido.getDesconto().toString());
         txtItemValor.setText(pedido.getValorTotal().toString());

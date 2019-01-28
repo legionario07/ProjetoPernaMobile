@@ -11,7 +11,7 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.ICombo;
 
-public class Combo implements Serializable, ICombo {
+public class Combo extends Mercadoria implements Serializable, ICombo {
 
     /**
      *

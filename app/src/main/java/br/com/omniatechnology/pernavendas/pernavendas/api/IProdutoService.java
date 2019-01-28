@@ -2,6 +2,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.api;
 
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,7 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface IProdutoService{
+public interface IProdutoService extends IMercadoriaService {
 
     String BASE_URL_PRODUTOS = "produtos/";
     String FIND_BY_ID = BASE_URL_PRODUTOS + "findById";
@@ -31,7 +32,5 @@ public interface IProdutoService{
     @DELETE(DELETE)
     Call<Boolean> delete(@Query("id") Long id);
 
-    @POST(LOGIN)
-    Call<Produto> login(@Body Produto Produto);
 
 }

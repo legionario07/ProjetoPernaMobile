@@ -245,7 +245,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 pedido.setDesconto(new BigDecimal(inpLayoutDesconto.getEditText().getText().toString()));
                 pedido.setTotal(Integer.valueOf(inpLayoutQuantidade.getEditText().getText().toString()));
 
-                BigDecimal valor = pedido.getProduto().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
+                BigDecimal valor = ((Produto) pedido.getProduto() ).getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
                 valor = valor.subtract(pedido.getDesconto());
                 pedido.setValorTotal(valor);
 

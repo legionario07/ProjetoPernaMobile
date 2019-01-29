@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -31,6 +32,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class MarcasActivity extends AppCompatActivity implements IModelView.IMarcaView, View.OnClickListener {
 
     private ListView lstMarca;
+    private TextView txtEmpty;
     IMarcaPresenter marcaPresenter;
 
 
@@ -40,13 +42,14 @@ public class MarcasActivity extends AppCompatActivity implements IModelView.IMar
         setContentView(R.layout.marca_activity);
 
         lstMarca = findViewById(R.id.lstMarca);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewMarca = findViewById(R.id.fabNovaMarca);
         fabNewMarca.setOnClickListener(this);
 
         marcaPresenter = new MarcaPresenter(this, this);
 
-        marcaPresenter.atualizarList(lstMarca);
+        marcaPresenter.atualizarList(lstMarca, txtEmpty);
 
         registerForContextMenu(lstMarca);
 

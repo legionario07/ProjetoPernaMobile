@@ -81,4 +81,5 @@
     <string name="qtde_sub">Qtde Sub Produto</string>
     <string name="um_sub_produto">É um Sub Produto?</string>
     <string name="se_sub_produto_deve_haver_ean_pai">Sub Produto deve conter Código do Produto Pai</string>
+    <string name="nao_itens_exibicao">Não há itens para exibição</string>
 </resources>

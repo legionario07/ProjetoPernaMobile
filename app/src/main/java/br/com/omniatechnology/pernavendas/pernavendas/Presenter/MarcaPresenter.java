@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
     private Boolean isSave;
     private List<Marca> marcas;
     private MarcasAdapter marcasAdapter;
+    private TextView txtEmpty;
     
     private ListView view;
     private OperationType operationType;
@@ -56,9 +58,10 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
 
 
 
-    public void atualizarList(ListView view){
+    public void atualizarList(ListView view, TextView txtEmpty){
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if(marcasAdapter==null){
             findAll();
@@ -219,6 +222,14 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
                     view.setAdapter(marcasAdapter);
                 }else{
                     marcasAdapter.notifyDataSetChanged();
+                }
+
+                if(marcas.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 marcasAdapter.notifyDataSetChanged();

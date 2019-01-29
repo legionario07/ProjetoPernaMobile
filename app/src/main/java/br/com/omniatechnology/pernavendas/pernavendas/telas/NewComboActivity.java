@@ -47,7 +47,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     private EditText inpNomeCombo;
     private EditText inpEanCombo;
 
-    private ImageButton imgAdicionarProduto;
+    //private ImageButton imgAdicionarProduto;
     private ImageButton imgLerQrCode;
     private ProdutosCombosAdapter combosAdapter;
 
@@ -67,12 +67,12 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         btnSave = findViewById(R.id.btn_save);
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
-        imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
+        //imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
 
 
         lstProdutos = findViewById(R.id.lstProdutos);
         inpProduto = findViewById(R.id.inp_produto);
-        imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
+        //imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
         inpPrecoVenda = findViewById(R.id.inpPrecoVenda);
         inpNomeCombo = findViewById(R.id.inpNomeCombo);
@@ -92,21 +92,20 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
                 produto = (Produto) inpProduto.getAdapter().getItem(position);
                 produtos.add(produto);
                 atualizarListDeProdutos();
+                inpProduto.clearListSelection();
 
             }
         });
 
         atualizarListDeProdutos();
 
-        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)){
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)) {
             combo = (Combo) getIntent().getExtras().get(ConstraintUtils.COMBO_INTENT);
             preencherDadosNaView();
         }
 
 
-
         registerForContextMenu(lstProdutos);
-
 
 
     }
@@ -121,7 +120,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     public boolean onContextItemSelected(MenuItem item) {
 
         AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
 
         switch (item.getItemId()) {
@@ -137,15 +136,14 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     }
 
 
+    public void atualizarListDeProdutos() {
 
-    public void atualizarListDeProdutos(){
-
-        if(combosAdapter==null){
+        if (combosAdapter == null) {
             produtos = new ArrayList<>();
             combosAdapter = new ProdutosCombosAdapter(this, produtos);
             lstProdutos.setAdapter(combosAdapter);
 
-        }else{
+        } else {
 
             combosAdapter.notifyDataSetChanged();
 
@@ -153,21 +151,27 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         }
 
 
-
     }
 
-    public void preencherDadosNaView(){
+    public void preencherDadosNaView() {
 
-       produtos = combo.getProdutos();
-       inpPrecoVenda.setText(combo.getPreco().toString());
-       atualizarListDeProdutos();
+        produtos = combo.getProdutos();
+
+        combosAdapter = new ProdutosCombosAdapter(this, produtos);
+        lstProdutos.setAdapter(combosAdapter);
+
+        inpPrecoVenda.setText(combo.getPreco().toString());
+        inpNomeCombo.setText(combo.getNome());
+        inpEanCombo.setText(combo.getEan());
+
+        atualizarListDeProdutos();
 
 
     }
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         onBackPressed();
     }
 
@@ -180,22 +184,10 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_save:
 
                 comboPresenter.onCreate();
-
-                break;
-
-            case R.id.imgAdicionarProduto:
-
-
-                if(produto==null){
-                    Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
-                }else{
-                    produtos.add(produto);
-                    atualizarListDeProdutos();
-                }
 
                 break;
 
@@ -216,25 +208,25 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(result != null){
+        if (result != null) {
 
-            if(result.getContents()!=null){
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+            if (result.getContents() != null) {
+                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
                 produto = ((ComboPresenter) comboPresenter).verificarProdutoPorEAN(result.getContents());
 
-                if(produto==null){
-                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo),Toast.LENGTH_LONG).show();
-                }else{
+                if (produto == null) {
+                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
+                } else {
                     produtos.add(produto);
                     atualizarListDeProdutos();
                 }
 
-            }else{
+            } else {
                 Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
             }
 
-        }else {
+        } else {
 
             super.onActivityResult(requestCode, resultCode, data);
         }

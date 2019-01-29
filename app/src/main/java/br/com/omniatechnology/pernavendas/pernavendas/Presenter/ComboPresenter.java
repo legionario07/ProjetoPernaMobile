@@ -187,7 +187,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                combo.setPreco(new BigDecimal(s.toString()));
+                combo.setNome(s.toString());
             }
         });
 

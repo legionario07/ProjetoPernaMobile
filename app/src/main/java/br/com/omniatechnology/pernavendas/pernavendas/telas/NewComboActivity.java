@@ -67,8 +67,6 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         setContentView(R.layout.new_combo_activity);
 
         btnSave = findViewById(R.id.btn_save);
-        imgLerQrCode = findViewById(R.id.imgLerQrCode);
-
 
         lstProdutos = findViewById(R.id.lstProdutos);
         inpProduto = findViewById(R.id.inp_produto);
@@ -86,6 +84,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         comboPresenter.atualizarProdutos(inpProduto);
 
         btnSave.setOnClickListener(this);
+        imgLerQrCode.setOnClickListener(this);
 
         inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -87,7 +87,7 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
         inpQtdeSubProduto = findViewById(R.id.inp_layout_qtde_sub_produto);
         imgQrCode = findViewById(R.id.imgQrCode);
 
-        ll = findViewById(R.id.ll);
+        ll = findViewById(R.id.llSubProduto);
 
         spnMarca = findViewById(R.id.spnMarca);
         spnCategoria = findViewById(R.id.spnCategoria);

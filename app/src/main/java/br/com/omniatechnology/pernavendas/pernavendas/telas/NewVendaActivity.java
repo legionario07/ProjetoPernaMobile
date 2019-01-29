@@ -101,8 +101,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 produto = (Produto) inpProduto.getAdapter().getItem(position);
-                inpProduto.setText("");
-                ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
+
+                //ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
 
             }
         });
@@ -207,6 +207,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                }else{
                    //Regra para abrir dialog com o produto selecionado
                    criarDialogCRUD();
+                   inpProduto.setText("");
                }
 
                 break;

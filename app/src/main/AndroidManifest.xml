@@ -48,6 +48,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".telas.NewUsuarioActivity" />
         <activity android:name=".telas.VendasActivity" />
+        <activity android:name=".telas.CombosActivity" />
+        <activity android:name=".telas.NewComboActivity" />
     </application>
 
 </manifest>

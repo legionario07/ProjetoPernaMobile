@@ -11,7 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface IProdutoService extends IMercadoriaService {
+public interface IProdutoService {
 
     String BASE_URL_PRODUTOS = "produtos/";
     String FIND_BY_ID = BASE_URL_PRODUTOS + "findById";

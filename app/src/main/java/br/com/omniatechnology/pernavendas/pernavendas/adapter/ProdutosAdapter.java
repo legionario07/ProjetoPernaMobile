@@ -82,6 +82,11 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
         notifyItemInserted(getItemCount());
     }
 
+    public Produto getiItem(int position){
+        return produtos.get(position);
+    }
+
+
     public void updateList(List<Produto> produtos) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProdutoDiffCallback(this.produtos, produtos));
         this.produtos = produtos;

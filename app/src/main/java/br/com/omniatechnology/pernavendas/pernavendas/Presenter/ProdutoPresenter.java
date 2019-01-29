@@ -14,6 +14,7 @@ import android.widget.Spinner;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -121,9 +122,10 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         return (IModel) spinner.getSelectedItem();
     }
 
-    public void atualizarList(RecyclerView view) {
+    public void atualizarList(RecyclerView view, ProdutosAdapter prodAdapter) {
 
         this.view = view;
+        this.produtosAdapter = prodAdapter;
 
         if (produtosAdapter == null) {
             findAll();
@@ -470,6 +472,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                     produtos.addAll((List<Produto>) serializable);
                 } else {
                     produtos = (List<Produto>) serializable;
+                    if(produtos==null){
+                        produtos = new ArrayList<>();
+                    }
                 }
 
                 if (produtosAdapter == null) {
@@ -492,6 +497,10 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
                 List<Marca> marcas = (List<Marca>) serializable;
 
+                if(marcas == null){
+                    marcas = new ArrayList<>();
+                }
+
                 ArrayAdapter arrayMarcas = new ArrayAdapter(context, android.R.layout.simple_spinner_item, marcas);
                 arrayMarcas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnMarca.setAdapter(arrayMarcas);
@@ -501,6 +510,10 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
             case FIND_ALL_UNIDADE_DE_MEDIDA:
 
                 List<UnidadeDeMedida> unidadeDeMedidas = (List<UnidadeDeMedida>) serializable;
+
+                if(unidadeDeMedidas == null){
+                    unidadeDeMedidas = new ArrayList<>();
+                }
 
                 ArrayAdapter arrayUnidadeDeMedida = new ArrayAdapter(context, android.R.layout.simple_spinner_item, unidadeDeMedidas);
                 arrayUnidadeDeMedida.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -513,6 +526,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
             case FIND_ALL_CATEGORIA:
 
                 List<Categoria> categorias = (List<Categoria>) serializable;
+                if(categorias==null){
+                    categorias = new ArrayList<>();
+                }
 
                 ArrayAdapter arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
                 arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

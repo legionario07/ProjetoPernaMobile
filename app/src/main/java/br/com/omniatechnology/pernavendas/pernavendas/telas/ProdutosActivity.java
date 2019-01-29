@@ -57,7 +57,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
-        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos);
+        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, produtosAdapter);
 
         registerForContextMenu(rcViewProdutos);
 

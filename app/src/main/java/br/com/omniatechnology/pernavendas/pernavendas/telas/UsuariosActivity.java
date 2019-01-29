@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ import static android.widget.Toast.LENGTH_LONG;
 public class UsuariosActivity extends AppCompatActivity implements IModelView.IUsuarioView, View.OnClickListener{
     private ListView lstUsuario;
     IUsuarioPresenter usuarioPresenter;
+    private TextView txtEmpty;
 
 
     @Override
@@ -38,12 +40,13 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
         setContentView(R.layout.usuario_activity);
 
         lstUsuario = findViewById(R.id.lstUsuario);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewUsuario = findViewById(R.id.fabNovoUsuario);
         fabNewUsuario.setOnClickListener(this);
 
         usuarioPresenter = new UsuarioPresenter(this, this);
-        usuarioPresenter.atualizarList(lstUsuario);
+        usuarioPresenter.atualizarList(lstUsuario, txtEmpty);
 
         registerForContextMenu(lstUsuario);
 

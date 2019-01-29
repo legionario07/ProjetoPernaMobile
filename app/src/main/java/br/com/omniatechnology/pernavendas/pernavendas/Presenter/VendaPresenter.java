@@ -5,10 +5,12 @@ import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +54,8 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
     private ListView lstProdutos;
     private AutoCompleteTextView autoCompleteProdutos;
 
+    private TextView txtEmpty;
+
     public VendaPresenter() {
         venda = new Venda();
     }
@@ -82,9 +86,10 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         onCreate();
     }
 
-    public void atualizarListaVenda(ListView view) {
+    public void atualizarListaVenda(ListView view, TextView txtEmpty) {
 
         this.lstVenda = view;
+        this.txtEmpty = txtEmpty;
 
         if (vendasAdapter == null) {
             findAll();
@@ -285,6 +290,14 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
                     lstVenda.setAdapter(vendasAdapter);
                 } else {
                     vendasAdapter.notifyDataSetChanged();
+                }
+
+                if(vendas.isEmpty()){
+                    lstVenda.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    lstVenda.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 vendasAdapter.notifyDataSetChanged();

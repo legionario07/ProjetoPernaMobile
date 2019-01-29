@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
     private UnidadesDeMedidasAdapter unidadesDeMedidasAdapter;
 
     private ListView view;
+    private TextView txtEmpty;
+
     private OperationType operationType;
 
 
@@ -56,9 +59,10 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
     }
 
 
-    public void atualizarList(ListView view) {
+    public void atualizarList(ListView view, TextView txtEmpty) {
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if (unidadesDeMedidasAdapter == null) {
             findAll();
@@ -223,6 +227,14 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
                     view.setAdapter(unidadesDeMedidasAdapter);
                 } else {
                     unidadesDeMedidasAdapter.notifyDataSetChanged();
+                }
+
+                if(unidadesDeMedidas.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 unidadesDeMedidasAdapter.notifyDataSetChanged();

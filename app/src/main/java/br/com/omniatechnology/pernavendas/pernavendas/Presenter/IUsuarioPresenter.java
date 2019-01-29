@@ -2,6 +2,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public interface IUsuarioPresenter extends IModelPresenter{
 
@@ -9,6 +10,6 @@ public interface IUsuarioPresenter extends IModelPresenter{
 
     void setSpinnerPerfil(Spinner spinner);
 
-    void atualizarList(ListView view);
+    void atualizarList(ListView view, TextView txtEmpty);
 
 }

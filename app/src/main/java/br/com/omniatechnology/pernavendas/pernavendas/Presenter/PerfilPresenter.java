@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     private List<Perfil> perfis;
     private PerfisAdapter perfilsAdapter;
     private ListView view;
+    private TextView txtEmpty;
 
     private OperationType operationType;
 
@@ -53,9 +55,10 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
         this.context = context;
     }
 
-    public void atualizarList(ListView view) {
+    public void atualizarList(ListView view, TextView txtEmpty) {
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if (perfilsAdapter == null) {
             findAll();
@@ -94,7 +97,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new PerfilServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
@@ -112,7 +115,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
         else {
             try {
                 new GenericDAO(context, this).execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl());
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
@@ -128,7 +131,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
@@ -140,7 +143,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
@@ -181,13 +184,13 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     }
 
 
-
-
     @Override
     public void onPostProcess(Serializable serializable) {
 
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
+        switch (operationType) {
+            case SAVE:
+            case UPDATE:
+            case DELETE:
 
                 isSave = (Boolean) serializable;
 
@@ -196,41 +199,49 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
                 else
                     perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
-                if(operationType == OperationType.DELETE)
+                if (operationType == OperationType.DELETE)
                     findAll();
-            break;
+                break;
             case FIND_ALL:
 
-                    if(perfis!=null){
-                        perfis.clear();
-                        List<Perfil> perfisTemp = (List<Perfil>) serializable;
-                        if(perfisTemp!=null){
-                            perfis.addAll(perfisTemp);
-                        }
-                    }else {
-                        perfis = (List<Perfil>) serializable;
-                        if(perfis==null){
-                            perfis = new ArrayList<>();
-                        }
+                if (perfis != null) {
+                    perfis.clear();
+                    List<Perfil> perfisTemp = (List<Perfil>) serializable;
+                    if (perfisTemp != null) {
+                        perfis.addAll(perfisTemp);
                     }
-
-                    if(perfilsAdapter == null) {
-                        perfilsAdapter = new PerfisAdapter(context, perfis);
-
-                        view.setAdapter(perfilsAdapter);
-                    }else{
-                        perfilsAdapter.notifyDataSetChanged();
+                } else {
+                    perfis = (List<Perfil>) serializable;
+                    if (perfis == null) {
+                        perfis = new ArrayList<>();
                     }
+                }
 
+                if (perfilsAdapter == null) {
+                    perfilsAdapter = new PerfisAdapter(context, perfis);
+
+                    view.setAdapter(perfilsAdapter);
+                } else {
                     perfilsAdapter.notifyDataSetChanged();
+                }
 
-                    break;
+                if (perfis.isEmpty()) {
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
+                }
+
+                perfilsAdapter.notifyDataSetChanged();
+
+                break;
 
             case FIND_BY_ID:
 
                 break;
 
-                default:
+            default:
         }
 
     }

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
 
     private ListView lstUnidadeDeMedida;
     IUnidadeDeMedidaPresenter unidadeDeMedidaPresenter;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +41,14 @@ public class UnidadesDeMedidasActivity extends AppCompatActivity implements IMod
         setContentView(R.layout.unidade_de_medida_activity);
 
         lstUnidadeDeMedida = findViewById(R.id.lstUnidadeDeMedida);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewUnidadeDeMedida = findViewById(R.id.fabNovaUnidadeDeMedida);
         fabNewUnidadeDeMedida.setOnClickListener(this);
 
         unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this);
 
-        unidadeDeMedidaPresenter.atualizarList(lstUnidadeDeMedida);
+        unidadeDeMedidaPresenter.atualizarList(lstUnidadeDeMedida, txtEmpty);
 
         registerForContextMenu(lstUnidadeDeMedida);
 

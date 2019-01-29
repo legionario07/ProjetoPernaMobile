@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
 
     private ListView lstCategoria;
     ICategoriaPresenter categoriaPresenter;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,13 +43,14 @@ public class CategoriasActivity extends AppCompatActivity implements IModelView.
         setContentView(R.layout.categoria_activity);
 
         lstCategoria = findViewById(R.id.lstCategoria);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewCategoria = findViewById(R.id.fabNovaCategoria);
         fabNewCategoria.setOnClickListener(this);
 
         categoriaPresenter = new CategoriaPresenter(this, this);
 
-        categoriaPresenter.atualizarList(lstCategoria);
+        categoriaPresenter.atualizarList(lstCategoria, txtEmpty);
 
         registerForContextMenu(lstCategoria);
 

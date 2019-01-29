@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     private OperationType operationType;
 
     private ListView view;
+    private TextView txtEmpty;
 
     public ComboPresenter() {
         combo = new Combo();
@@ -52,9 +54,10 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     }
 
 
-    public void atualizarList(ListView view){
+    public void atualizarList(ListView view, TextView txtEmpty){
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if(combosAdapter==null){
             findAll();
@@ -270,6 +273,14 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
                     view.setAdapter(combosAdapter);
                 }else{
                     combosAdapter.notifyDataSetChanged();
+                }
+
+                if(combos.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 combosAdapter.notifyDataSetChanged();

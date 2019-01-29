@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
     private OperationType operationType;
     private Spinner spnPerfil;
 
+    private TextView txtEmpty;
+
     public UsuarioPresenter() {
         usuario = new Usuario();
     }
@@ -82,9 +85,10 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
         return (IModel) spinner.getSelectedItem();
     }
 
-    public void atualizarList(ListView view) {
+    public void atualizarList(ListView view, TextView txtEmpty) {
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if (usuariosAdapter == null) {
             findAll();
@@ -312,6 +316,14 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
                     view.setAdapter(usuariosAdapter);
                 } else {
                     usuariosAdapter.notifyDataSetChanged();
+                }
+
+                if(usuarios.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 usuariosAdapter.notifyDataSetChanged();

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
     private OperationType operationType;
     
     private ListView view;
+    private TextView txtEmpty;
 
     public CategoriaPresenter() {
         categoria = new Categoria();
@@ -51,9 +53,10 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
     }
 
 
-    public void atualizarList(ListView view){
+    public void atualizarList(ListView view, TextView txtEmpty){
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if(categoriasAdapter==null){
             findAll();
@@ -215,6 +218,14 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
                     view.setAdapter(categoriasAdapter);
                 }else{
                     categoriasAdapter.notifyDataSetChanged();
+                }
+
+                if(categorias.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 categoriasAdapter.notifyDataSetChanged();

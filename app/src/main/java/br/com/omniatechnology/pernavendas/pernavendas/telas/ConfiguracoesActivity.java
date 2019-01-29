@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
 
     private ListView lstConfiguracao;
     IConfiguracaoPresenter configuracaoPresenter;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,13 +43,14 @@ public class ConfiguracoesActivity extends AppCompatActivity implements IModelVi
         setContentView(R.layout.configuracao_activity);
 
         lstConfiguracao = findViewById(R.id.lstConfiguracao);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewConfiguracao = findViewById(R.id.fabNovaConfiguracao);
         fabNewConfiguracao.setOnClickListener(this);
 
         configuracaoPresenter = new ConfiguracaoPresenter(this, this);
 
-        configuracaoPresenter.atualizarList(lstConfiguracao);
+        configuracaoPresenter.atualizarList(lstConfiguracao, txtEmpty);
 
         registerForContextMenu(lstConfiguracao);
 

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class CombosActivity extends AppCompatActivity implements IModelView.ICom
 
     private ListView lstCombo;
     IComboPresenter comboPresenter;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,13 +36,14 @@ public class CombosActivity extends AppCompatActivity implements IModelView.ICom
         setContentView(R.layout.combo_activity);
 
         lstCombo = findViewById(R.id.lstCombo);
+        txtEmpty =  findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewCombo = findViewById(R.id.fabNovoCombo);
         fabNewCombo.setOnClickListener(this);
 
         comboPresenter = new ComboPresenter(this, this);
 
-        comboPresenter.atualizarList(lstCombo);
+        comboPresenter.atualizarList(lstCombo, txtEmpty);
 
         registerForContextMenu(lstCombo);
 

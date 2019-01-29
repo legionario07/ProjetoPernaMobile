@@ -11,6 +11,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     private RecyclerView rcViewProdutos;
     private ProdutosAdapter produtosAdapter;
     IProdutoPresenter produtoPresenter;
+    private TextView txtEmpty;
 
 
     @Override
@@ -47,6 +49,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         }
 
         rcViewProdutos = findViewById(R.id.rcViewProdutos);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -57,7 +60,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
-        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, produtosAdapter);
+        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, produtosAdapter, txtEmpty);
 
         registerForContextMenu(rcViewProdutos);
 

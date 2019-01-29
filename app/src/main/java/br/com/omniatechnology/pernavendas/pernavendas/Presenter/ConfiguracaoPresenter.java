@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
     
     private ListView view;
     private OperationType operationType;
+    private TextView txtEmpty;
 
     public ConfiguracaoPresenter() {
         configuracao = new Configuracao();
@@ -51,9 +53,10 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
         this.context = context;
     }
 
-    public void atualizarList(ListView view){
+    public void atualizarList(ListView view, TextView txtEmpty){
 
         this.view = view;
+        this.txtEmpty = txtEmpty;
 
         if(configuracoesAdapter==null){
             findAll();
@@ -235,6 +238,14 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
                     view.setAdapter(configuracoesAdapter);
                 }else{
                     configuracoesAdapter.notifyDataSetChanged();
+                }
+
+                if(configuracoes.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 configuracoesAdapter.notifyDataSetChanged();

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
 
     private ListView lstPerfil;
     IPerfilPresenter perfilPresenter;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,13 +42,14 @@ public class PerfilActivity extends AppCompatActivity implements IModelView.IPer
         setContentView(R.layout.perfil_activity);
 
         lstPerfil = findViewById(R.id.lstPerfil);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewPerfil = findViewById(R.id.fabNovoPerfil);
         fabNewPerfil.setOnClickListener(this);
 
         perfilPresenter = new PerfilPresenter(this, this);
 
-        perfilPresenter.atualizarList(lstPerfil);
+        perfilPresenter.atualizarList(lstPerfil, txtEmpty);
 
         registerForContextMenu(lstPerfil);
 

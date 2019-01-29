@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -49,6 +50,8 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
     private Spinner spnMarca;
     private Spinner spnCategoria;
     private Spinner spnUnidadeDeMedida;
+
+    private TextView txtEmpty;
 
 
     public ProdutoPresenter() {
@@ -122,10 +125,11 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         return (IModel) spinner.getSelectedItem();
     }
 
-    public void atualizarList(RecyclerView view, ProdutosAdapter prodAdapter) {
+    public void atualizarList(RecyclerView view, ProdutosAdapter prodAdapter, TextView txtEmpty) {
 
         this.view = view;
         this.produtosAdapter = prodAdapter;
+        this.txtEmpty = txtEmpty;
 
         if (produtosAdapter == null) {
             findAll();
@@ -487,6 +491,14 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                     view.setAdapter(produtosAdapter);
                 } else {
                     produtosAdapter.notifyDataSetChanged();
+                }
+
+                if(produtos.isEmpty()){
+                    view.setVisibility(View.GONE);
+                    txtEmpty.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.VISIBLE);
+                    txtEmpty.setVisibility(View.GONE);
                 }
 
                 produtosAdapter.notifyDataSetChanged();

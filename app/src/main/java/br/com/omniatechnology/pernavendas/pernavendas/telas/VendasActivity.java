@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -24,8 +25,10 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class VendasActivity extends AppCompatActivity implements IModelView.IVendaView, View.OnClickListener{
+
     private ListView lstVenda;
     IVendaPresenter vendaPresenter;
+    private TextView txtEmpty;
 
 
     @Override
@@ -34,12 +37,13 @@ public class VendasActivity extends AppCompatActivity implements IModelView.IVen
         setContentView(R.layout.venda_activity);
 
         lstVenda = findViewById(R.id.lstVenda);
+        txtEmpty = findViewById(R.id.txtEmpty);
 
         FloatingActionButton fabNewVenda = findViewById(R.id.fabNovaVenda);
         fabNewVenda.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
-        ((VendaPresenter) vendaPresenter).atualizarListaVenda(lstVenda);
+        ((VendaPresenter) vendaPresenter).atualizarListaVenda(lstVenda, txtEmpty);
 
         registerForContextMenu(lstVenda);
 

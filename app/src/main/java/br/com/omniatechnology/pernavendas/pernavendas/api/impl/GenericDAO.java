@@ -38,7 +38,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
 
     }
 
-    private void showProgressDialog() {
+    private void showProgressDialog() throws Exception{
         progressDialog = new ProgressDialog(context);
 
         progressDialog.setMessage(context.getString(R.string.processando));
@@ -51,7 +51,13 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
     protected void onPreExecute() {
         super.onPreExecute();
 
-        showProgressDialog();
+        try {
+            showProgressDialog();
+        }catch(Exception e){
+            if(progressDialog!=null){
+                progressDialog.dismiss();
+            }
+        }
 
     }
 

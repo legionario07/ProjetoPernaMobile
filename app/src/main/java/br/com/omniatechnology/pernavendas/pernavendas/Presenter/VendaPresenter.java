@@ -303,8 +303,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
                 produtos = (List<Mercadoria>) serializable;
 
 
-
-
+                findAllCombos();
 
                 break;
 

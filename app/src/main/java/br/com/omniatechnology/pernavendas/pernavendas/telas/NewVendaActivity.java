@@ -41,6 +41,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -100,6 +101,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 produto = (Produto) inpProduto.getAdapter().getItem(position);
+                inpProduto.setText("");
+                ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
 
             }
         });

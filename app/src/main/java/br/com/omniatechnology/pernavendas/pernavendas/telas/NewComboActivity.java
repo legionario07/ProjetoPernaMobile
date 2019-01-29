@@ -35,6 +35,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -92,7 +93,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
                 produto = (Produto) inpProduto.getAdapter().getItem(position);
                 produtos.add(produto);
                 atualizarListDeProdutos();
-                inpProduto.clearListSelection();
+                inpProduto.setText("");
+                ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
 
             }
         });

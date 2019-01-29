@@ -274,6 +274,9 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
                     vendas.addAll((List<Venda>) serializable);
                 } else {
                     vendas = (List<Venda>) serializable;
+                    if(vendas==null){
+                        vendas = new ArrayList<>();
+                    }
                 }
 
                 if (vendasAdapter == null) {

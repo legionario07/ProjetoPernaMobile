@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -294,9 +295,15 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
 
                 if (usuarios != null) {
                     usuarios.clear();
-                    usuarios.addAll((List<Usuario>) serializable);
+                    List<Usuario> usuariosTemp = (List<Usuario>) serializable;
+                    if(usuariosTemp!=null) {
+                        usuarios.addAll(usuariosTemp);
+                    }
                 } else {
                     usuarios = (List<Usuario>) serializable;
+                    if(usuarios==null){
+                        usuarios = new ArrayList<>();
+                    }
                 }
 
                 if (usuariosAdapter == null) {

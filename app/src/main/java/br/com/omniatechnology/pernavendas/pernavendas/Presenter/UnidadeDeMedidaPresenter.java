@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -205,9 +206,15 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
 
                 if (unidadesDeMedidas != null) {
                     unidadesDeMedidas.clear();
-                    unidadesDeMedidas.addAll((List<UnidadeDeMedida>) serializable);
+                    List<UnidadeDeMedida> unidadeMedidaTemp = (List<UnidadeDeMedida>) serializable;
+                    if(unidadeMedidaTemp!=null) {
+                        unidadesDeMedidas.addAll(unidadeMedidaTemp);
+                    }
                 } else {
                     unidadesDeMedidas = (List<UnidadeDeMedida>) serializable;
+                    if(unidadesDeMedidas==null){
+                        unidadesDeMedidas = new ArrayList<>();
+                    }
                 }
 
                 if (unidadesDeMedidasAdapter == null) {

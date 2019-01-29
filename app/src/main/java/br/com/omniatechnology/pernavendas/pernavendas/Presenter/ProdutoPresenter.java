@@ -466,10 +466,14 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 break;
             case FIND_ALL:
 
-
                 if (produtos != null) {
                     produtos.clear();
-                    produtos.addAll((List<Produto>) serializable);
+                    List<Produto> produtosTemp = (List<Produto>) serializable;
+
+                    if(produtosTemp!=null){
+                        produtos.addAll(produtosTemp);
+                    }
+
                 } else {
                     produtos = (List<Produto>) serializable;
                     if(produtos==null){

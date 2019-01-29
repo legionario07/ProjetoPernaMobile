@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -252,9 +253,15 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
                 if(combos!=null){
                     combos.clear();
-                    combos.addAll((List<Combo>) serializable);
+                    List<Combo> comboTemp = (List<Combo>) serializable;
+                    if (comboTemp!=null) {
+                        combos.addAll(comboTemp);
+                    }
                 }else {
                     combos = (List<Combo>) serializable;
+                    if(combos==null){
+                        combos = new ArrayList<>();
+                    }
                 }
 
                 if(combosAdapter == null) {

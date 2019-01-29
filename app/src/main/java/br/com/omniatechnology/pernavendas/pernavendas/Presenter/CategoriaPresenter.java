@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -195,9 +196,17 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
 
                 if(categorias!=null){
                     categorias.clear();
-                    categorias.addAll((List<Categoria>) serializable);
+                    List<Categoria> categoriasTemp = (List<Categoria>) serializable;
+                    if(categoriasTemp!=null){
+
+                        categorias.addAll(categoriasTemp);
+                    }
                 }else {
                     categorias = (List<Categoria>) serializable;
+
+                    if(categorias==null){
+                        categorias = new ArrayList<>();
+                    }
                 }
 
                 if(categoriasAdapter == null) {

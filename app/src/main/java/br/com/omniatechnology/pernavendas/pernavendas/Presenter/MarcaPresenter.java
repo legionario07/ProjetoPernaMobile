@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -201,9 +202,15 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
 
                 if(marcas!=null){
                     marcas.clear();
-                    marcas.addAll((List<Marca>) serializable);
+                    List<Marca> marcasTemp = (List<Marca>) serializable;
+                    if(marcasTemp!=null) {
+                        marcas.addAll(marcasTemp);
+                    }
                 }else {
                     marcas = (List<Marca>) serializable;
+                    if(marcas==null){
+                        marcas = new ArrayList<>();
+                    }
                 }
 
                 if(marcasAdapter == null) {

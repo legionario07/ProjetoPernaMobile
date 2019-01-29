@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -202,9 +203,15 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
                     if(perfis!=null){
                         perfis.clear();
-                        perfis.addAll((List<Perfil>) serializable);
+                        List<Perfil> perfisTemp = (List<Perfil>) serializable;
+                        if(perfisTemp!=null){
+                            perfis.addAll(perfisTemp);
+                        }
                     }else {
                         perfis = (List<Perfil>) serializable;
+                        if(perfis==null){
+                            perfis = new ArrayList<>();
+                        }
                     }
 
                     if(perfilsAdapter == null) {

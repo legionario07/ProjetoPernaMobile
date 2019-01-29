@@ -298,12 +298,19 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
             case FIND_ALL_PEDIDO:
 
                 pedidos = (List<Pedido>) serializable;
+                if(pedidos==null){
+                    pedidos = new ArrayList<>();
+                }
 
                 break;
 
             case FIND_ALL_PRODUTO:
 
                 produtos = (List<Mercadoria>) serializable;
+
+                if(produtos==null){
+                    produtos = new ArrayList<>();
+                }
 
 
                 findAllCombos();
@@ -312,7 +319,11 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
             case FIND_ALL_COMBOS:
 
-                produtos.addAll((List<Mercadoria>) serializable);
+                List<Mercadoria> mercadoriasTemp = (List<Mercadoria>) serializable;
+
+                if(mercadoriasTemp!=null && produtos!=null) {
+                    produtos.addAll(mercadoriasTemp);
+                }
 
                 if (produtos == null) {
                     produtos = new ArrayList<>();

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
@@ -217,9 +218,15 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
 
                 if(configuracoes!=null){
                     configuracoes.clear();
-                    configuracoes.addAll((List<Configuracao>) serializable);
+                    List<Configuracao> configuracoesTemp = (List<Configuracao>) serializable;
+                    if(configuracoesTemp!=null) {
+                        configuracoes.addAll(configuracoesTemp);
+                    }
                 }else {
                     configuracoes = (List<Configuracao>) serializable;
+                    if(configuracoes==null){
+                        configuracoes = new ArrayList<>();
+                    }
                 }
 
                 if(configuracoesAdapter == null) {

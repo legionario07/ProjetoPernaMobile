@@ -49,59 +49,71 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inp_layout_valor_venda_produto"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/inp_valor_venda_produto"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/inp_valor_venda_produto"
-                style="@style/cadastros"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_layout_valor_venda_produto"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/valor_venda"
-                android:inputType="numberDecimal" />
+                android:layout_below="@id/inp_valor_venda_produto"
+                android:layout_marginTop="10dp"
+                android:layout_weight="4">
+
+                <EditText
+                    android:id="@+id/inp_valor_venda_produto"
+                    style="@style/cadastros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/valor_venda"
+                    android:inputType="numberDecimal" />
 
 
-        </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inp_layout_qtde_produto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/inp_qtde_produto"
-            android:layout_marginTop="10dp"
-            android:hint="@string/quantidade">
-
-            <EditText
-                android:id="@+id/inp_qtde_produto"
-                style="@style/cadastros"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_layout_qtde_produto"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:layout_below="@id/inp_qtde_produto"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:hint="@string/quantidade">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/inp_qtde_produto"
+                    style="@style/cadastros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inp_layout_qtde_min_produto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/inp_qtde_min_produto"
-            android:layout_marginTop="10dp"
-            android:hint="@string/quantidade_min">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/inp_qtde_min_produto"
-                style="@style/cadastros"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_layout_qtde_min_produto"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:layout_below="@id/inp_qtde_min_produto"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:hint="@string/quantidade_min">
+
+                <EditText
+                    android:id="@+id/inp_qtde_min_produto"
+                    style="@style/cadastros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
 
 
-        </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inp_layout_ean_produto"
@@ -121,21 +133,29 @@
 
         </android.support.design.widget.TextInputLayout>
 
-
-        <Spinner
-            android:id="@+id/spnMarca"
-            style="@style/cadastros.spinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"></Spinner>
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/spnUnidadeDeMedida"
-            style="@style/cadastros.spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"></Spinner>
+            <Spinner
+                android:id="@+id/spnMarca"
+                style="@style/cadastros.spinner"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"></Spinner>
+
+            <Spinner
+                android:id="@+id/spnUnidadeDeMedida"
+                style="@style/cadastros.spinner"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"></Spinner>
+
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/spnCategoria"
@@ -153,17 +173,17 @@
         <LinearLayout
             android:id="@+id/llSubProduto"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/inp_layout_ean_pai_produto"
                 android:layout_width="0dp"
-                android:layout_weight="7"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inp_ean_pai_produto"
                 android:layout_marginTop="10dp"
+                android:layout_weight="7"
                 android:hint="@string/codigo_ean_pai"
                 android:visibility="visible">
 
@@ -179,10 +199,10 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/inp_layout_qtde_sub_produto"
                 android:layout_width="0dp"
-                android:layout_weight="3"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inp_qte_sub_produto"
                 android:layout_marginTop="10dp"
+                android:layout_weight="3"
                 android:hint="@string/qtde_sub"
                 android:visibility="visible">
 

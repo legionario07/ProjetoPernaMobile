@@ -53,5 +53,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="item_list_view.titulos.land">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

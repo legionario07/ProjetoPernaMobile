@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:background="@android:color/holo_blue_light"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".telas.HomeActivity"
+    tools:showIn="@layout/app_bar_home">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"/>
+
+   <LinearLayout
+      android:layout_centerInParent="true"
+       android:orientation="vertical"
+       android:gravity="center"
+       android:background="@android:color/darker_gray"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="2.5">
+
+       <Button
+
+           android:text="@string/vender"
+           android:background="#d5d5d5"
+           android:id="@+id/img_vendas"
+           android:textStyle="bold"
+           android:gravity="center"
+           android:layout_gravity="center"
+           android:paddingTop="30dp"
+           android:paddingBottom="30dp"
+           android:paddingRight="40dp"
+           android:paddingLeft="40dp"
+           android:drawableStart="@drawable/baseline_shopping_cart_black_48"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+
+
+   </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"/>
+
+</LinearLayout>

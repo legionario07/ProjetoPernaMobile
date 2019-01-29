@@ -1,10 +1,13 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,10 +22,13 @@ import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CombosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
@@ -36,8 +42,13 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     private CombosAdapter combosAdapter;
     private OperationType operationType;
 
+    private AutoCompleteTextView actProdutos;
+
+    private ArrayAdapter<Produto> arrayAdapter;
+
     private ListView view;
     private TextView txtEmpty;
+    private List<Produto> produtos;
 
     public ComboPresenter() {
         combo = new Combo();
@@ -53,16 +64,26 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         this.context = context;
     }
 
+    public void atualizarProdutos(AutoCompleteTextView autoCompleteTextView){
 
-    public void atualizarList(ListView view, TextView txtEmpty){
+        this.actProdutos = autoCompleteTextView;
+
+        findAllProdutos();
+
+        actProdutos.setThreshold(1);
+        actProdutos.setTextColor(Color.RED);
+
+    }
+
+    public void atualizarList(ListView view, TextView txtEmpty) {
 
         this.view = view;
         this.txtEmpty = txtEmpty;
 
-        if(combosAdapter==null){
+        if (combosAdapter == null) {
             findAll();
 
-        }else{
+        } else {
 
             combosAdapter.notifyDataSetChanged();
 
@@ -70,7 +91,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     }
 
-    public void setItem(IModel model){
+    public void setItem(IModel model) {
         this.combo = (Combo) model;
     }
 
@@ -101,7 +122,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ComboServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
 
@@ -119,7 +140,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         else {
             try {
                 new GenericDAO(context, this).execute(combo, ConstraintUtils.EDITAR, new ComboServiceImpl());
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(ConstraintUtils.TAG, e.getMessage());
             }
 
@@ -135,7 +156,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_BY_ID, new ComboServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
@@ -147,7 +168,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         try {
             new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
@@ -239,8 +260,10 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     @Override
     public void onPostProcess(Serializable serializable) {
 
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
+        switch (operationType) {
+            case SAVE:
+            case UPDATE:
+            case DELETE:
 
                 isSave = (Boolean) serializable;
 
@@ -249,41 +272,57 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
                 else
                     comboView.onMessageError(context.getResources().getString(R.string.error_operacao));
 
-                if(operationType == OperationType.DELETE)
+                if (operationType == OperationType.DELETE)
                     findAll();
                 break;
             case FIND_ALL:
 
-                if(combos!=null){
+                if (combos != null) {
                     combos.clear();
                     List<Combo> comboTemp = (List<Combo>) serializable;
-                    if (comboTemp!=null) {
+                    if (comboTemp != null) {
                         combos.addAll(comboTemp);
                     }
-                }else {
+                } else {
                     combos = (List<Combo>) serializable;
-                    if(combos==null){
+                    if (combos == null) {
                         combos = new ArrayList<>();
                     }
                 }
 
-                if(combosAdapter == null) {
+                if (combosAdapter == null) {
                     combosAdapter = new CombosAdapter(context, combos);
 
                     view.setAdapter(combosAdapter);
-                }else{
+                } else {
                     combosAdapter.notifyDataSetChanged();
                 }
 
-                if(combos.isEmpty()){
+                if (combos.isEmpty()) {
                     view.setVisibility(View.GONE);
                     txtEmpty.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     view.setVisibility(View.VISIBLE);
                     txtEmpty.setVisibility(View.GONE);
                 }
 
                 combosAdapter.notifyDataSetChanged();
+
+                break;
+
+            case FIND_ALL_PRODUTO:
+
+                produtos = (List<Produto>) serializable;
+
+                if (produtos == null) {
+                    produtos = new ArrayList<>();
+                }
+
+                arrayAdapter = new ArrayAdapter<Produto>
+                        (context, android.R.layout.select_dialog_item, produtos);
+
+                actProdutos.setAdapter(arrayAdapter);
+
 
                 break;
 
@@ -294,6 +333,31 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
             default:
         }
 
+    }
+
+    public Produto verificarProdutoPorEAN(String ean) {
+
+        for (Produto p : produtos) {
+
+            if (p.getEan().equals(ean)) {
+                return p;
+
+            }
+        }
+
+        return null;
+
+    }
+
+    public void findAllProdutos() {
+
+        operationType = OperationType.FIND_ALL_PRODUTO;
+
+        try {
+            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
     }
 
 }

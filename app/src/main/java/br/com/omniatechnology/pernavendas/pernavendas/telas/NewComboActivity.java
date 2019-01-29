@@ -1,5 +1,6 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -14,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,7 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.CategoriaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ComboPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IComboPresenter;
+import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
@@ -29,6 +34,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -60,6 +66,10 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         setContentView(R.layout.new_combo_activity);
 
         btnSave = findViewById(R.id.btn_save);
+        imgLerQrCode = findViewById(R.id.imgLerQrCode);
+        imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
+
+
         lstProdutos = findViewById(R.id.lstProdutos);
         inpProduto = findViewById(R.id.inp_produto);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
@@ -72,6 +82,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         ((ComboPresenter) comboPresenter).addTextWatcherNomeCombo(inpNomeCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
         ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
+        comboPresenter.atualizarProdutos(inpProduto);
 
         btnSave.setOnClickListener(this);
 
@@ -188,8 +199,45 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
                 break;
 
-                default:
+            case R.id.imgLerQrCode:
+
+                QrCodeUtil.lerQRCode(this);
+
+                break;
+
+
+            default:
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(result != null){
+
+            if(result.getContents()!=null){
+                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+
+                produto = ((ComboPresenter) comboPresenter).verificarProdutoPorEAN(result.getContents());
+
+                if(produto==null){
+                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo),Toast.LENGTH_LONG).show();
+                }else{
+                    produtos.add(produto);
+                    atualizarListDeProdutos();
+                }
+
+            }else{
+                Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 }

@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.4"
+            android:layout_weight="1.7"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -38,7 +38,6 @@
                 android:inputType="text"
                 android:textSize="12dp"
                 android:textStyle="bold" />
-
 
 
             <ImageButton
@@ -57,132 +56,136 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#e6e6e6"
-            android:orientation="horizontal">
+            android:layout_weight="5"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#e6e6e6"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="@string/nome_combo"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="@string/nome_combo"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/inpNomeCombo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/inpNomeCombo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:hint="@string/nome_combo"
+                    android:inputType="text" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#e6e6e6"
                 android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="6"
-                android:hint="@string/nome_combo"
-                android:inputType="text" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="@string/preco_combo"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
 
+                <EditText
+                    android:id="@+id/inpPrecoVenda"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:hint="@string/preco_combo"
+                    android:inputType="numberDecimal" />
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#e6e6e6"
-            android:gravity="center"
-            android:orientation="horizontal">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#e6e6e6"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="@string/preco_combo"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="@string/codigo_combo"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/inpPrecoVenda"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                <EditText
+                    android:id="@+id/inpEanCombo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:hint="@string/codigo_combo"
+                    android:inputType="text" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#e6e6e6"
                 android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="6"
-                android:hint="@string/preco_combo"
-                android:inputType="numberDecimal" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="@string/descricao_combo"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#e6e6e6"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="@string/codigo_combo"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/inpDescricaoCombo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="6"
+                    android:gravity="center"
+                    android:hint="@string/descricao_combo"
+                    android:inputType="text" />
 
 
-            <EditText
-                android:id="@+id/inpEanCombo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="6"
-                android:hint="@string/codigo_combo"
-                android:inputType="text" />
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#e6e6e6"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:text="@string/descricao_combo"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-
-            <EditText
-                android:id="@+id/inpDescricaoCombo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginRight="10dp"
-                android:layout_weight="6"
-                android:hint="@string/descricao_combo"
-                android:inputType="text" />
-
-
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -224,11 +227,10 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8">
+            android:layout_weight="6">
 
             <ListView
                 android:id="@+id/lstProdutos"
@@ -236,7 +238,6 @@
                 android:layout_height="match_parent"></ListView>
 
         </LinearLayout>
-
 
 
         <ImageButton

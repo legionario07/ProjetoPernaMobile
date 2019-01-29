@@ -75,6 +75,11 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     }
 
+    @Override
+    public void setProdutosEmCombo(List<Produto> produtos) {
+        this.combo.setProdutos(produtos);
+    }
+
     public void atualizarList(ListView view, TextView txtEmpty) {
 
         this.view = view;
@@ -244,6 +249,34 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
             @Override
             public void afterTextChanged(Editable s) {
                 combo.setEan(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
+    }
+
+    public void addTextWatcherDescricaoCombo(final EditText editText) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                combo.setDescricao(s.toString());
             }
         });
 

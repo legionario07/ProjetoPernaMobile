@@ -40,16 +40,6 @@
                 android:textStyle="bold" />
 
 
-            <!--<ImageButton-->
-                <!--android:id="@+id/imgAdicionarProduto"-->
-                <!--style="@style/Widget.AppCompat.Button.Colored"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginRight="5dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:padding="5dp"-->
-                <!--android:src="@drawable/ic_add_black_24dp" />-->
 
             <ImageButton
                 android:id="@+id/imgLerQrCode"
@@ -144,7 +134,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:text="@string/codigo_produto"
+                android:text="@string/codigo_combo"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -156,7 +146,40 @@
                 android:gravity="center"
                 android:layout_marginRight="10dp"
                 android:layout_weight="6"
-                android:hint="@string/codigo_produto"
+                android:hint="@string/codigo_combo"
+                android:inputType="text" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#e6e6e6"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:text="@string/descricao_combo"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/inpDescricaoCombo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="6"
+                android:hint="@string/descricao_combo"
                 android:inputType="text" />
 
 
@@ -221,9 +244,9 @@
             style="@style/Base.Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:paddingEnd="10dp"
+            android:paddingEnd="0dp"
             android:src="@drawable/ic_save_black_24dp" />
 
     </LinearLayout>

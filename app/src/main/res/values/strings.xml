@@ -82,4 +82,8 @@
     <string name="um_sub_produto">É um Sub Produto?</string>
     <string name="se_sub_produto_deve_haver_ean_pai">Sub Produto deve conter Código do Produto Pai</string>
     <string name="nao_itens_exibicao">Não há itens para exibição</string>
+    <string name="codigo_combo">Código do Combo</string>
+    <string name="descricao_combo">Descrição Combo</string>
+    <string name="nome_vazio_combo">O Nome do Combo não pode estar vazio</string>
+    <string name="preco_vazio_combo">O Preço não pode estar vazio</string>
 </resources>

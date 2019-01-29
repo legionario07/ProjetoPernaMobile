@@ -46,8 +46,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     private EditText inpPrecoVenda;
     private EditText inpNomeCombo;
     private EditText inpEanCombo;
+    private EditText inpDescricaoCombo;
 
-    //private ImageButton imgAdicionarProduto;
     private ImageButton imgLerQrCode;
     private ProdutosCombosAdapter combosAdapter;
 
@@ -67,21 +67,21 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         btnSave = findViewById(R.id.btn_save);
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
-        //imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
 
 
         lstProdutos = findViewById(R.id.lstProdutos);
         inpProduto = findViewById(R.id.inp_produto);
-        //imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
         inpPrecoVenda = findViewById(R.id.inpPrecoVenda);
         inpNomeCombo = findViewById(R.id.inpNomeCombo);
         inpEanCombo = findViewById(R.id.inpNomeCombo);
+        inpDescricaoCombo = findViewById(R.id.inpDescricaoCombo);
 
         comboPresenter = new ComboPresenter(this, this);
         ((ComboPresenter) comboPresenter).addTextWatcherNomeCombo(inpNomeCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
         ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
+        ((ComboPresenter) comboPresenter).addTextWatcherDescricaoCombo(inpDescricaoCombo);
         comboPresenter.atualizarProdutos(inpProduto);
 
         btnSave.setOnClickListener(this);
@@ -186,6 +186,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         switch (v.getId()) {
             case R.id.btn_save:
+
+                comboPresenter.setProdutosEmCombo(produtos);
 
                 comboPresenter.onCreate();
 

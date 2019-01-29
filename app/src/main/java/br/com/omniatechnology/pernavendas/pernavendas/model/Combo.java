@@ -86,7 +86,9 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
         StringBuilder retorno = new StringBuilder();
         if(TextUtils.isEmpty(getNome())){
 
-            retorno.append(context.getResources().getString(R.string.nome_vazio_categoria));
+            retorno.append(context.getResources().getString(R.string.nome_vazio_combo));
+        }else if(getPreco()==null){
+            retorno.append(context.getResources().getString(R.string.preco_vazio_combo));
         }
 
         return retorno.toString();

@@ -25,10 +25,12 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
@@ -105,7 +107,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         operationType = OperationType.SAVE;
         String retornoStr = combo.isValid(context);
-
+        setEntidades();
         if (retornoStr.length() > 1)
             comboView.onMessageError(retornoStr);
         else {
@@ -137,7 +139,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     public void onUpdate() {
 
         operationType = OperationType.UPDATE;
-
+        setEntidades();
         String retornoStr = combo.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -220,7 +222,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                combo.setPreco(new BigDecimal(s.toString()));
+                combo.setValorVenda(new BigDecimal(s.toString()));
             }
         });
 
@@ -260,6 +262,12 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
                 }
             }
         });
+    }
+
+
+    private void setEntidades(){
+        combo.setCategoria(new Categoria(1l));
+        combo.setUnidadeDeMedida(new UnidadeDeMedida(1l));
     }
 
     public void addTextWatcherDescricaoCombo(final EditText editText) {

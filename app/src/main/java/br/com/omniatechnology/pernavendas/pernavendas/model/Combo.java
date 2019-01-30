@@ -18,45 +18,18 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
      */
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private String nome;
-    private String descricao;
+
     private List<Produto> produtos;
-    private BigDecimal preco;
-    private String ean;
 
     public Combo(Long id) {
         this();
-        this.id = id;
+       setId(id);
     }
 
     public Combo() {
         this.produtos = new ArrayList<Produto>();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 
     public List<Produto> getProdutos() {
         return produtos;
@@ -66,20 +39,13 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
         this.produtos = produtos;
     }
 
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-
 
 
     @Override
     public String toString() {
-        return nome;
+        return getNome() + " - " + getDescricao();
     }
+
 
     @Override
     public String isValid(Context context) {
@@ -87,7 +53,7 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
         if(TextUtils.isEmpty(getNome())){
 
             retorno.append(context.getResources().getString(R.string.nome_vazio_combo));
-        }else if(getPreco()==null){
+        }else if(getValorVenda()==null){
             retorno.append(context.getResources().getString(R.string.preco_vazio_combo));
         }
 
@@ -95,11 +61,4 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
     }
 
 
-    public String getEan() {
-        return ean;
-    }
-
-    public void setEan(String ean) {
-        this.ean = ean;
-    }
 }

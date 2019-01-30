@@ -161,7 +161,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         combosAdapter = new ProdutosCombosAdapter(this, produtos);
         lstProdutos.setAdapter(combosAdapter);
 
-        inpPrecoVenda.setText(combo.getPreco().toString());
+        inpPrecoVenda.setText(combo.getValorVenda().toString());
         inpNomeCombo.setText(combo.getNome());
         inpEanCombo.setText(combo.getEan());
 

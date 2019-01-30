@@ -18,13 +18,14 @@ public class Pedido implements Serializable, IPedido {
 	
 	private Long id;
 	private BigDecimal valorTotal;
-	private Mercadoria produto;
+	private Produto produto;
+	private Combo combo;
 	private Integer total;
 	private BigDecimal desconto;
 
 	
 	
-	public Pedido(BigDecimal valorTotal, Mercadoria produto, Integer total) {
+	public Pedido(BigDecimal valorTotal, Produto produto, Integer total) {
 		super();
 		this.valorTotal = valorTotal;
 		this.produto = produto;
@@ -35,7 +36,7 @@ public class Pedido implements Serializable, IPedido {
 		return produto;
 	}
 
-	public void setProduto(Mercadoria produto) {
+	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
 
@@ -87,4 +88,12 @@ public class Pedido implements Serializable, IPedido {
     public void setDesconto(BigDecimal desconto) {
         this.desconto = desconto;
     }
+
+	public Combo getCombo() {
+		return combo;
+	}
+
+	public void setCombo(Combo combo) {
+		this.combo = combo;
+	}
 }

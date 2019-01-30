@@ -56,7 +56,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
+            android:layout_weight="2.5"
             android:orientation="vertical">
 
             <LinearLayout
@@ -67,15 +67,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="@string/nome_combo"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
 
 
                 <EditText
@@ -88,34 +79,12 @@
                     android:hint="@string/nome_combo"
                     android:inputType="text" />
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#e6e6e6"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="@string/preco_combo"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-
                 <EditText
                     android:id="@+id/inpPrecoVenda"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="6"
+                    android:layout_weight="4"
                     android:gravity="center"
                     android:hint="@string/preco_combo"
                     android:inputType="numberDecimal" />
@@ -123,37 +92,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#e6e6e6"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="@string/codigo_combo"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-
-                <EditText
-                    android:id="@+id/inpEanCombo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="6"
-                    android:gravity="center"
-                    android:hint="@string/codigo_combo"
-                    android:inputType="text" />
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,15 +101,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:paddingLeft="10dp"
-                    android:text="@string/descricao_combo"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
 
 
                 <EditText
@@ -184,8 +113,22 @@
                     android:hint="@string/descricao_combo"
                     android:inputType="text" />
 
+                <EditText
+                    android:id="@+id/inpEanCombo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:hint="@string/codigo_combo"
+                    android:inputType="text" />
+
+
+
+
 
             </LinearLayout>
+
 
         </LinearLayout>
 

@@ -46,7 +46,7 @@ public class CombosAdapter extends ArrayAdapter<Combo> {
         txtComboID.setText(combo.getId().toString());
         txtComboNome.setText(combo.getNome());
         txtComboTotalItens.setText(String.valueOf(combo.getProdutos().size()));
-        txtComboValor.setText(combo.getPreco().toString());
+        txtComboValor.setText(combo.getValorVenda().toString());
 
         return convertView;
     }

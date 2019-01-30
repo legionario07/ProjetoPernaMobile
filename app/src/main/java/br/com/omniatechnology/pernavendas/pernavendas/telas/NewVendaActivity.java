@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IVendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
@@ -251,12 +252,20 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                BigDecimal valor = BigDecimal.ZERO;
+
                 Pedido pedido = new Pedido();
-                pedido.setProduto(produto);
+                if(produto instanceof Produto) {
+                    pedido.setProduto((Produto) produto);
+                    valor = pedido.getProduto().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
+                }else{
+                    pedido.setCombo((Combo) produto);
+                    valor = pedido.getCombo().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
+                }
                 pedido.setDesconto(new BigDecimal(inpLayoutDesconto.getEditText().getText().toString()));
                 pedido.setTotal(Integer.valueOf(inpLayoutQuantidade.getEditText().getText().toString()));
 
-                BigDecimal valor = ((Produto) pedido.getProduto() ).getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
+
                 valor = valor.subtract(pedido.getDesconto());
                 pedido.setValorTotal(valor);
 

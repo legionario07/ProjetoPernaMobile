@@ -51,6 +51,11 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
     protected void onPreExecute() {
         super.onPreExecute();
 
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+
         try {
             showProgressDialog();
         }catch(Exception e){

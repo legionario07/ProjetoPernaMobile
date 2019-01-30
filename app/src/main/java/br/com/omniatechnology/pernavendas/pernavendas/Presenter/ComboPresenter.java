@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -20,9 +21,12 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CombosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
@@ -43,6 +47,9 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     private List<Combo> combos;
     private CombosAdapter combosAdapter;
     private OperationType operationType;
+
+    private Spinner spnCategoria;
+    private Spinner spnUnidadeDeMedida;
 
     private AutoCompleteTextView actProdutos;
 
@@ -66,6 +73,11 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         this.context = context;
     }
 
+    public void initializeSpinner(Spinner spnCategoria, Spinner spnUnidadeDeMedida) {
+        this.spnUnidadeDeMedida = spnUnidadeDeMedida;
+        this.spnCategoria = spnCategoria;
+    }
+
     public void atualizarProdutos(AutoCompleteTextView autoCompleteTextView){
 
         this.actProdutos = autoCompleteTextView;
@@ -74,6 +86,29 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         actProdutos.setThreshold(1);
         actProdutos.setTextColor(Color.RED);
+
+    }
+
+    public void setSpinnerCategoria() {
+
+        operationType = OperationType.FIND_ALL_CATEGORIA;
+        try {
+            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
+
+    }
+
+    public void setSpinnerUnidadeDeMedida() {
+
+        operationType = OperationType.FIND_ALL_UNIDADE_DE_MEDIDA;
+        try {
+            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
+        } catch (Exception e) {
+            Log.e(ConstraintUtils.TAG, e.getMessage());
+        }
+
 
     }
 
@@ -367,6 +402,37 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
                 break;
 
+            case FIND_ALL_UNIDADE_DE_MEDIDA:
+
+                List<UnidadeDeMedida> unidadeDeMedidas = (List<UnidadeDeMedida>) serializable;
+
+                if(unidadeDeMedidas == null){
+                    unidadeDeMedidas = new ArrayList<>();
+                }
+
+                ArrayAdapter arrayUnidadeDeMedida = new ArrayAdapter(context, android.R.layout.simple_spinner_item, unidadeDeMedidas);
+                arrayUnidadeDeMedida.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnUnidadeDeMedida.setAdapter(arrayUnidadeDeMedida);
+
+
+
+                break;
+
+            case FIND_ALL_CATEGORIA:
+
+                List<Categoria> categorias = (List<Categoria>) serializable;
+                if(categorias==null){
+                    categorias = new ArrayList<>();
+                }
+
+                ArrayAdapter arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
+                arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spnCategoria.setAdapter(arrayCategorias);
+
+                setSpinnerUnidadeDeMedida();
+
+                break;
+
             case FIND_BY_ID:
 
                 break;
@@ -390,6 +456,8 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     }
 
+
+
     public void findAllProdutos() {
 
         operationType = OperationType.FIND_ALL_PRODUTO;
@@ -400,5 +468,19 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
+
+    public void getDadoSpinnerCategoria(Spinner spinner) {
+        combo.setCategoria((Categoria) getDadosDeSpinner(spinner));
+    }
+
+    public void getDadoSpinnerUnidadeDeMedida(Spinner spinner) {
+        combo.setUnidadeDeMedida((UnidadeDeMedida) getDadosDeSpinner(spinner));
+    }
+
+    private IModel getDadosDeSpinner(Spinner spinner) {
+        return (IModel) spinner.getSelectedItem();
+    }
+
+
 
 }

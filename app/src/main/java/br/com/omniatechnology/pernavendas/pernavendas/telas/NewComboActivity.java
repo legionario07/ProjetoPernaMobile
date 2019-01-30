@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -30,9 +31,11 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosCombosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
@@ -51,6 +54,9 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
     private ImageButton imgLerQrCode;
     private ProdutosCombosAdapter combosAdapter;
+
+    Spinner spnCategoria;
+    Spinner spnUnidadeDeMedida;
 
     private List<Produto> produtos;
 
@@ -76,12 +82,18 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         inpEanCombo = findViewById(R.id.inpNomeCombo);
         inpDescricaoCombo = findViewById(R.id.inpDescricaoCombo);
 
+        spnCategoria = findViewById(R.id.spnCategoriaCombo);
+        spnUnidadeDeMedida = findViewById(R.id.spnUnidadeDeMedidaCombo);
+
         comboPresenter = new ComboPresenter(this, this);
+        ((ComboPresenter) comboPresenter).initializeSpinner(spnCategoria, spnUnidadeDeMedida);
+
         ((ComboPresenter) comboPresenter).addTextWatcherNomeCombo(inpNomeCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
         ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherDescricaoCombo(inpDescricaoCombo);
         comboPresenter.atualizarProdutos(inpProduto);
+        ((ComboPresenter) comboPresenter).setSpinnerCategoria();
 
         btnSave.setOnClickListener(this);
         imgLerQrCode.setOnClickListener(this);
@@ -103,6 +115,23 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)) {
             combo = (Combo) getIntent().getExtras().get(ConstraintUtils.COMBO_INTENT);
             preencherDadosNaView();
+
+            for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
+
+                if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
+                    spnCategoria.setSelection(i);
+                }
+
+            }
+
+            for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
+
+                if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
+                    spnUnidadeDeMedida.setSelection(i);
+                }
+
+            }
+
         }
 
 
@@ -188,6 +217,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         switch (v.getId()) {
             case R.id.btn_save:
 
+                getDadosDeSpinner();
                 comboPresenter.setProdutosEmCombo(produtos);
 
                 comboPresenter.onCreate();
@@ -233,6 +263,13 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void getDadosDeSpinner() {
+
+        comboPresenter.getDadoSpinnerCategoria(spnCategoria);
+        comboPresenter.getDadoSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+
     }
 
 }

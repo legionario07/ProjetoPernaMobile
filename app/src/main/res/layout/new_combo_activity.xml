@@ -75,7 +75,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="6"
+                    android:layout_weight="5"
                     android:gravity="center"
                     android:hint="@string/nome_combo"
                     android:inputType="text" />
@@ -85,10 +85,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:gravity="center"
                     android:hint="@string/preco_combo"
                     android:inputType="numberDecimal" />
+
+                <EditText
+                    android:id="@+id/inpQtdeCombo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:hint="@string/qtde"
+                    android:inputType="number" />
 
 
             </LinearLayout>

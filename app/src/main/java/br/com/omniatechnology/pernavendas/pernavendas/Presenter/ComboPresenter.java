@@ -141,8 +141,10 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     public void onCreate() {
 
         operationType = OperationType.SAVE;
+        getDadoSpinnerCategoria(spnCategoria);
+        getDadoSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
         String retornoStr = combo.isValid(context);
-        setEntidades();
+
         if (retornoStr.length() > 1)
             comboView.onMessageError(retornoStr);
         else {
@@ -174,7 +176,6 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     public void onUpdate() {
 
         operationType = OperationType.UPDATE;
-        setEntidades();
         String retornoStr = combo.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -230,6 +231,34 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
             @Override
             public void afterTextChanged(Editable s) {
                 combo.setNome(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
+    }
+
+    public void addTextWatcherQtdeCombo(final EditText editText) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                combo.setQtde(Integer.valueOf(s.toString()));
             }
         });
 
@@ -300,10 +329,6 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     }
 
 
-    private void setEntidades(){
-        combo.setCategoria(new Categoria(1l));
-        combo.setUnidadeDeMedida(new UnidadeDeMedida(1l));
-    }
 
     public void addTextWatcherDescricaoCombo(final EditText editText) {
 

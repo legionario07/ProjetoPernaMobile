@@ -51,6 +51,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     private EditText inpNomeCombo;
     private EditText inpEanCombo;
     private EditText inpDescricaoCombo;
+    private EditText inpQtdeCombo;
 
     private ImageButton imgLerQrCode;
     private ProdutosCombosAdapter combosAdapter;
@@ -81,6 +82,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         inpNomeCombo = findViewById(R.id.inpNomeCombo);
         inpEanCombo = findViewById(R.id.inpEanCombo);
         inpDescricaoCombo = findViewById(R.id.inpDescricaoCombo);
+        inpQtdeCombo = findViewById(R.id.inpQtdeCombo);
 
         spnCategoria = findViewById(R.id.spnCategoriaCombo);
         spnUnidadeDeMedida = findViewById(R.id.spnUnidadeDeMedidaCombo);
@@ -92,6 +94,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
         ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherDescricaoCombo(inpDescricaoCombo);
+        ((ComboPresenter) comboPresenter).addTextWatcherQtdeCombo(inpQtdeCombo);
         comboPresenter.atualizarProdutos(inpProduto);
 
         btnSave.setOnClickListener(this);
@@ -178,7 +181,9 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         inpNomeCombo.setText(combo.getNome());
         inpEanCombo.setText(combo.getEan());
         inpDescricaoCombo.setText(combo.getDescricao());
+        inpQtdeCombo.setText(combo.getQtde().toString());
 
+        comboPresenter.setItem(combo);
         atualizarListDeProdutos();
 
 

@@ -81,17 +81,29 @@
                     android:hint="@string/nome_combo"
                     android:inputType="text" />
 
+
+
                 <EditText
                     android:id="@+id/inpPrecoVenda"
                     android:layout_width="0dp"
                     android:textSize="12dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="6"
+                    android:layout_weight="3"
                     android:gravity="center"
                     android:hint="@string/preco_combo"
                     android:inputType="numberDecimal" />
 
+                <EditText
+                    android:id="@+id/inpQtdeCombo"
+                    android:layout_width="0dp"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:hint="@string/qtde"
+                    android:inputType="number" />
 
             </LinearLayout>
 

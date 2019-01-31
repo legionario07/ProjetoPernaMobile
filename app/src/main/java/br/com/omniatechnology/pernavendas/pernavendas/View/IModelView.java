@@ -14,6 +14,7 @@ public interface IModelView {
 
     interface IProdutoView extends IModelView{
 
+        void onLoadeadEntitys();
     }
 
     interface IMarcaView extends IModelView{
@@ -25,7 +26,7 @@ public interface IModelView {
     }
 
     interface IComboView extends IModelView{
-
+        void onLoadeadEntitys();
     }
 
     interface IConfiguracaoView extends IModelView{

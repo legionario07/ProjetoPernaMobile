@@ -79,7 +79,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         imgLerQrCode = findViewById(R.id.imgLerQrCode);
         inpPrecoVenda = findViewById(R.id.inpPrecoVenda);
         inpNomeCombo = findViewById(R.id.inpNomeCombo);
-        inpEanCombo = findViewById(R.id.inpNomeCombo);
+        inpEanCombo = findViewById(R.id.inpEanCombo);
         inpDescricaoCombo = findViewById(R.id.inpDescricaoCombo);
 
         spnCategoria = findViewById(R.id.spnCategoriaCombo);
@@ -93,7 +93,6 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
         ((ComboPresenter) comboPresenter).addTextWatcherDescricaoCombo(inpDescricaoCombo);
         comboPresenter.atualizarProdutos(inpProduto);
-        ((ComboPresenter) comboPresenter).setSpinnerCategoria();
 
         btnSave.setOnClickListener(this);
         imgLerQrCode.setOnClickListener(this);
@@ -110,28 +109,13 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
             }
         });
 
-        atualizarListDeProdutos();
-
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)) {
             combo = (Combo) getIntent().getExtras().get(ConstraintUtils.COMBO_INTENT);
             preencherDadosNaView();
 
-            for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
 
-                if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
-                    spnCategoria.setSelection(i);
-                }
-
-            }
-
-            for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
-
-                if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
-                    spnUnidadeDeMedida.setSelection(i);
-                }
-
-            }
-
+        }else{
+            atualizarListDeProdutos();
         }
 
 
@@ -193,6 +177,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         inpPrecoVenda.setText(combo.getValorVenda().toString());
         inpNomeCombo.setText(combo.getNome());
         inpEanCombo.setText(combo.getEan());
+        inpDescricaoCombo.setText(combo.getDescricao());
 
         atualizarListDeProdutos();
 
@@ -203,6 +188,26 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         onBackPressed();
+    }
+
+    @Override
+    public void onLoadeadEntitys() {
+        for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
+
+            if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
+                spnCategoria.setSelection(i);
+            }
+
+        }
+
+        for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
+
+            if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
+                spnUnidadeDeMedida.setSelection(i);
+            }
+
+        }
+
     }
 
     @Override

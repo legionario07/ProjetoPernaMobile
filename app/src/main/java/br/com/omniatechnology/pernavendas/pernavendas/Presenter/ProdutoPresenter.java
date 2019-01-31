@@ -550,6 +550,8 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnCategoria.setAdapter(arrayCategorias);
 
+                produtoView.onLoadeadEntitys();
+
                 break;
 
             default:

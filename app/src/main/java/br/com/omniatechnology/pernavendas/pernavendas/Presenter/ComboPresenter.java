@@ -399,6 +399,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
                 actProdutos.setAdapter(arrayAdapter);
 
+                setSpinnerCategoria();
 
                 break;
 

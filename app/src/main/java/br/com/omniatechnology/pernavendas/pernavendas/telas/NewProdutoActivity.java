@@ -118,29 +118,6 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
             produto = (Produto) getIntent().getExtras().get(ConstraintUtils.PRODUTO_INTENT);
 
-            for(int i = 0;i<spnMarca.getAdapter().getCount();i++){
-
-                if (produto.getMarca().getId() == ((Marca) spnMarca.getAdapter().getItem(i) ).getId()) {
-                    spnMarca.setSelection(i);
-                }
-
-            }
-
-            for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
-
-                if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
-                    spnCategoria.setSelection(i);
-                }
-
-            }
-
-            for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
-
-                if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
-                    spnUnidadeDeMedida.setSelection(i);
-                }
-
-            }
 
             preencherViewsComDados();
 
@@ -249,4 +226,33 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
     }
 
+    @Override
+    public void onLoadeadEntitys() {
+
+        for(int i = 0;i<spnMarca.getAdapter().getCount();i++){
+
+            if (produto.getMarca().getId() == ((Marca) spnMarca.getAdapter().getItem(i) ).getId()) {
+                spnMarca.setSelection(i);
+            }
+
+        }
+
+        for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
+
+            if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
+                spnCategoria.setSelection(i);
+            }
+
+        }
+
+        for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
+
+            if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
+                spnUnidadeDeMedida.setSelection(i);
+            }
+
+        }
+
+
+    }
 }

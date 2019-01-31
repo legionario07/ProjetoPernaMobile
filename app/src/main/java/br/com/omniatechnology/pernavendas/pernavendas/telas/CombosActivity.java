@@ -117,4 +117,8 @@ public class CombosActivity extends AppCompatActivity implements IModelView.ICom
         }
     }
 
+    @Override
+    public void onLoadeadEntitys() {
+
+    }
 }

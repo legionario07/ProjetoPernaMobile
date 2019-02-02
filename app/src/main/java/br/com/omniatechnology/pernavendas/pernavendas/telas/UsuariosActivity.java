@@ -123,7 +123,8 @@ public class UsuariosActivity extends AppCompatActivity implements IModelView.IU
     }
 
 
+    @Override
+    public void onLoadedEntitys() {
 
-
-
+    }
 }

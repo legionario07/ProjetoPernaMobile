@@ -95,7 +95,10 @@ public class Usuario implements Serializable, IUsuario {
 	@Override
 	public String isValid(Context context) {
 		StringBuilder retorno = new StringBuilder();
-		if(TextUtils.isEmpty(getUsuario())){
+
+		if(TextUtils.isEmpty(getSenha())){
+			retorno.append(R.string.senha_nao_vazia);
+		}else if(TextUtils.isEmpty(getUsuario())) {
 			retorno.append(context.getResources().getString(R.string.usuario_vazio));
 		}
 

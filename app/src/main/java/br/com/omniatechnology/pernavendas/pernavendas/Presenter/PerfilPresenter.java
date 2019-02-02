@@ -235,6 +235,7 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
                 perfilsAdapter.notifyDataSetChanged();
 
+
                 break;
 
             case FIND_BY_ID:

@@ -38,7 +38,7 @@ public interface IModelView {
     }
 
     interface IUsuarioView extends IModelView{
-
+        void onLoadedEntitys();
     }
 
     interface IPedidoView extends IModelView{

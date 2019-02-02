@@ -342,6 +342,8 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
                 arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnPerfil.setAdapter(arrayPerfis);
 
+                usuarioView.onLoadedEntitys();
+
                 break;
             default:
         }

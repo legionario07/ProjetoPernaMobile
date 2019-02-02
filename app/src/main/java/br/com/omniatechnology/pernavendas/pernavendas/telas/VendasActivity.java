@@ -21,6 +21,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -61,6 +62,10 @@ public class VendasActivity extends AppCompatActivity implements IModelView.IVen
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 
+        if(SessionUtil.getInstance().getUsuario().getPerfil().getId().compareTo(1l)!=1){
+            Toast.makeText(this, getString(R.string.apenas_administradores_editam),Toast.LENGTH_LONG).show();
+            return true;
+        }
 
         switch (item.getItemId()) {
             case R.id.menu_editar:

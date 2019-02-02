@@ -127,8 +127,9 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
         usuario = (Usuario) serializable;
 
         if (usuario == null) {
-            loginView.OnLoginResultError();
             usuario = new Usuario();
+            loginView.OnLoginResultError();
+
         } else {
             loginView.OnLoginResultSuccess();
             SessionUtil.getInstance().setUsuario(usuario);

@@ -64,16 +64,11 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
     public void preencherDadosNaView(){
 
         inpUsuario.getEditText().setText(usuario.getUsuario());
-        inpConfirmarSenha.getEditText().setText(usuario.getSenha());
-        inpSenha.getEditText().setText(usuario.getSenha());
+        inpConfirmarSenha.getEditText().setText("");
+        inpSenha.getEditText().setText("");
 
         usuarioPresenter.setItem(usuario);
 
-        for(int i = 0;i<spnPerfil.getAdapter().getCount();i++){
-            if(usuario.getPerfil().getId()==((Perfil) spnPerfil.getAdapter().getItem(i)).getId()){
-                spnPerfil.setSelection(i);
-            }
-        }
 
     }
 
@@ -113,4 +108,13 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
     }
 
 
+    @Override
+    public void onLoadedEntitys() {
+        for(int i = 0;i<spnPerfil.getAdapter().getCount();i++){
+            if(usuario.getPerfil().getId().compareTo(((Perfil) spnPerfil.getAdapter().getItem(i)).getId()) == 0){
+                spnPerfil.setSelection(i);
+                continue;
+            }
+        }
+    }
 }

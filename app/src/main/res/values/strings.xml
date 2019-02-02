@@ -86,4 +86,6 @@
     <string name="descricao_combo">Descrição Combo</string>
     <string name="nome_vazio_combo">O Nome do Combo não pode estar vazio</string>
     <string name="preco_vazio_combo">O Preço não pode estar vazio</string>
+    <string name="senha_nao_vazia">A senha não pode estar vazia</string>
+    <string name="apenas_administradores_editam">Apenas Administradores podem Editar ou Excluir Vendas</string>
 </resources>

@@ -7,25 +7,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.Serializable;
-import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -33,9 +25,9 @@ import static android.widget.Toast.LENGTH_LONG;
 public class ProdutosActivity extends AppCompatActivity implements IModelView.IProdutoView, View.OnClickListener {
 
     private RecyclerView rcViewProdutos;
-    private ProdutosAdapter produtosAdapter;
     IProdutoPresenter produtoPresenter;
     private TextView txtEmpty;
+    private ProdutosAdapter produtosAdapter;
 
 
     @Override
@@ -60,35 +52,37 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
-        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, produtosAdapter, txtEmpty);
+        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, txtEmpty);
 
-        registerForContextMenu(rcViewProdutos);
+
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getMenuInflater().inflate(R.menu.menu_contextual, menu);
-        super.onCreateContextMenu(menu, v, menuInfo);
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        getMenuInflater().inflate(R.menu.menu_contextual, menu);
+//
+//        ContextMenuRecyclerView.RecyclerContextMenuInfo info = (ContextMenuRecyclerView
+//                .RecyclerContextMenuInfo) menuInfo;
+//
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
-            case R.id.menu_editar:
+            case 1:
 
                 Intent intent = new Intent(this,NewProdutoActivity.class);
-                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, (Serializable) produtosAdapter.getItem(info.position));
+                intent.putExtra(ConstraintUtils.PRODUTO_INTENT, produtosAdapter.getItem(item.getGroupId()));
                 startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
 
-            case R.id.menu_excluir:
+            case 2:
 
-                produtoPresenter.onDelete((produtosAdapter.getItem(info.position)).getId());
+                produtoPresenter.onDelete(produtosAdapter.getItem(item.getGroupId()).getId());
 
                 break;
         }
@@ -136,6 +130,6 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
     @Override
     public void onLoadeadEntitys() {
-
+       produtosAdapter = (ProdutosAdapter) rcViewProdutos.getAdapter();
     }
 }

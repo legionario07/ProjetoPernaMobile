@@ -57,6 +57,7 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
         produtoViewHolder.txtDescricao.setText(produto.getDescricao());
         produtoViewHolder.txtValorVenda.setText(produto.getValorVenda().toString());
 
+
     }
 
     // Método responsável por remover um usuário da lista.
@@ -71,6 +72,7 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
         return produtos.size();
     }
 
+
     public void updateList(Produto produto) {
         insertItem(produto);
     }
@@ -80,10 +82,6 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutoViewHolder> {
     public void insertItem(Produto produto) {
         produtos.add(produto);
         notifyItemInserted(getItemCount());
-    }
-
-    public Produto getiItem(int position){
-        return produtos.get(position);
     }
 
 

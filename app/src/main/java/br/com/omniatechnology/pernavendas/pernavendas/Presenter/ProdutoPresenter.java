@@ -125,10 +125,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         return (IModel) spinner.getSelectedItem();
     }
 
-    public void atualizarList(RecyclerView view, ProdutosAdapter prodAdapter, TextView txtEmpty) {
+    public void atualizarList(RecyclerView view, TextView txtEmpty) {
 
         this.view = view;
-        this.produtosAdapter = prodAdapter;
         this.txtEmpty = txtEmpty;
 
         if (produtosAdapter == null) {
@@ -502,6 +501,8 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
                 }
 
                 produtosAdapter.notifyDataSetChanged();
+
+                produtoView.onLoadeadEntitys();
 
                 break;
 

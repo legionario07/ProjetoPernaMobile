@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.spec.ECField;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
@@ -74,15 +75,18 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
 
 
         if(ConstraintUtils.SALVAR.equals(OPCAO) || ConstraintUtils.EDITAR.equals(OPCAO)){
-            if(service.save((IModel) serializables[0]))
-                return true;
-            else
+
+            try {
+                if (service.save((IModel) serializables[0]))
+                    return true;
+            }catch (Exception e) {
                 return false;
+            }
         }else if(ConstraintUtils.DELETAR.equals(OPCAO)){
 
             try {
                 return service.delete((Long) serializables[0]);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 return false;
             }
 
@@ -90,7 +94,7 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
 
             try {
                 return (Serializable) service.findAll();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
@@ -98,14 +102,14 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
         }else if(ConstraintUtils.FIND_BY_ID.equals(OPCAO)){
             try {
                 return (Serializable) service.findById((Long) serializables[0]);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
         }else if(ConstraintUtils.LOGIN.equals(OPCAO)){
             try {
                 return new UsuarioServiceImpl().login((Usuario) serializables[0]);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }

@@ -54,8 +54,8 @@ public class ProdutoViewHolder extends RecyclerView.ViewHolder implements View.O
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(Menu.NONE, 1, 1, "Editar");
-        menu.add(Menu.NONE, 2, 2, "Excluir");
+        menu.add(this.getAdapterPosition(), 1, 1, "Editar");
+        menu.add(this.getAdapterPosition(), 2, 2, "Excluir");
 
     }
 }

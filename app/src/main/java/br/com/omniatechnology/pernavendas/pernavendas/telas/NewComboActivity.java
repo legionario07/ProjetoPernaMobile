@@ -197,18 +197,26 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
     @Override
     public void onLoadeadEntitys() {
+
+
         for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
 
-            if (produto.getCategoria().getId() == ((Categoria) spnCategoria.getAdapter().getItem(i) ).getId()) {
+            Categoria categoria = (Categoria) spnCategoria.getAdapter().getItem(i);
+
+            if (combo.getCategoria().getId().compareTo(categoria.getId())==0) {
                 spnCategoria.setSelection(i);
+                continue;
             }
 
         }
 
         for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
 
-            if (produto.getUnidadeDeMedida().getId() == ((UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i) ).getId()) {
+            UnidadeDeMedida unidadeDeMedida = (UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i);
+
+            if (combo.getUnidadeDeMedida().getId().compareTo(unidadeDeMedida.getId())==0) {
                 spnUnidadeDeMedida.setSelection(i);
+                continue;
             }
 
         }
@@ -227,7 +235,6 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         switch (v.getId()) {
             case R.id.btn_save:
 
-                getDadosDeSpinner();
                 comboPresenter.setProdutosEmCombo(produtos);
 
                 comboPresenter.onCreate();

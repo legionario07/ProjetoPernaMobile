@@ -294,7 +294,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setValorVenda(new BigDecimal(s.toString()));
+                if(!s.toString().isEmpty()) {
+                    produto.setValorVenda(new BigDecimal(s.toString()));
+                }
             }
         });
 
@@ -322,7 +324,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setQtdeMinima(new Integer(s.toString()));
+                if(!s.toString().isEmpty()) {
+                    produto.setQtdeMinima(new Integer(s.toString()));
+                }
             }
         });
 
@@ -350,8 +354,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setQtde(Integer.valueOf(s.toString()));
-                ViewUtils.hideKeyboard(context, editText);
+                if(!s.toString().isEmpty()) {
+                    produto.setQtde(Integer.valueOf(s.toString()));
+                }
             }
         });
 
@@ -435,7 +440,9 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                produto.setQtdeSubProduto(Integer.valueOf(s.toString()));
+                if(!s.toString().isEmpty()) {
+                    produto.setQtdeSubProduto(Integer.valueOf(s.toString()));
+                }
             }
         });
 

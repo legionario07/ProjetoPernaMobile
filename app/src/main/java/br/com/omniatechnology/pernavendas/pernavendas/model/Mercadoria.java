@@ -22,6 +22,8 @@ public class Mercadoria implements Serializable {
         this.setAtivo(true);
         setUnidadeDeMedida(new UnidadeDeMedida());
         this.setDataCadastro(Calendar.getInstance().getTimeInMillis());
+        this.qtdeMinima = 0;
+        this.valorVenda = BigDecimal.ZERO;
     }
 
     public Long getId() {

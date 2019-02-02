@@ -21,7 +21,7 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
     private Marca marca;
 
     private String eanPai;
-    private Boolean isSubProduto;
+    private Boolean subProduto;
     private Integer qtdeSubProduto;
 
     public Produto(Long id) {
@@ -31,6 +31,7 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
 
     public Produto() {
         super();
+        this.qtdeSubProduto = 0;
     }
 
 
@@ -92,11 +93,11 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
     }
 
     public Boolean getSubProduto() {
-        return isSubProduto;
+        return subProduto;
     }
 
     public void setSubProduto(Boolean subProduto) {
-        isSubProduto = subProduto;
+        this.subProduto = subProduto;
     }
 
     public Integer getQtdeSubProduto() {

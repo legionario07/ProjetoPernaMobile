@@ -258,7 +258,9 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                combo.setQtde(Integer.valueOf(s.toString()));
+                if(!s.toString().isEmpty()) {
+                    combo.setQtde(Integer.valueOf(s.toString()));
+                }
             }
         });
 
@@ -286,7 +288,9 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
             @Override
             public void afterTextChanged(Editable s) {
-                combo.setValorVenda(new BigDecimal(s.toString()));
+                if(!s.toString().isEmpty()) {
+                    combo.setValorVenda(new BigDecimal(s.toString()));
+                }
             }
         });
 
@@ -440,7 +444,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
                 arrayUnidadeDeMedida.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spnUnidadeDeMedida.setAdapter(arrayUnidadeDeMedida);
 
-
+                comboView.onLoadeadEntitys();
 
                 break;
 

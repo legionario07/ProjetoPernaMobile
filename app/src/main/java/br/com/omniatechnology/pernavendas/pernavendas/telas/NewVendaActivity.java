@@ -255,6 +255,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 BigDecimal valor = BigDecimal.ZERO;
 
                 Pedido pedido = new Pedido();
+                pedido.setTotal(Integer.valueOf(inpLayoutQuantidade.getEditText().getText().toString()));
                 if(produto instanceof Produto) {
                     pedido.setProduto((Produto) produto);
                     valor = pedido.getProduto().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
@@ -263,7 +264,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                     valor = pedido.getCombo().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
                 }
                 pedido.setDesconto(new BigDecimal(inpLayoutDesconto.getEditText().getText().toString()));
-                pedido.setTotal(Integer.valueOf(inpLayoutQuantidade.getEditText().getText().toString()));
+
 
 
                 valor = valor.subtract(pedido.getDesconto());

@@ -39,7 +39,7 @@ public class Mercadoria implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = nome.toUpperCase().trim();
     }
 
     public String getDescricao() {
@@ -47,7 +47,7 @@ public class Mercadoria implements Serializable {
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao = descricao.toUpperCase().trim();
     }
 
     public BigDecimal getValorVenda() {

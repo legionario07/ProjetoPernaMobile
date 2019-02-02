@@ -101,7 +101,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                produto = (Produto) inpProduto.getAdapter().getItem(position);
+                produto = (Mercadoria) inpProduto.getAdapter().getItem(position);
 
                 //ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
 
@@ -203,7 +203,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
             case R.id.imgAdicionarProduto:
 
-               if(produto==null){
+               if(produto==null || inpProduto.getText().toString().isEmpty()){
                    Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
                }else{
                    //Regra para abrir dialog com o produto selecionado

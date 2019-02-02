@@ -47,10 +47,10 @@ public class PedidosAdapter extends ArrayAdapter<Pedido> {
         TextView txtItemValor = (TextView) convertView.findViewById(R.id.txtItemValor);
 
 
-        if(pedido.getProduto() instanceof Produto){
+        if(pedido.getProduto().getId()!=null){
             txtItemNomeProduto.setText(((Produto) pedido.getProduto() ).getNome());
         }else{
-            txtItemNomeProduto.setText(((Combo) pedido.getProduto() ).getNome());
+            txtItemNomeProduto.setText(((Combo) pedido.getCombo() ).getNome());
         }
 
         txtItemQtdeProduto.setText(pedido.getTotal().toString());

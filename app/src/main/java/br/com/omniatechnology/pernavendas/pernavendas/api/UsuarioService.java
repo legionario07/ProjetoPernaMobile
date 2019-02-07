@@ -9,6 +9,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
 
 public interface UsuarioService {
 
@@ -32,6 +33,6 @@ public interface UsuarioService {
     Call<Boolean> delete(@Query("id") Integer id);
 
     @POST(LOGIN)
-    Call<Usuario> login(@Body Usuario usuario);
+    Observable<Usuario> login(@Body Usuario usuario);
 
 }

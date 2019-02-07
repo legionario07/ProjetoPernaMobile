@@ -108,7 +108,8 @@ public class GenericDAO extends AsyncTask<Serializable, IService, Serializable> 
             }
         }else if(ConstraintUtils.LOGIN.equals(OPCAO)){
             try {
-                return new UsuarioServiceImpl().login((Usuario) serializables[0]);
+                //return new UsuarioServiceImpl().login((Usuario) serializables[0]);
+                return null;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

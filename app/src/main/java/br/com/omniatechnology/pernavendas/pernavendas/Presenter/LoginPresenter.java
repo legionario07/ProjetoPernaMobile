@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,20 +13,33 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
+import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
+import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.api.UsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class LoginPresenter implements ILoginPresenter, ITaskProcess {
 
     ILoginView loginView;
     Usuario usuario;
     Context context;
+    private ProgressDialog progressDialog;
 
 
     public LoginPresenter() {
@@ -101,38 +115,68 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
     }
 
 
-    @Override
-    public void onLogin() {
-
+    public void onLogin(){
 
         String retornoStr = usuario.isValid(context);
 
         if (retornoStr.length() == 0) {
-            try {
-                new GenericDAO(context, this).execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            loginView.OnLoginResultError();
+            new UsuarioServiceImpl().login(usuario)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Usuario>() {
+                @Override
+                public void onCompleted() {
+                    loginView.OnLoginResultSuccess(context.getString(R.string.login_sucess));
+                }
 
-            usuario = new Usuario();
+                @Override
+                public void onError(Throwable e) {
+                    loginView.OnLoginResultError(context.getString(R.string.login_error )+ " - "+e.getMessage());
+                }
+
+                @Override
+                public void onNext(Usuario usuario) {
+                    SessionUtil.getInstance().setUsuario(usuario);
+                }
+            });
+
+
+        }else{
+            loginView.OnLoginResultError(retornoStr);
         }
+
+
+
     }
+
 
 
     @Override
     public void onPostProcess(Serializable serializable) {
-        usuario = (Usuario) serializable;
 
-        if (usuario == null) {
-            usuario = new Usuario();
-            loginView.OnLoginResultError();
-
-        } else {
-            loginView.OnLoginResultSuccess();
-            SessionUtil.getInstance().setUsuario(usuario);
-        }
     }
+
+//    @Override
+//    public void onLogin() {
+//
+//
+//        String retornoStr = usuario.isValid(context);
+//
+//        if (retornoStr.length() == 0) {
+//            try {
+//                new GenericDAO(context, this).execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            loginView.OnLoginResultError();
+//
+//            usuario = new Usuario();
+//        }
+//    }
+
+
+
 }

@@ -92,16 +92,16 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
     }
 
     @Override
-    public void OnLoginResultSuccess() {
+    public void OnLoginResultSuccess(String message) {
         atualizarDadosSalvo();
-        Toast.makeText(this, getResources().getString(R.string.login_sucess), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, HomeActivity.class));
 
     }
 
     @Override
-    public void OnLoginResultError() {
-        Toast.makeText(this, getResources().getString(R.string.login_error), Toast.LENGTH_LONG).show();
+    public void OnLoginResultError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         usuarioWrapper.getEditText().getText().clear();
         senhaWrapper.getEditText().getText().clear();
     }

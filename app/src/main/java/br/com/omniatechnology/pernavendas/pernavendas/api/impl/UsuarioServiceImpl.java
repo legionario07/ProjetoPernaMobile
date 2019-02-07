@@ -9,11 +9,19 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IUsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.api.UsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Interfaces.IUsuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class UsuarioServiceImpl implements IService<Usuario> {
 
@@ -79,12 +87,25 @@ public class UsuarioServiceImpl implements IService<Usuario> {
     }
 
 
-    public Usuario login(Usuario usuario) throws IOException{
-        retrofit = RetrofitConfig.getBuilder();
+//    public Usuario login(Usuario usuario) throws IOException{
+//        retrofit = RetrofitConfig.getBuilder();
+//
+//        service = retrofit.create(IUsuarioService.class);
+//
+//        return service.login(usuario).execute().body();
+//    }
 
-        service = retrofit.create(IUsuarioService.class);
+    public Observable<Usuario> login(final Usuario usuario){
 
-        return service.login(usuario).execute().body();
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        UsuarioService service = retrofit.create(UsuarioService.class);
+
+
+        return service.login(usuario).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
     }
 
 

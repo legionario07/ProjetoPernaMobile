@@ -172,25 +172,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     }
 
-    @Override
-    public void onUpdate() {
 
-        operationType = OperationType.UPDATE;
-        String retornoStr = combo.isValid(context);
-
-        if (retornoStr.length() > 1)
-            comboView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(combo, ConstraintUtils.EDITAR, new ComboServiceImpl());
-            } catch (Exception e) {
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

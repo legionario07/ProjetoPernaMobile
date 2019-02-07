@@ -102,26 +102,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
 
     }
 
-    @Override
-    public void onUpdate() {
 
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = configuracao.isValid(context);
-
-        if (retornoStr.length() > 1)
-            configuracaoView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(configuracao, ConstraintUtils.EDITAR, new ConfiguracaoServiceImpl());
-            }catch (Exception e){
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

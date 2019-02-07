@@ -39,6 +39,8 @@ public interface IModelView {
 
     interface IUsuarioView extends IModelView{
         void onLoadedEntitys();
+        void onMessageSuccess(String message);
+        void onMessageError(String message);
     }
 
     interface IPedidoView extends IModelView{

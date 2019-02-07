@@ -20,19 +20,18 @@ public interface UsuarioService {
     String LOGIN = BASE_URL_USUARIOS + "login";
 
 
-    @GET(BASE_URL_USUARIOS)
-    Call<List<Usuario>> findAll();
-
-    @GET(FIND_BY_ID)
-    Call<Usuario> findById(@Query("id") Integer id);
-
-    @POST(SAVE)
-    Call<Usuario> save(@Body Usuario usuario);
-
-    @DELETE(DELETE)
-    Call<Boolean> delete(@Query("id") Integer id);
-
     @POST(LOGIN)
     Observable<Usuario> login(@Body Usuario usuario);
 
+    @POST(SAVE)
+    Observable<Usuario> save(@Body Usuario usuario);
+
+    @POST(DELETE)
+    Observable<Usuario> delete(@Query("id") Long id);
+
+    @POST(BASE_URL_USUARIOS)
+    Observable<List<Usuario>> findAll();
+
+    @GET(FIND_BY_ID)
+    Observable<Usuario> findById(@Query("id") Long id);
 }

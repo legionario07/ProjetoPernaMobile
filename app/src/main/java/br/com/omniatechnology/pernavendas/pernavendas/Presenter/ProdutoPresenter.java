@@ -174,26 +174,6 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
     }
 
-    @Override
-    public void onUpdate() {
-
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = produto.isValid(context);
-
-        if (retornoStr.length() > 1)
-            produtoView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(produto, ConstraintUtils.EDITAR, new ProdutoServiceImpl());
-            } catch (Exception e) {
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

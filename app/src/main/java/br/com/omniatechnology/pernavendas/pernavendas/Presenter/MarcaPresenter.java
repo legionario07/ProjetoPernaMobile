@@ -107,26 +107,6 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
 
     }
 
-    @Override
-    public void onUpdate() {
-
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = marca.isValid(context);
-
-        if (retornoStr.length() > 1)
-            marcaView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(marca, ConstraintUtils.EDITAR, new MarcaServiceImpl());
-            }catch (Exception e){
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

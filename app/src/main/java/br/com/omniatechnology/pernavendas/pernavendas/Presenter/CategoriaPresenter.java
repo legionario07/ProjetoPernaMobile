@@ -106,26 +106,7 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
 
     }
 
-    @Override
-    public void onUpdate() {
 
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = categoria.isValid(context);
-
-        if (retornoStr.length() > 1)
-            categoriaView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(categoria, ConstraintUtils.EDITAR, new CategoriaServiceImpl());
-            }catch (Exception e){
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

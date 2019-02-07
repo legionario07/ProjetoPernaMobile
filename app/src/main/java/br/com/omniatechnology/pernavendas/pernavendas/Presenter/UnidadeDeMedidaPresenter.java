@@ -114,26 +114,6 @@ public class UnidadeDeMedidaPresenter implements IUnidadeDeMedidaPresenter, ITas
 
     }
 
-    @Override
-    public void onUpdate() {
-
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = unidadeDeMedida.isValid(context);
-
-        if (retornoStr.length() > 1)
-            unidadeDeMedidaView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(unidadeDeMedida, ConstraintUtils.EDITAR, new UnidadeDeMedidaServiceImpl());
-            } catch (Exception e) {
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

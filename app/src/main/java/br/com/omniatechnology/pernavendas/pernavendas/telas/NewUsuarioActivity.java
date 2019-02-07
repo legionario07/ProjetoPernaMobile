@@ -46,9 +46,9 @@ public class NewUsuarioActivity extends AppCompatActivity implements IModelView.
         btnSave = findViewById(R.id.btn_save);
 
         usuarioPresenter = new UsuarioPresenter(this, this);
-        ((UsuarioPresenter) usuarioPresenter).addTextWatcherSenha(inpSenha.getEditText());
-        ((UsuarioPresenter) usuarioPresenter).addTextWatcherUsuario(inpUsuario.getEditText());
-        ((UsuarioPresenter) usuarioPresenter).addTextWatcherConfirmarSenha(inpConfirmarSenha.getEditText());
+        usuarioPresenter.addTextWatcherSenha(inpSenha.getEditText());
+        usuarioPresenter.addTextWatcherUsuario(inpUsuario.getEditText());
+        usuarioPresenter.addTextWatcherConfirmarSenha(inpConfirmarSenha.getEditText());
 
         btnSave.setOnClickListener(this);
 

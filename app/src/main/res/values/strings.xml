@@ -88,4 +88,6 @@
     <string name="preco_vazio_combo">O Preço não pode estar vazio</string>
     <string name="senha_nao_vazia">A senha não pode estar vazia</string>
     <string name="apenas_administradores_editam">Apenas Administradores podem Editar ou Excluir Vendas</string>
+    <string name="version">Version:</string>
+    <string name="conexao_com_a_internet">Verifique sua conexão com a Internet</string>
 </resources>

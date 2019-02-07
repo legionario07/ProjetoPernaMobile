@@ -147,11 +147,6 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
     }
 
 
-    @Override
-    public void onUpdate() {
-
-
-    }
 
     @Override
     public void findById() {

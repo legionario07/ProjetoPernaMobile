@@ -25,26 +25,29 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
 
-public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
+public class UsuarioPresenter implements IUsuarioPresenter {
 
     IModelView.IUsuarioView usuarioView;
     private Context context;
     Usuario usuario;
     private Boolean isSave;
-    private List<Usuario> usuarios;
+    private final List<Usuario> usuarios = new ArrayList<>();
+    private final List<Perfil> perfis = new ArrayList<>();
     private String confirmarSenhaStr;
     private UsuariosAdapter usuariosAdapter;
 
     private ListView view;
-    private OperationType operationType;
     private Spinner spnPerfil;
 
     private TextView txtEmpty;
@@ -67,13 +70,30 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
 
         this.spnPerfil = spinner;
 
-        operationType = OperationType.FIND_ALL_PERFIL;
-        try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+        new PerfilServiceImpl().findAll2()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Perfil>>() {
+                    @Override
+                    public void onCompleted() {
 
+                        ArrayAdapter arrayPerfis = new ArrayAdapter(context, android.R.layout.simple_spinner_item, perfis);
+                        arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spnPerfil.setAdapter(arrayPerfis);
+
+                        usuarioView.onLoadedEntitys();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        usuarioView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Perfil> perfisTemp) {
+                        perfis.addAll(perfisTemp);
+                    }
+                });
 
     }
 
@@ -104,23 +124,37 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
         String retornoStr = usuario.isValid(context);
 
-        if(!usuario.getSenha().equals(confirmarSenhaStr)){
+        if (!usuario.getSenha().equals(confirmarSenhaStr)) {
             retornoStr = context.getString(R.string.confirmacao_senha);
         }
 
-        if (retornoStr.length() > 1 )
+        if (retornoStr.length() == 0) {
+
+            new UsuarioServiceImpl().save(usuario)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Usuario>() {
+                        @Override
+                        public void onCompleted() {
+                            usuarioView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            usuarioView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Usuario usuario) {
+
+                        }
+                    });
+
+
+        } else {
             usuarioView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(usuario, ConstraintUtils.SALVAR, new UsuarioServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
@@ -128,63 +162,79 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
-        operationType = OperationType.DELETE;
+        new UsuarioServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Usuario>() {
+                    @Override
+                    public void onCompleted() {
+                        usuarioView.onMessageSuccess(context.getString(R.string.save_success));
 
-        try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new UsuarioServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        usuarioView.onMessageSuccess(context.getResources().getString(R.string.save_success));
+
+                        findAll();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        usuarioView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Usuario usuario) {
+                    }
+                });
+
 
     }
 
-    @Override
-    public void onUpdate() {
-
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = usuario.isValid(context);
-
-        if(!usuario.getSenha().equals(confirmarSenhaStr)){
-            retornoStr = context.getString(R.string.confirmacao_senha);
-        }
-
-        if (retornoStr.length() > 1)
-            usuarioView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(usuario, ConstraintUtils.EDITAR, new UsuarioServiceImpl());
-            } catch (Exception e) {
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {
 
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(usuario, ConstraintUtils.FIND_BY_ID, new UsuarioServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
     }
 
     @Override
     public void findAll() {
 
-        operationType = OperationType.FIND_ALL;
+        new UsuarioServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Usuario>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            new GenericDAO(context, this).execute(usuario, ConstraintUtils.FIND_ALL, new UsuarioServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("TQAG", "onNext: ");
+                    }
+
+                    @Override
+                    public void onNext(List<Usuario> usuarios) {
+                        Log.i("TQAG", "onNext: ");
+                    }
+                });
+
+//        if (usuariosAdapter == null) {
+//            usuariosAdapter = new UsuariosAdapter(context, usuarios);
+//
+//            view.setAdapter(usuariosAdapter);
+//        } else {
+//            usuariosAdapter.notifyDataSetChanged();
+//        }
+//
+//        if (usuarios.isEmpty()) {
+//            view.setVisibility(View.GONE);
+//            txtEmpty.setVisibility(View.VISIBLE);
+//        } else {
+//            view.setVisibility(View.VISIBLE);
+//            txtEmpty.setVisibility(View.GONE);
+//        }
+//
+//        usuariosAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -277,78 +327,12 @@ public class UsuarioPresenter implements IUsuarioPresenter, ITaskProcess {
     }
 
 
-    @Override
     public void onPostProcess(Serializable serializable) {
 
-        switch (operationType) {
-            case SAVE:
-            case UPDATE:
-            case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    usuarioView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    usuarioView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if (operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if (usuarios != null) {
-                    usuarios.clear();
-                    List<Usuario> usuariosTemp = (List<Usuario>) serializable;
-                    if(usuariosTemp!=null) {
-                        usuarios.addAll(usuariosTemp);
-                    }
-                } else {
-                    usuarios = (List<Usuario>) serializable;
-                    if(usuarios==null){
-                        usuarios = new ArrayList<>();
-                    }
-                }
-
-                if (usuariosAdapter == null) {
-                    usuariosAdapter = new UsuariosAdapter(context, usuarios);
-
-                    view.setAdapter(usuariosAdapter);
-                } else {
-                    usuariosAdapter.notifyDataSetChanged();
-                }
-
-                if(usuarios.isEmpty()){
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                usuariosAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            case FIND_ALL_PERFIL:
-
-                List<Perfil> perfis = (List<Perfil>) serializable;
-
-                ArrayAdapter arrayPerfis = new ArrayAdapter(context, android.R.layout.simple_spinner_item, perfis);
-                arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spnPerfil.setAdapter(arrayPerfis);
-
-                usuarioView.onLoadedEntitys();
-
-                break;
-            default:
-        }
 
     }
 
-
 }
+
+
+

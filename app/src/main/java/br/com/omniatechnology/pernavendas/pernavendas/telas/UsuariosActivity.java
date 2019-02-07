@@ -1,6 +1,5 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,14 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
-import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IUsuarioPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.UsuarioPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 

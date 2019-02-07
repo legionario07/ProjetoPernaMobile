@@ -8,10 +8,15 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IPerfilService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.api.UsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class PerfilServiceImpl implements IService<Perfil> {
 
@@ -44,6 +49,18 @@ public class PerfilServiceImpl implements IService<Perfil> {
         return perfis;
     }
 
+    public Observable<List<Perfil>> findAll2(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IPerfilService.class);
+
+
+        return service.findAll2().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
 
     public boolean save(Perfil perfil) {
 

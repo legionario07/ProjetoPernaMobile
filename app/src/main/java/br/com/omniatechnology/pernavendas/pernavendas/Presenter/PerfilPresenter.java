@@ -103,26 +103,6 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
 
     }
 
-    @Override
-    public void onUpdate() {
-
-        operationType = OperationType.UPDATE;
-
-        String retornoStr = perfil.isValid(context);
-
-        if (retornoStr.length() > 1)
-            perfilView.onMessageError(retornoStr);
-        else {
-            try {
-                new GenericDAO(context, this).execute(perfil, ConstraintUtils.EDITAR, new PerfilServiceImpl());
-            } catch (Exception e) {
-                Log.e(ConstraintUtils.TAG, e.getMessage());
-            }
-
-
-        }
-
-    }
 
     @Override
     public void findById() {

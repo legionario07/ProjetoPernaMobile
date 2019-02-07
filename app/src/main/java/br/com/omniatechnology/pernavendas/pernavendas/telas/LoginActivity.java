@@ -39,11 +39,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         setContentView(R.layout.login_activity);
 
         txtVersionCode = findViewById(R.id.txtVersion);
-        String versionCode = "Version: " + AppUtil.versionName(this);
+        String versionCode = getString(R.string.version) + AppUtil.versionName(this);
         txtVersionCode.setText(versionCode);
 
         if (!VerificaConexaoStrategy.verificarConexao(this)) {
-            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.conexao_com_a_internet), Toast.LENGTH_LONG).show();
             finish();
         }
 

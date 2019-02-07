@@ -35,6 +35,11 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0+'
     implementation 'com.google.zxing:core:3.3.3'
+
+    implementation 'io.reactivex:rxandroid:1.+'
+    implementation 'io.reactivex:rxjava:1.+'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.+'
+
     implementation group: 'com.journeyapps', name: 'zxing-android-embedded', version: '3.3.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.1.0+'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

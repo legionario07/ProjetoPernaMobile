@@ -54,8 +54,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginView, View
         senhaWrapper = findViewById(R.id.senhaWrapper);
 
         loginPresenter = new LoginPresenter(this, this);
-        ((LoginPresenter) loginPresenter).addSenhaTextWatcher(senhaWrapper.getEditText());
-        ((LoginPresenter) loginPresenter).addUsuarioTextWatcher(usuarioWrapper.getEditText());
+        loginPresenter.addSenhaTextWatcher(senhaWrapper.getEditText());
+        loginPresenter.addUsuarioTextWatcher(usuarioWrapper.getEditText());
 
         btn_login.setOnClickListener(this);
 

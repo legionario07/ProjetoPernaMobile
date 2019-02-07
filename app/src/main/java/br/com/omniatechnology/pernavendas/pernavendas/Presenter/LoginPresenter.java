@@ -1,45 +1,25 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.Serializable;
-import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.ILoginView;
-import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
-import br.com.omniatechnology.pernavendas.pernavendas.api.UsuarioService;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
-import retrofit2.Retrofit;
-import rx.Observable;
 import rx.Observer;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
-public class LoginPresenter implements ILoginPresenter, ITaskProcess {
+public class LoginPresenter implements ILoginPresenter {
 
     ILoginView loginView;
     Usuario usuario;
     Context context;
-    private ProgressDialog progressDialog;
 
 
     public LoginPresenter() {
@@ -90,12 +70,10 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
         view.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.i(ConstraintUtils.TAG, "beforeTextChanged: ");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.i(ConstraintUtils.TAG, "beforeTextChanged: ");
             }
 
             @Override
@@ -146,37 +124,6 @@ public class LoginPresenter implements ILoginPresenter, ITaskProcess {
             loginView.OnLoginResultError(retornoStr);
         }
 
-
-
     }
-
-
-
-    @Override
-    public void onPostProcess(Serializable serializable) {
-
-    }
-
-//    @Override
-//    public void onLogin() {
-//
-//
-//        String retornoStr = usuario.isValid(context);
-//
-//        if (retornoStr.length() == 0) {
-//            try {
-//                new GenericDAO(context, this).execute(usuario, ConstraintUtils.LOGIN, new UsuarioServiceImpl());
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            loginView.OnLoginResultError();
-//
-//            usuario = new Usuario();
-//        }
-//    }
-
-
 
 }

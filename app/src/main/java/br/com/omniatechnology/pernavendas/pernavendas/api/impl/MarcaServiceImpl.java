@@ -1,19 +1,10 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
-import android.util.Log;
-
-import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IMarcaService;
-import br.com.omniatechnology.pernavendas.pernavendas.api.IMarcaService;
-import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
-import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

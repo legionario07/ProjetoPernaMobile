@@ -39,7 +39,7 @@ public class NewUnidadeDeMedidaActivity extends AppCompatActivity implements IMo
         btnSave = findViewById(R.id.btn_save);
 
         unidadeDeMedidaPresenter = new UnidadeDeMedidaPresenter(this, this);
-        ((UnidadeDeMedidaPresenter) unidadeDeMedidaPresenter).addTextWatcherTipoUnidadeDeMedida(inpTipoUnidadeDeMedida.getEditText());
+        unidadeDeMedidaPresenter.addTextWatcherTipoUnidadeDeMedida(inpTipoUnidadeDeMedida.getEditText());
 
         btnSave.setOnClickListener(this);
 

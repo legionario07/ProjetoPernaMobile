@@ -40,7 +40,6 @@ public class VendaPresenter implements IVendaPresenter{
     private List<Mercadoria> produtos = new ArrayList<>();
     private List<Pedido> pedidos = new ArrayList<>();
     ArrayAdapter<Mercadoria> adapter;
-    private PedidosAdapter pedidosAdapter;
     private VendasAdapter vendasAdapter;
 
     private ListView lstVenda;
@@ -92,20 +91,6 @@ public class VendaPresenter implements IVendaPresenter{
 
     }
 
-    public void atualizarListaPedidos(ListView view) {
-
-        this.lstPedidos = view;
-
-        if (pedidosAdapter == null) {
-            findAllPedidos();
-
-        } else {
-
-            pedidosAdapter.notifyDataSetChanged();
-
-        }
-
-    }
 
 
     @Override

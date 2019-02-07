@@ -3,7 +3,6 @@ package br.com.omniatechnology.pernavendas.pernavendas.api;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -20,20 +19,16 @@ public interface IPerfilService {
     String LOGIN = BASE_URL_PERFIS + "login";
 
 
-    @GET(BASE_URL_PERFIS)
-    Call<List<Perfil>> findAll();
-
-    @GET(FIND_BY_ID)
-    Call<Perfil> findById(@Query("id") Long id);
-
     @POST(SAVE)
-    Call<Perfil> save(@Body Perfil perfil);
+    Observable<Perfil> save(@Body Perfil perfil);
 
     @DELETE(DELETE)
-    Call<Boolean> delete(@Query("id") Long id);
+    Observable<Boolean> delete(@Query("id") Long id);
 
     @GET(BASE_URL_PERFIS)
-    Observable<List<Perfil>> findAll2();
+    Observable<List<Perfil>> findAll();
 
+    @GET(FIND_BY_ID)
+    Observable<Perfil> findById(@Query("id") Long id);
 
 }

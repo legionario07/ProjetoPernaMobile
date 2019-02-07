@@ -3,12 +3,12 @@ package br.com.omniatechnology.pernavendas.pernavendas.api;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
 
 public interface IMarcaService {
 
@@ -19,19 +19,17 @@ public interface IMarcaService {
     String LOGIN = BASE_URL_MARCAS + "login";
 
 
-    @GET(BASE_URL_MARCAS)
-    Call<List<Marca>> findAll();
-
-    @GET(FIND_BY_ID)
-    Call<Marca> findById(@Query("id") Long id);
-
     @POST(SAVE)
-    Call<Marca> save(@Body Marca marca);
+    Observable<Marca> save(@Body Marca marca);
 
     @DELETE(DELETE)
-    Call<Boolean> delete(@Query("id") Long id);
+    Observable<Boolean> delete(@Query("id") Long id);
 
-    @POST(LOGIN)
-    Call<Marca> login(@Body Marca marca);
+    @GET(BASE_URL_MARCAS)
+    Observable<List<Marca>> findAll();
+
+    @GET(FIND_BY_ID)
+    Observable<Marca> findById(@Query("id") Long id);
+
 
 }

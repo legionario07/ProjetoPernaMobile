@@ -2,18 +2,18 @@ package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
 import java.util.List;
 
+import br.com.omniatechnology.pernavendas.pernavendas.api.IUsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
-import br.com.omniatechnology.pernavendas.pernavendas.api.UsuarioService;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class UsuarioServiceImpl{
+public class UsuarioServiceImpl implements IUsuarioService{
 
 
-    private UsuarioService service;
+    private IUsuarioService service;
     private Retrofit retrofit;
 
     public UsuarioServiceImpl() {
@@ -24,7 +24,7 @@ public class UsuarioServiceImpl{
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 
-        service = retrofit.create(UsuarioService.class);
+        service = retrofit.create(IUsuarioService.class);
 
 
         return service.login(usuario).subscribeOn(Schedulers.newThread())
@@ -37,7 +37,7 @@ public class UsuarioServiceImpl{
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 
-        service = retrofit.create(UsuarioService.class);
+        service = retrofit.create(IUsuarioService.class);
 
 
         return service.save(usuario).subscribeOn(Schedulers.newThread())
@@ -50,7 +50,7 @@ public class UsuarioServiceImpl{
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 
-        service = retrofit.create(UsuarioService.class);
+        service = retrofit.create(IUsuarioService.class);
 
 
         return service.findAll().subscribeOn(Schedulers.newThread())
@@ -63,7 +63,7 @@ public class UsuarioServiceImpl{
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 
-        service = retrofit.create(UsuarioService.class);
+        service = retrofit.create(IUsuarioService.class);
 
         return service.findById(id).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -75,7 +75,7 @@ public class UsuarioServiceImpl{
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 
-        service = retrofit.create(UsuarioService.class);
+        service = retrofit.create(IUsuarioService.class);
 
         return service.delete(id).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());

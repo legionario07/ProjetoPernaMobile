@@ -39,7 +39,7 @@ public class NewMarcaActivity extends AppCompatActivity implements IModelView.IM
         btnSave = findViewById(R.id.btn_save);
 
         marcaPresenter = new MarcaPresenter(this, this);
-        ((MarcaPresenter) marcaPresenter).addTextWatcherNomeMarca(inpNomeMarca.getEditText());
+        marcaPresenter.addTextWatcherNomeMarca(inpNomeMarca.getEditText());
 
         btnSave.setOnClickListener(this);
 

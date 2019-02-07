@@ -39,7 +39,7 @@ public class NewPerfilActivity extends AppCompatActivity implements IModelView.I
         btnSave = findViewById(R.id.btn_save);
 
         perfilPresenter = new PerfilPresenter(this, this);
-        ((PerfilPresenter) perfilPresenter).addTextWatcherNomePerfil(inpNomePerfil.getEditText());
+        perfilPresenter.addTextWatcherNomePerfil(inpNomePerfil.getEditText());
 
         btnSave.setOnClickListener(this);
 

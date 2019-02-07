@@ -6,77 +6,79 @@ import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IMarcaService;
+import br.com.omniatechnology.pernavendas.pernavendas.api.IMarcaService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class MarcaServiceImpl implements IService<Marca> {
+public class MarcaServiceImpl implements IMarcaService {
 
 
     private IMarcaService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Marca p;
 
     public MarcaServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+
+    public Observable<Marca> save(final Marca marca){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IMarcaService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(marca).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Marca> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Marca>> findAll(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IMarcaService.class);
 
-        List<Marca> marcas =  service.findAll().execute().body();
 
-        return marcas;
-    }
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
-
-    public boolean save(Marca marca) {
-
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IMarcaService.class);
-
-        try {
-            p = service.save(marca).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
-
-
-        return isSave;
-    }
-
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IMarcaService.class);
-
-        return service.delete(id).execute().body();
 
     }
 
+    public Observable<Marca> findById(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IMarcaService.class);
+
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
+    public Observable<Boolean> delete(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IMarcaService.class);
+
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
 
 
 }

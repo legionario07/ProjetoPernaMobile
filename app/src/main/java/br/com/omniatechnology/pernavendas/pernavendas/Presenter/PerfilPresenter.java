@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
@@ -21,33 +23,32 @@ import br.com.omniatechnology.pernavendas.pernavendas.adapter.PerfisAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
+import rx.functions.Action0;
 
-public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
+public class PerfilPresenter implements IPerfilPresenter{
 
     IModelView.IPerfilView perfilView;
     private Context context;
     Perfil perfil;
-    private Boolean isSave;
-    private List<Perfil> perfis;
+    private List<Perfil> perfis = new ArrayList<>();
     private PerfisAdapter perfilsAdapter;
     private ListView view;
     private TextView txtEmpty;
 
-    private OperationType operationType;
 
     public PerfilPresenter() {
         perfil = new Perfil();
 
     }
 
-    public PerfilPresenter(IModelView.IPerfilView perfilView) {
-        this.perfilView = perfilView;
-    }
 
     public PerfilPresenter(IModelView.IPerfilView perfilView, Context context) {
         this();
@@ -73,19 +74,34 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
         String retornoStr = perfil.isValid(context);
 
-        if (retornoStr.length() > 1)
+
+        if (retornoStr.length() == 0) {
+
+            new PerfilServiceImpl().save(perfil)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Perfil>() {
+                        @Override
+                        public void onCompleted() {
+                            perfilView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            perfilView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Perfil perfil) {
+
+                        }
+                    });
+
+
+        } else {
             perfilView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(perfil, ConstraintUtils.SALVAR, new PerfilServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
@@ -93,13 +109,33 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
-        operationType = OperationType.DELETE;
+        new PerfilServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        perfilView.onMessageSuccess(context.getString(R.string.save_success));
 
-        try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new PerfilServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        perfilView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSave) {
+
+                    }
+                });
+
 
     }
 
@@ -107,25 +143,50 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     @Override
     public void findById() {
 
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
     }
 
     @Override
     public void findAll() {
 
-        operationType = OperationType.FIND_ALL;
+        new PerfilServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Perfil>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            new GenericDAO(context, this).execute(perfil, ConstraintUtils.FIND_ALL, new PerfilServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        if (perfilsAdapter == null) {
+                            perfilsAdapter = new PerfisAdapter(context, perfis);
+
+                            view.setAdapter(perfilsAdapter);
+                        } else {
+                            perfilsAdapter.notifyDataSetChanged();
+                        }
+
+                        if (perfis.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        perfilsAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Perfil> perfilsTemp) {
+                        if (perfis != null) {
+                            perfis.clear();
+                            perfis.addAll(perfilsTemp);
+                        }
+                    }
+                });
 
 
     }
@@ -164,66 +225,4 @@ public class PerfilPresenter implements IPerfilPresenter, ITaskProcess {
     }
 
 
-    @Override
-    public void onPostProcess(Serializable serializable) {
-
-        switch (operationType) {
-            case SAVE:
-            case UPDATE:
-            case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    perfilView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    perfilView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if (operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if (perfis != null) {
-                    perfis.clear();
-                    List<Perfil> perfisTemp = (List<Perfil>) serializable;
-                    if (perfisTemp != null) {
-                        perfis.addAll(perfisTemp);
-                    }
-                } else {
-                    perfis = (List<Perfil>) serializable;
-                    if (perfis == null) {
-                        perfis = new ArrayList<>();
-                    }
-                }
-
-                if (perfilsAdapter == null) {
-                    perfilsAdapter = new PerfisAdapter(context, perfis);
-
-                    view.setAdapter(perfilsAdapter);
-                } else {
-                    perfilsAdapter.notifyDataSetChanged();
-                }
-
-                if (perfis.isEmpty()) {
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                } else {
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                perfilsAdapter.notifyDataSetChanged();
-
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            default:
-        }
-
-    }
 }

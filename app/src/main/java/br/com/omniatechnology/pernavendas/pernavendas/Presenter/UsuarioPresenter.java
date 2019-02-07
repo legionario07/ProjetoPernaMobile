@@ -56,7 +56,7 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
         this.spnPerfil = spinner;
 
-        new PerfilServiceImpl().findAll2()
+        new PerfilServiceImpl().findAll()
                 .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                 .doAfterTerminate(new Action0() {
                     @Override

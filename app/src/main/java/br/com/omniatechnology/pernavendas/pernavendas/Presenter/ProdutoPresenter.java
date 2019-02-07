@@ -79,7 +79,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
 
         operationType = OperationType.FIND_ALL_MARCA;
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
+            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }

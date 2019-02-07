@@ -9,6 +9,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import rx.Observable;
 
 public interface IUsuarioService {
 
@@ -19,19 +20,19 @@ public interface IUsuarioService {
     String LOGIN = BASE_URL_USUARIOS + "login";
 
 
-    @GET(BASE_URL_USUARIOS)
-    Call<List<Usuario>> findAll();
-
-    @GET(FIND_BY_ID)
-    Call<Usuario> findById(@Query("id") Long id);
+    @POST(LOGIN)
+    Observable<Usuario> login(@Body Usuario usuario);
 
     @POST(SAVE)
-    Call<Usuario> save(@Body Usuario usuario);
+    Observable<Usuario> save(@Body Usuario usuario);
 
     @DELETE(DELETE)
-    Call<Boolean> delete(@Query("id") Long id);
+    Observable<Boolean> delete(@Query("id") Long id);
 
-    @POST(LOGIN)
-    Call<Usuario> login(@Body Usuario usuario);
+    @GET(BASE_URL_USUARIOS)
+    Observable<List<Usuario>> findAll();
+
+    @GET(FIND_BY_ID)
+    Observable<Usuario> findById(@Query("id") Long id);
 
 }

@@ -3,52 +3,40 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.MarcasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
+import rx.functions.Action0;
 
-public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
+public class MarcaPresenter implements IMarcaPresenter {
 
     IModelView.IMarcaView marcaView;
     private Context context;
     Marca marca;
-    private Boolean isSave;
-    private List<Marca> marcas;
+    private List<Marca> marcas = new ArrayList<>();
     private MarcasAdapter marcasAdapter;
     private TextView txtEmpty;
     
     private ListView view;
-    private OperationType operationType;
 
     public MarcaPresenter() {
         marca = new Marca();
     }
 
-    public MarcaPresenter(IModelView.IMarcaView marcaView) {
-        this.marcaView = marcaView;
-    }
 
     public MarcaPresenter(IModelView.IMarcaView marcaView, Context context) {
         this();
@@ -77,19 +65,34 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
         String retornoStr = marca.isValid(context);
 
-        if (retornoStr.length() > 1)
+
+        if (retornoStr.length() == 0) {
+
+            new MarcaServiceImpl().save(marca)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Marca>() {
+                        @Override
+                        public void onCompleted() {
+                            marcaView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            marcaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Marca marca) {
+
+                        }
+                    });
+
+
+        } else {
             marcaView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(marca, ConstraintUtils.SALVAR, new MarcaServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
@@ -97,13 +100,33 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
-        operationType = OperationType.DELETE;
+        new MarcaServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        marcaView.onMessageSuccess(context.getString(R.string.save_success));
 
-        try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new MarcaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        marcaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSave) {
+
+                    }
+                });
+
 
     }
 
@@ -111,27 +134,55 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
     @Override
     public void findById() {
 
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(marca, ConstraintUtils.FIND_BY_ID, new MarcaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
     }
 
     @Override
     public void findAll() {
 
-        operationType = OperationType.FIND_ALL;
+        new MarcaServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Marca>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            new GenericDAO(context, this).execute(marca, ConstraintUtils.FIND_ALL, new MarcaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        if (marcasAdapter == null) {
+                            marcasAdapter = new MarcasAdapter(context, marcas);
+
+                            view.setAdapter(marcasAdapter);
+                        } else {
+                            marcasAdapter.notifyDataSetChanged();
+                        }
+
+                        if (marcas.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        marcasAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Marca> marcasTemp) {
+                        if (marcas != null) {
+                            marcas.clear();
+                            marcas.addAll(marcasTemp);
+                        }
+                    }
+                });
+
+
     }
-
+    
+    
     @Override
     public void setItem(IModel model) {
         this.marca = (Marca) model;
@@ -165,64 +216,5 @@ public class MarcaPresenter implements IMarcaPresenter, ITaskProcess {
             });
         }
 
-    @Override
-    public void onPostProcess(Serializable serializable) {
-
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    marcaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    marcaView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if(operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if(marcas!=null){
-                    marcas.clear();
-                    List<Marca> marcasTemp = (List<Marca>) serializable;
-                    if(marcasTemp!=null) {
-                        marcas.addAll(marcasTemp);
-                    }
-                }else {
-                    marcas = (List<Marca>) serializable;
-                    if(marcas==null){
-                        marcas = new ArrayList<>();
-                    }
-                }
-
-                if(marcasAdapter == null) {
-                    marcasAdapter = new MarcasAdapter(context, marcas);
-
-                    view.setAdapter(marcasAdapter);
-                }else{
-                    marcasAdapter.notifyDataSetChanged();
-                }
-
-                if(marcas.isEmpty()){
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                marcasAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            default:
-        }
-
-    }
 
 }

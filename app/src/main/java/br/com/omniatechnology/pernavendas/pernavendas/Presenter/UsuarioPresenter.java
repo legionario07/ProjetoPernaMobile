@@ -3,7 +3,6 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -11,28 +10,18 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.UsuariosAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PerfilServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UsuarioServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Perfil;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Usuario;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 import rx.Observer;
 import rx.functions.Action0;
@@ -55,10 +44,6 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
     public UsuarioPresenter() {
         usuario = new Usuario();
-    }
-
-    public UsuarioPresenter(IModelView.IUsuarioView usuarioView) {
-        this.usuarioView = usuarioView;
     }
 
     public UsuarioPresenter(IModelView.IUsuarioView usuarioView, Context context) {
@@ -192,7 +177,7 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
                     @Override
                     public void onNext(Boolean isSave) {
-                        
+
                     }
                 });
 
@@ -340,11 +325,6 @@ public class UsuarioPresenter implements IUsuarioPresenter {
         });
     }
 
-
-    public void onPostProcess(Serializable serializable) {
-
-
-    }
 
 }
 

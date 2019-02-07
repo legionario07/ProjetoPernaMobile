@@ -152,7 +152,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         else {
 
             try {
-                new GenericDAO(context, this).execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl());
+                //new GenericDAO(context, this).execute(produto, ConstraintUtils.SALVAR, new ProdutoServiceImpl());
             } catch (Exception e) {
                 Log.i(ConstraintUtils.TAG, e.getMessage());
             }
@@ -167,7 +167,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         operationType = OperationType.DELETE;
 
         try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ProdutoServiceImpl());
+        //    new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ProdutoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -181,7 +181,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         operationType = OperationType.FIND_BY_ID;
 
         try {
-            new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_BY_ID, new ProdutoServiceImpl());
+           // new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_BY_ID, new ProdutoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -193,7 +193,7 @@ public class ProdutoPresenter implements IProdutoPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL;
 
         try {
-            new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+        //    new GenericDAO(context, this).execute(produto, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }

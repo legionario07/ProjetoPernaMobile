@@ -93,7 +93,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
         operationType = OperationType.FIND_ALL_CATEGORIA;
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
+            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }

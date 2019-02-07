@@ -3,13 +3,11 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,24 +15,21 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CategoriasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
+import rx.functions.Action0;
 
-public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
+public class CategoriaPresenter implements ICategoriaPresenter {
 
     IModelView.ICategoriaView categoriaView;
     private Context context;
     Categoria categoria;
-    private Boolean isSave;
-    private List<Categoria> categorias;
+    private List<Categoria> categorias = new ArrayList<>();
     private CategoriasAdapter categoriasAdapter;
-    private OperationType operationType;
-    
+
     private ListView view;
     private TextView txtEmpty;
 
@@ -42,9 +37,6 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
         categoria = new Categoria();
     }
 
-    public CategoriaPresenter(IModelView.ICategoriaView categoriaView) {
-        this.categoriaView = categoriaView;
-    }
 
     public CategoriaPresenter(IModelView.ICategoriaView categoriaView, Context context) {
         this();
@@ -69,26 +61,38 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
 
     }
 
-    public void setItem(IModel model){
-        this.categoria = (Categoria) model;
-    }
 
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
         String retornoStr = categoria.isValid(context);
 
-        if (retornoStr.length() > 1)
+
+        if (retornoStr.length() == 0) {
+
+            new CategoriaServiceImpl().save(categoria)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Categoria>() {
+                        @Override
+                        public void onCompleted() {
+                            categoriaView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            categoriaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Categoria categoria) {
+
+                        }
+                    });
+
+
+        } else {
             categoriaView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(categoria, ConstraintUtils.SALVAR, new CategoriaServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
@@ -96,41 +100,92 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
-        operationType = OperationType.DELETE;
+        new CategoriaServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        categoriaView.onMessageSuccess(context.getString(R.string.save_success));
 
-        try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new CategoriaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        categoriaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSave) {
+
+                    }
+                });
+
 
     }
-
 
 
     @Override
     public void findById() {
 
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(categoria, ConstraintUtils.FIND_BY_ID, new CategoriaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
     }
 
     @Override
     public void findAll() {
 
-        operationType = OperationType.FIND_ALL;
+        new CategoriaServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Categoria>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            new GenericDAO(context, this).execute(categoria, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        if (categoriasAdapter == null) {
+                            categoriasAdapter = new CategoriasAdapter(context, categorias);
+
+                            view.setAdapter(categoriasAdapter);
+                        } else {
+                            categoriasAdapter.notifyDataSetChanged();
+                        }
+
+                        if (categorias.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        categoriasAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Categoria> categoriasTemp) {
+                        if (categorias != null) {
+                            categorias.clear();
+                            categorias.addAll(categoriasTemp);
+                        }
+                    }
+                });
+
+
     }
+
+    public void setItem(IModel model){
+        this.categoria = (Categoria) model;
+    }
+
 
     public void addTextWatcherNomeCategoria(final EditText editText) {
 
@@ -160,66 +215,5 @@ public class CategoriaPresenter implements ICategoriaPresenter, ITaskProcess {
         });
     }
 
-    @Override
-    public void onPostProcess(Serializable serializable) {
-
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    categoriaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    categoriaView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if(operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if(categorias!=null){
-                    categorias.clear();
-                    List<Categoria> categoriasTemp = (List<Categoria>) serializable;
-                    if(categoriasTemp!=null){
-
-                        categorias.addAll(categoriasTemp);
-                    }
-                }else {
-                    categorias = (List<Categoria>) serializable;
-
-                    if(categorias==null){
-                        categorias = new ArrayList<>();
-                    }
-                }
-
-                if(categoriasAdapter == null) {
-                    categoriasAdapter = new CategoriasAdapter(context, categorias);
-
-                    view.setAdapter(categoriasAdapter);
-                }else{
-                    categoriasAdapter.notifyDataSetChanged();
-                }
-
-                if(categorias.isEmpty()){
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                categoriasAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            default:
-        }
-
-    }
 
 }

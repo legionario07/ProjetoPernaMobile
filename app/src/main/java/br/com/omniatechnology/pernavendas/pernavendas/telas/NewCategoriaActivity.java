@@ -40,7 +40,7 @@ public class NewCategoriaActivity extends AppCompatActivity implements IModelVie
         btnSave = findViewById(R.id.btn_save);
 
         categoriaPresenter = new CategoriaPresenter(this, this);
-        ((CategoriaPresenter) categoriaPresenter).addTextWatcherNomeCategoria(inpNomeCategoria.getEditText());
+        categoriaPresenter.addTextWatcherNomeCategoria(inpNomeCategoria.getEditText());
 
         btnSave.setOnClickListener(this);
 

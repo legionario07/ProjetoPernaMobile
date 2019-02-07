@@ -1,81 +1,72 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
-import android.util.Log;
-
-import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IComboService;
-import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ComboServiceImpl implements IService<Combo> {
-
+public class ComboServiceImpl implements IComboService {
 
     private IComboService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Combo p;
 
     public ComboServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<Combo> save(final Combo combo) {
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IComboService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(combo).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Combo> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Combo>> findAll() {
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IComboService.class);
 
-        List<Combo> combos =  service.findAll().execute().body();
 
-        return combos;
-    }
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
-
-    public boolean save(Combo combo) {
-
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IComboService.class);
-
-        try {
-            p = service.save(combo).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
-
-
-        return isSave;
-    }
-
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IComboService.class);
-
-        return service.delete(id).execute().body();
 
     }
 
+    public Observable<Combo> findById(final Long id) {
 
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IComboService.class);
+
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
+    public Observable<Boolean> delete(final Long id) {
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IComboService.class);
+
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
 
 }

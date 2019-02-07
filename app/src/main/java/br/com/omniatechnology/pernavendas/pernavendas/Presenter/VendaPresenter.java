@@ -2,14 +2,12 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +15,20 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PedidoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import rx.Observer;
+import rx.functions.Action0;
 
 public class VendaPresenter implements IVendaPresenter{
 
@@ -35,13 +37,12 @@ public class VendaPresenter implements IVendaPresenter{
     Venda venda;
     private Boolean isSave;
     private List<Venda> vendas =  new ArrayList<>();
-    private List<Mercadoria> produtos;
-    private List<Pedido> pedidos;
+    private List<Mercadoria> produtos = new ArrayList<>();
+    private List<Pedido> pedidos = new ArrayList<>();
     ArrayAdapter<Mercadoria> adapter;
     private PedidosAdapter pedidosAdapter;
     private VendasAdapter vendasAdapter;
 
-    private OperationType operationType;
     private ListView lstVenda;
     private ListView lstPedidos;
     private ListView lstProdutos;
@@ -217,7 +218,7 @@ public class VendaPresenter implements IVendaPresenter{
 
         new PedidoServiceImpl().findAll()
                 .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
-                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<Pedido>>() {
                     @Override
                     public void onCompleted() {
@@ -241,25 +242,64 @@ public class VendaPresenter implements IVendaPresenter{
     }
 
     public void findAllProdutos() {
+        new ProdutoServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAllCombos();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Produto>>() {
+                    @Override
+                    public void onCompleted() {
 
-        operationType = OperationType.FIND_ALL_PRODUTO;
+                    }
 
-        try {
-            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Produto> produtosTemp) {
+                        if (produtos != null) {
+                            produtos.clear();
+                            produtos.addAll(produtosTemp);
+                        }
+                    }
+                });
+
+
+
     }
 
     public void findAllCombos() {
 
-        operationType = OperationType.FIND_ALL_COMBOS;
+        new ComboServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Combo>>() {
+                    @Override
+                    public void onCompleted() {
+                        adapter = new ArrayAdapter<Mercadoria>
+                                (context, android.R.layout.select_dialog_item, produtos);
 
-        try {
-            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        autoCompleteProdutos.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Combo> combosTemp) {
+                        if (produtos != null) {
+                            produtos.addAll(combosTemp);
+                        }
+                    }
+                });
+
     }
 
 
@@ -276,46 +316,5 @@ public class VendaPresenter implements IVendaPresenter{
         return null;
     }
 
-    public void onPostProcess(Serializable serializable) {
-
-        switch (operationType) {
-
-            case FIND_ALL_PRODUTO:
-
-                produtos = (List<Mercadoria>) serializable;
-
-                if(produtos==null){
-                    produtos = new ArrayList<>();
-                }
-
-
-                findAllCombos();
-
-                break;
-
-            case FIND_ALL_COMBOS:
-
-                List<Mercadoria> mercadoriasTemp = (List<Mercadoria>) serializable;
-
-                if(mercadoriasTemp!=null && produtos!=null) {
-                    produtos.addAll(mercadoriasTemp);
-                }
-
-                if (produtos == null) {
-                    produtos = new ArrayList<>();
-                }
-
-                adapter = new ArrayAdapter<Mercadoria>
-                        (context, android.R.layout.select_dialog_item, produtos);
-
-                autoCompleteProdutos.setAdapter(adapter);
-
-                break;
-
-
-            default:
-        }
-
-    }
 
 }

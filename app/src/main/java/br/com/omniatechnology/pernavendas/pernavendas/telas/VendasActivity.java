@@ -44,7 +44,7 @@ public class VendasActivity extends AppCompatActivity implements IModelView.IVen
         fabNewVenda.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
-        ((VendaPresenter) vendaPresenter).atualizarListaVenda(lstVenda, txtEmpty);
+        vendaPresenter.atualizarListaVenda(lstVenda, txtEmpty);
 
         registerForContextMenu(lstVenda);
 

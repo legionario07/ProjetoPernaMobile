@@ -8,79 +8,78 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IProdutoService;
+import br.com.omniatechnology.pernavendas.pernavendas.api.IProdutoService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ProdutoServiceImpl implements IService<Produto> {
+public class ProdutoServiceImpl implements IProdutoService {
 
 
-    private static final String PATTERN_YYYY_MM_DD = "yyyy-MM-dd";
     private IProdutoService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Produto p;
 
     public ProdutoServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+
+    public Observable<Produto> save(final Produto produto){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IProdutoService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(produto).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Produto> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Produto>> findAll(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IProdutoService.class);
 
-        List<Produto> produtos =  service.findAll().execute().body();
 
-        return produtos;
-    }
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
-
-    public boolean save(Produto produto) {
-
-        retrofit = RetrofitConfig.getBuilderData(PATTERN_YYYY_MM_DD);
-        service = retrofit.create(IProdutoService.class);
-
-        try {
-            p = service.save(produto).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
-
-
-        return isSave;
-    }
-
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IProdutoService.class);
-
-        return service.delete(id).execute().body();
 
     }
 
+    public Observable<Produto> findById(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IProdutoService.class);
+
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
 
+    }
+
+    public Observable<Boolean> delete(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IProdutoService.class);
+
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
 
 }

@@ -95,15 +95,13 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         vendaPresenter = new VendaPresenter(this, this);
 
-        ((VendaPresenter) vendaPresenter).addDataForAdapter(inpProduto);
+        vendaPresenter.addDataForAdapter(inpProduto);
 
 
         inpProduto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 produto = (Mercadoria) inpProduto.getAdapter().getItem(position);
-
-                //ViewUtils.hideKeyboard(getApplicationContext(), inpProduto, true);
 
             }
         });

@@ -150,7 +150,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         else {
 
             try {
-                new GenericDAO(context, this).execute(combo, ConstraintUtils.SALVAR, new ComboServiceImpl());
+              //  new GenericDAO(context, this).execute(combo, ConstraintUtils.SALVAR, new ComboServiceImpl());
             } catch (Exception e) {
                 Log.i(ConstraintUtils.TAG, e.getMessage());
             }
@@ -165,7 +165,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         operationType = OperationType.DELETE;
 
         try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ComboServiceImpl());
+          //  new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ComboServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -180,7 +180,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         operationType = OperationType.FIND_BY_ID;
 
         try {
-            new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_BY_ID, new ComboServiceImpl());
+          //  new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_BY_ID, new ComboServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -192,7 +192,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL;
 
         try {
-            new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
+            //new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -475,7 +475,7 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL_PRODUTO;
 
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+          //  new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }

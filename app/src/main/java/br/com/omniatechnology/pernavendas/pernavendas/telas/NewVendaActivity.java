@@ -84,10 +84,10 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         lstPedidos = findViewById(R.id.lstPedidos);
         inpProduto = findViewById(R.id.inp_produto);
-        txtTotal  =findViewById(R.id.txtTotal);
+        txtTotal = findViewById(R.id.txtTotal);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
         imgSalvarVenda = findViewById(R.id.imgSalvarVenda);
-        imgQrCode  =findViewById(R.id.imgLerQrCode);
+        imgQrCode = findViewById(R.id.imgLerQrCode);
 
         imgAdicionarProduto.setOnClickListener(this);
         imgSalvarVenda.setOnClickListener(this);
@@ -114,7 +114,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         registerForContextMenu(lstPedidos);
 
 
-
     }
 
     @Override
@@ -127,7 +126,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     public boolean onContextItemSelected(MenuItem item) {
 
         AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
 
         switch (item.getItemId()) {
@@ -143,21 +142,20 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     }
 
 
-
-    public void atualizarListDePedidos(){
+    public void atualizarListDePedidos() {
 
         BigDecimal valorTotal = new BigDecimal("0.0");
 
-        if(pedidosAdapter==null){
+        if (pedidosAdapter == null) {
             pedidos = new ArrayList<>();
             pedidosAdapter = new PedidosAdapter(this, pedidos);
             lstPedidos.setAdapter(pedidosAdapter);
 
-        }else{
+        } else {
 
             pedidosAdapter.notifyDataSetChanged();
 
-            for(Pedido p : pedidos){
+            for (Pedido p : pedidos) {
                 valorTotal = valorTotal.add(p.getValorTotal());
             }
 
@@ -170,7 +168,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
     @Override
     public void onMessageSuccess(String message) {
-        Toast.makeText(this, message ,Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         onBackPressed();
     }
 
@@ -187,7 +185,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
             finishAffinity();
         }
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.imgSalvarVenda:
 
                 venda = new Venda();
@@ -203,13 +201,13 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
             case R.id.imgAdicionarProduto:
 
-               if(produto==null || inpProduto.getText().toString().isEmpty()){
-                   Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
-               }else{
-                   //Regra para abrir dialog com o produto selecionado
-                   criarDialogCRUD();
-                   inpProduto.setText("");
-               }
+                if (produto == null || inpProduto.getText().toString().isEmpty()) {
+                    Toast.makeText(this, getString(R.string.selecione_produto_primeiro), Toast.LENGTH_LONG).show();
+                } else {
+                    //Regra para abrir dialog com o produto selecionado
+                    criarDialogCRUD();
+                    inpProduto.setText("");
+                }
 
                 break;
 
@@ -219,7 +217,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
                 break;
 
-                default:
+            default:
         }
 
     }
@@ -238,12 +236,12 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         inpLayoutQuantidade = dialogView.findViewById(R.id.inp_layout_quantidade);
         inpLayoutDesconto = dialogView.findViewById(R.id.inp_layout_desconto);
 
-        if(produto instanceof Produto) {
-            txtNomeProduto.setText(((Produto) produto ).getNome());
-            txtDescricaoProduto.setText(((Produto) produto ).getDescricao());
-        }else{
-            txtNomeProduto.setText(((Combo) produto ).getNome());
-            txtDescricaoProduto.setText(((Combo) produto ).getDescricao());
+        if (produto instanceof Produto) {
+            txtNomeProduto.setText(((Produto) produto).getNome());
+            txtDescricaoProduto.setText(((Produto) produto).getDescricao());
+        } else {
+            txtNomeProduto.setText(((Combo) produto).getNome());
+            txtDescricaoProduto.setText(((Combo) produto).getDescricao());
         }
         inpLayoutQuantidade.getEditText().setText("1");
         inpLayoutDesconto.getEditText().setText("0");
@@ -256,15 +254,14 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
                 Pedido pedido = new Pedido();
                 pedido.setTotal(Integer.valueOf(inpLayoutQuantidade.getEditText().getText().toString()));
-                if(produto instanceof Produto) {
+                if (produto instanceof Produto) {
                     pedido.setProduto((Produto) produto);
                     valor = pedido.getProduto().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
-                }else{
+                } else {
                     pedido.setCombo((Combo) produto);
                     valor = pedido.getCombo().getValorVenda().multiply(new BigDecimal(pedido.getTotal()));
                 }
                 pedido.setDesconto(new BigDecimal(inpLayoutDesconto.getEditText().getText().toString()));
-
 
 
                 valor = valor.subtract(pedido.getDesconto());
@@ -298,24 +295,24 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(result != null){
+        if (result != null) {
 
-            if(result.getContents()!=null){
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+            if (result.getContents() != null) {
+                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
 
                 produto = ((VendaPresenter) vendaPresenter).verificarProdutoPorEAN(result.getContents());
 
-                if(produto==null){
-                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo),Toast.LENGTH_LONG).show();
-                }else{
+                if (produto == null) {
+                    Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
+                } else {
                     criarDialogCRUD();
                 }
 
-            }else{
+            } else {
                 Toast.makeText(this, getString(R.string.nao_possivel_ler_codigo), Toast.LENGTH_LONG).show();
             }
 
-        }else {
+        } else {
 
             super.onActivityResult(requestCode, resultCode, data);
         }

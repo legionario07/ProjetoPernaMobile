@@ -1,81 +1,73 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api.impl;
 
-import android.util.Log;
-
-import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IVendaService;
-import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class VendaServiceImpl implements IService<Venda> {
-
+public class VendaServiceImpl implements IVendaService {
 
     private IVendaService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Venda p;
 
     public VendaServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+
+    public Observable<Venda> save(final Venda venda){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IVendaService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(venda).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Venda> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Venda>> findAll(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IVendaService.class);
 
-        List<Venda> vendas =  service.findAll().execute().body();
 
-        return vendas;
-    }
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
-
-    public boolean save(Venda venda) {
-
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IVendaService.class);
-
-        try {
-            p = service.save(venda).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
-
-
-        return isSave;
-    }
-
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
-        service = retrofit.create(IVendaService.class);
-
-        return service.delete(id).execute().body();
 
     }
 
+    public Observable<Venda> findById(final Long id){
 
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IVendaService.class);
+
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
+    public Observable<Boolean> delete(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IVendaService.class);
+
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
 
 }

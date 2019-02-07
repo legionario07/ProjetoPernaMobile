@@ -22,26 +22,29 @@ import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PedidoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import rx.Observer;
 
-public class VendaPresenter implements IVendaPresenter, ITaskProcess {
+public class VendaPresenter implements IVendaPresenter{
 
     IModelView.IVendaView vendaView;
     private Context context;
     Venda venda;
     private Boolean isSave;
-    private List<Venda> vendas;
+    private List<Venda> vendas =  new ArrayList<>();
     private List<Mercadoria> produtos;
     private List<Pedido> pedidos;
     ArrayAdapter<Mercadoria> adapter;
@@ -58,10 +61,6 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
     public VendaPresenter() {
         venda = new Venda();
-    }
-
-    public VendaPresenter(IModelView.IVendaView vendaView) {
-        this.vendaView = vendaView;
     }
 
     public VendaPresenter(IModelView.IVendaView vendaView, Context context) {
@@ -117,25 +116,95 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
     }
 
+
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
         String retornoStr = venda.isValid(context);
 
-        if (retornoStr.length() > 1)
+
+        if (retornoStr.length() == 0) {
+
+            new VendaServiceImpl().save(venda)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Venda>() {
+                        @Override
+                        public void onCompleted() {
+                            vendaView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            vendaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Venda venda) {
+
+                        }
+                    });
+
+
+        } else {
             vendaView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(venda, ConstraintUtils.SALVAR, new VendaServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
+
+   
+
+    @Override
+    public void findById() {
+
+    }
+
+    @Override
+    public void findAll() {
+
+        new VendaServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Venda>>() {
+                    @Override
+                    public void onCompleted() {
+
+                        if (vendasAdapter == null) {
+                            vendasAdapter = new VendasAdapter(context, vendas);
+
+                            lstVenda.setAdapter(vendasAdapter);
+                        } else {
+                            vendasAdapter.notifyDataSetChanged();
+                        }
+
+                        if (vendas.isEmpty()) {
+                            lstVenda.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            lstVenda.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        vendasAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Venda> vendasTemp) {
+                        if (vendas != null) {
+                            vendas.clear();
+                            vendas.addAll(vendasTemp);
+                        }
+                    }
+                });
+
+
+    }
+
 
     @Override
     public void onDelete(Long id) {
@@ -148,29 +217,6 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
 
 
 
-    @Override
-    public void findById() {
-
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(venda, ConstraintUtils.FIND_BY_ID, new VendaServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-    }
-
-    @Override
-    public void findAll() {
-
-        operationType = OperationType.FIND_ALL;
-
-        try {
-            new GenericDAO(context, this).execute(venda, ConstraintUtils.FIND_ALL, new VendaServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-    }
 
     @Override
     public void setItem(IModel model) {
@@ -182,7 +228,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL_PEDIDO;
 
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new PedidoServiceImpl());
+            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new PedidoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -193,7 +239,7 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL_PRODUTO;
 
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
+            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
@@ -204,105 +250,29 @@ public class VendaPresenter implements IVendaPresenter, ITaskProcess {
         operationType = OperationType.FIND_ALL_COMBOS;
 
         try {
-            new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
+            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
         } catch (Exception e) {
             Log.e(ConstraintUtils.TAG, e.getMessage());
         }
     }
 
 
-    public void addTextWatcherVenda(final EditText editText) {
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //venda.setVenda(s.toString());
-            }
-        });
-    }
-
     public Mercadoria verificarProdutoPorEAN(String ean) {
 
         for (Mercadoria p : produtos) {
 
-            if(p instanceof Produto) {
-                if (((Produto) p ).getEan().equals(ean)) {
+                if (p.getEan().equals(ean)) {
                     return p;
                 }
-            }else{
-                if(((Combo) p ).getEan().equals(ean)){
-                    return p;
-                }
-            }
 
         }
 
         return null;
     }
 
-    @Override
     public void onPostProcess(Serializable serializable) {
 
         switch (operationType) {
-            case SAVE:
-            case UPDATE:
-            case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    vendaView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    vendaView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if (operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if (vendas != null) {
-                    vendas.clear();
-                    vendas.addAll((List<Venda>) serializable);
-                } else {
-                    vendas = (List<Venda>) serializable;
-                    if(vendas==null){
-                        vendas = new ArrayList<>();
-                    }
-                }
-
-                if (vendasAdapter == null) {
-                    vendasAdapter = new VendasAdapter(context, vendas);
-
-                    lstVenda.setAdapter(vendasAdapter);
-                } else {
-                    vendasAdapter.notifyDataSetChanged();
-                }
-
-                if(vendas.isEmpty()){
-                    lstVenda.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    lstVenda.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                vendasAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_BY_ID:
-
-
-                break;
             case FIND_ALL_PEDIDO:
 
                 pedidos = (List<Pedido>) serializable;

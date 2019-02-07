@@ -26,10 +26,10 @@ public interface UsuarioService {
     @POST(SAVE)
     Observable<Usuario> save(@Body Usuario usuario);
 
-    @POST(DELETE)
-    Observable<Usuario> delete(@Query("id") Long id);
+    @DELETE(DELETE)
+    Observable<Boolean> delete(@Query("id") Long id);
 
-    @POST(BASE_URL_USUARIOS)
+    @GET(BASE_URL_USUARIOS)
     Observable<List<Usuario>> findAll();
 
     @GET(FIND_BY_ID)

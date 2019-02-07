@@ -35,6 +35,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 import rx.Observer;
+import rx.functions.Action0;
 
 public class UsuarioPresenter implements IUsuarioPresenter {
 
@@ -72,7 +73,13 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
         new PerfilServiceImpl().findAll2()
                 .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
-                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        usuarioView.onLoadedEntitys();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<Perfil>>() {
                     @Override
                     public void onCompleted() {
@@ -81,7 +88,7 @@ public class UsuarioPresenter implements IUsuarioPresenter {
                         arrayPerfis.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spnPerfil.setAdapter(arrayPerfis);
 
-                        usuarioView.onLoadedEntitys();
+
                     }
 
                     @Override
@@ -164,15 +171,18 @@ public class UsuarioPresenter implements IUsuarioPresenter {
 
         new UsuarioServiceImpl().delete(id)
                 .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
-                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
-                .subscribe(new Observer<Usuario>() {
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onCompleted() {
                         usuarioView.onMessageSuccess(context.getString(R.string.save_success));
 
-                        usuarioView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-
-                        findAll();
                     }
 
                     @Override
@@ -181,7 +191,8 @@ public class UsuarioPresenter implements IUsuarioPresenter {
                     }
 
                     @Override
-                    public void onNext(Usuario usuario) {
+                    public void onNext(Boolean isSave) {
+                        
                     }
                 });
 
@@ -204,36 +215,39 @@ public class UsuarioPresenter implements IUsuarioPresenter {
                     @Override
                     public void onCompleted() {
 
+                       if (usuariosAdapter == null) {
+                            usuariosAdapter = new UsuariosAdapter(context, usuarios);
+
+                            view.setAdapter(usuariosAdapter);
+                        } else {
+                            usuariosAdapter.notifyDataSetChanged();
+                        }
+
+                        if (usuarios.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        usuariosAdapter.notifyDataSetChanged();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("TQAG", "onNext: ");
                     }
 
                     @Override
-                    public void onNext(List<Usuario> usuarios) {
-                        Log.i("TQAG", "onNext: ");
+                    public void onNext(List<Usuario> usuariosTemp) {
+                        if (usuarios != null) {
+                            usuarios.clear();
+                            usuarios.addAll(usuariosTemp);
+                        }
                     }
                 });
 
-//        if (usuariosAdapter == null) {
-//            usuariosAdapter = new UsuariosAdapter(context, usuarios);
-//
-//            view.setAdapter(usuariosAdapter);
-//        } else {
-//            usuariosAdapter.notifyDataSetChanged();
-//        }
-//
-//        if (usuarios.isEmpty()) {
-//            view.setVisibility(View.GONE);
-//            txtEmpty.setVisibility(View.VISIBLE);
-//        } else {
-//            view.setVisibility(View.VISIBLE);
-//            txtEmpty.setVisibility(View.GONE);
-//        }
-//
-//        usuariosAdapter.notifyDataSetChanged();
 
     }
 

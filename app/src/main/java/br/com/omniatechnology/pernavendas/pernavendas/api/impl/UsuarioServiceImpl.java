@@ -71,7 +71,7 @@ public class UsuarioServiceImpl{
 
     }
 
-    public Observable<Usuario> delete(final Long id){
+    public Observable<Boolean> delete(final Long id){
 
         retrofit = RetrofitConfig.getBuilderAdapter();
 

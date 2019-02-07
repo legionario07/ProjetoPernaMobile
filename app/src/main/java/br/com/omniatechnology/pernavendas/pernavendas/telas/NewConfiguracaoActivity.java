@@ -1,6 +1,5 @@
 package br.com.omniatechnology.pernavendas.pernavendas.telas;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -9,15 +8,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.util.List;
-
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ConfiguracaoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IConfiguracaoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
-import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
@@ -42,8 +37,8 @@ public class NewConfiguracaoActivity extends AppCompatActivity implements IModel
         btnSave = findViewById(R.id.btn_save);
 
         configuracaoPresenter = new ConfiguracaoPresenter(this, this);
-        ((ConfiguracaoPresenter) configuracaoPresenter).addTextWatcherPropriedadeConfiguracao(inpPropriedadeConfiguracao.getEditText());
-        ((ConfiguracaoPresenter) configuracaoPresenter).addTextWatcherValorConfiguracao(inpValorConfiguracao.getEditText());
+        configuracaoPresenter.addTextWatcherPropriedadeConfiguracao(inpPropriedadeConfiguracao.getEditText());
+        configuracaoPresenter.addTextWatcherValorConfiguracao(inpValorConfiguracao.getEditText());
 
         btnSave.setOnClickListener(this);
 

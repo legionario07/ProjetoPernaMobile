@@ -6,73 +6,77 @@ import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IConfiguracaoService;
+import br.com.omniatechnology.pernavendas.pernavendas.api.IConfiguracaoService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class ConfiguracaoServiceImpl implements IService<Configuracao> {
+public class ConfiguracaoServiceImpl implements IConfiguracaoService {
+
 
 
     private IConfiguracaoService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Configuracao p;
 
     public ConfiguracaoServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+
+    public Observable<Configuracao> save(final Configuracao configuracao){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IConfiguracaoService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(configuracao).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Configuracao> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Configuracao>> findAll(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IConfiguracaoService.class);
 
-        List<Configuracao> configuracoes =  service.findAll().execute().body();
 
-        return configuracoes;
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
     }
 
+    public Observable<Configuracao> findById(final Long id){
 
-    public boolean save(Configuracao configuracao) {
+        retrofit = RetrofitConfig.getBuilderAdapter();
 
-        retrofit = RetrofitConfig.getBuilder();
         service = retrofit.create(IConfiguracaoService.class);
 
-        try {
-            p = service.save(configuracao).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
 
-        return isSave;
     }
 
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<Boolean> delete(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IConfiguracaoService.class);
 
-        return service.delete(id).execute().body();
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 

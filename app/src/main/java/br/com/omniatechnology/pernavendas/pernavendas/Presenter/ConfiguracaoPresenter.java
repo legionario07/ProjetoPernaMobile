@@ -1,16 +1,13 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,34 +15,28 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ConfiguracoesAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
+import rx.functions.Action0;
 
-public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProcess {
+public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
 
     IModelView.IConfiguracaoView configuracaoView;
     private Context context;
     Configuracao configuracao;
-    private Boolean isSave;
-    private List<Configuracao> configuracoes;
+    private List<Configuracao> configuracoes = new ArrayList<>();
     private ConfiguracoesAdapter configuracoesAdapter;
     
     private ListView view;
-    private OperationType operationType;
     private TextView txtEmpty;
 
     public ConfiguracaoPresenter() {
         configuracao = new Configuracao();
     }
 
-    public ConfiguracaoPresenter(IModelView.IConfiguracaoView configuracaoView) {
-        this.configuracaoView = configuracaoView;
-    }
 
     public ConfiguracaoPresenter(IModelView.IConfiguracaoView configuracaoView, Context context) {
         this();
@@ -69,66 +60,6 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
 
     }
 
-    @Override
-    public void onCreate() {
-
-        operationType = OperationType.SAVE;
-        String retornoStr = configuracao.isValid(context);
-
-        if (retornoStr.length() > 1)
-            configuracaoView.onMessageError(retornoStr);
-        else {
-
-            try {
-                new GenericDAO(context, this).execute(configuracao, ConstraintUtils.SALVAR, new ConfiguracaoServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
-        }
-
-    }
-
-    @Override
-    public void onDelete(Long id) {
-
-        operationType = OperationType.DELETE;
-
-        try {
-            new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ConfiguracaoServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-
-    }
-
-
-
-    @Override
-    public void findById() {
-
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-            new GenericDAO(context, this).execute(configuracao, ConstraintUtils.FIND_BY_ID, new ConfiguracaoServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-    }
-
-    @Override
-    public void findAll() {
-
-        operationType = OperationType.FIND_ALL;
-
-        try {
-            new GenericDAO(context, this).execute(configuracao, ConstraintUtils.FIND_ALL, new ConfiguracaoServiceImpl());
-        }catch (Exception e){
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-
-
-    }
 
     @Override
     public void setItem(IModel model) {
@@ -183,62 +114,122 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter, ITaskProce
     }
 
     @Override
-    public void onPostProcess(Serializable serializable) {
+    public void onCreate() {
 
-        switch (operationType){
-            case SAVE: case UPDATE: case DELETE:
+        String retornoStr = configuracao.isValid(context);
 
-                isSave = (Boolean) serializable;
 
-                if (isSave)
-                    configuracaoView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    configuracaoView.onMessageError(context.getResources().getString(R.string.error_operacao));
+        if (retornoStr.length() == 0) {
 
-                if(operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
+            new ConfiguracaoServiceImpl().save(configuracao)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Configuracao>() {
+                        @Override
+                        public void onCompleted() {
+                            configuracaoView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
 
-                if(configuracoes!=null){
-                    configuracoes.clear();
-                    List<Configuracao> configuracoesTemp = (List<Configuracao>) serializable;
-                    if(configuracoesTemp!=null) {
-                        configuracoes.addAll(configuracoesTemp);
-                    }
-                }else {
-                    configuracoes = (List<Configuracao>) serializable;
-                    if(configuracoes==null){
-                        configuracoes = new ArrayList<>();
-                    }
-                }
+                        @Override
+                        public void onError(Throwable e) {
+                            configuracaoView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
 
-                if(configuracoesAdapter == null) {
-                    configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
+                        @Override
+                        public void onNext(Configuracao configuracao) {
 
-                    view.setAdapter(configuracoesAdapter);
-                }else{
-                    configuracoesAdapter.notifyDataSetChanged();
-                }
+                        }
+                    });
 
-                if(configuracoes.isEmpty()){
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
 
-                configuracoesAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            default:
+        } else {
+            configuracaoView.onMessageError(retornoStr);
         }
+
+    }
+
+    @Override
+    public void onDelete(Long id) {
+
+        new ConfiguracaoServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        configuracaoView.onMessageSuccess(context.getString(R.string.save_success));
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        configuracaoView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSave) {
+
+                    }
+                });
+
+
+    }
+
+
+    @Override
+    public void findById() {
+
+    }
+
+    @Override
+    public void findAll() {
+
+        new ConfiguracaoServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Configuracao>>() {
+                    @Override
+                    public void onCompleted() {
+
+                        if (configuracoes == null) {
+                            configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
+
+                            view.setAdapter(configuracoesAdapter);
+                        } else {
+                            configuracoesAdapter.notifyDataSetChanged();
+                        }
+
+                        if (configuracoes.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        configuracoesAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Configuracao> configuracoesTemp) {
+                        if (configuracoes != null) {
+                            configuracoes.clear();
+                            configuracoes.addAll(configuracoesTemp);
+                        }
+                    }
+                });
+
 
     }
 

@@ -2,13 +2,10 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,20 +17,13 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAdapter;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PedidoServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
-import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import rx.Observer;
@@ -225,13 +215,29 @@ public class VendaPresenter implements IVendaPresenter{
 
     public void findAllPedidos() {
 
-        operationType = OperationType.FIND_ALL_PEDIDO;
+        new PedidoServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Pedido>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new PedidoServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Pedido> pedidosTemp) {
+                        if (pedidos != null) {
+                            pedidos.clear();
+                            pedidos.addAll(pedidosTemp);
+                        }
+                    }
+                });
+
+
     }
 
     public void findAllProdutos() {
@@ -273,14 +279,6 @@ public class VendaPresenter implements IVendaPresenter{
     public void onPostProcess(Serializable serializable) {
 
         switch (operationType) {
-            case FIND_ALL_PEDIDO:
-
-                pedidos = (List<Pedido>) serializable;
-                if(pedidos==null){
-                    pedidos = new ArrayList<>();
-                }
-
-                break;
 
             case FIND_ALL_PRODUTO:
 

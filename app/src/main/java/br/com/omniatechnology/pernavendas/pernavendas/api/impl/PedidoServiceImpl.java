@@ -6,73 +6,76 @@ import java.io.IOException;
 import java.util.List;
 
 import br.com.omniatechnology.pernavendas.pernavendas.api.IPedidoService;
+import br.com.omniatechnology.pernavendas.pernavendas.api.IPedidoService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.IService;
 import br.com.omniatechnology.pernavendas.pernavendas.api.RetrofitConfig;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import retrofit2.Retrofit;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-public class PedidoServiceImpl implements IService<Pedido> {
+public class PedidoServiceImpl implements IPedidoService {
 
 
     private IPedidoService service;
     private Retrofit retrofit;
-    private Boolean isSave;
-    private Pedido p;
 
     public PedidoServiceImpl() {
     }
 
 
-    @Override
-    public IModel findById(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+
+    public Observable<Pedido> save(final Pedido pedido){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IPedidoService.class);
 
-        return service.findById(id).execute().body();
+
+        return service.save(pedido).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 
-    @Override
-    public List<Pedido> findAll() throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<List<Pedido>> findAll(){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IPedidoService.class);
 
-        List<Pedido> pedidos =  service.findAll().execute().body();
 
-        return pedidos;
+        return service.findAll().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
     }
 
+    public Observable<Pedido> findById(final Long id){
 
-    public boolean save(Pedido pedido) {
+        retrofit = RetrofitConfig.getBuilderAdapter();
 
-        retrofit = RetrofitConfig.getBuilder();
         service = retrofit.create(IPedidoService.class);
 
-        try {
-            p = service.save(pedido).execute().body();
-        } catch (IOException e) {
-            Log.i(ConstraintUtils.TAG, e.getMessage());
-            isSave = false;
-        }
-
-        if (p == null) {
-            isSave = false;
-        } else {
-            isSave = true;
-        }
+        return service.findById(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
 
 
-        return isSave;
     }
 
-    @Override
-    public boolean delete(Long id) throws IOException {
-        retrofit = RetrofitConfig.getBuilder();
+    public Observable<Boolean> delete(final Long id){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
         service = retrofit.create(IPedidoService.class);
 
-        return service.delete(id).execute().body();
+        return service.delete(id).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
 
     }
 

@@ -26,6 +26,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IProdutoPresente
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Marca;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
@@ -224,11 +225,15 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
 
     @Override
     public void onLoadeadEntitys() {
-
+        ViewHelper.closeProgressDialog();
 
     }
 
     public void fillDataInSpinnerMarca() {
+
+        if(produto==null)
+            return;
+
         for (int i = 0; i < spnMarca.getAdapter().getCount(); i++) {
 
             Marca marca = (Marca) spnMarca.getAdapter().getItem(i);
@@ -242,6 +247,10 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     }
 
     public void fillDataInSpinnerCategoria() {
+
+        if(produto==null)
+            return;
+
         for (int i = 0; i < spnCategoria.getAdapter().getCount(); i++) {
 
             Categoria categoria = (Categoria) spnCategoria.getAdapter().getItem(i);
@@ -255,6 +264,10 @@ public class NewProdutoActivity extends AppCompatActivity implements IModelView.
     }
 
     public void fillDataInSpinnerUnidadeDeMedida() {
+
+        if(produto==null)
+            return;
+
         for (int i = 0; i < spnUnidadeDeMedida.getAdapter().getCount(); i++) {
 
             UnidadeDeMedida unidadeDeMedida = (UnidadeDeMedida) spnUnidadeDeMedida.getAdapter().getItem(i);

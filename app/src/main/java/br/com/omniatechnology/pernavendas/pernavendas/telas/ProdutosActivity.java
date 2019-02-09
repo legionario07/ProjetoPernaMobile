@@ -17,6 +17,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ProdutoPresenter
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 
@@ -121,6 +122,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     @Override
     public void onLoadeadEntitys() {
        produtosAdapter = (ProdutosAdapter) rcViewProdutos.getAdapter();
+
     }
 
     @Override

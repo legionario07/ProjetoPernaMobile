@@ -71,6 +71,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
      * Ira chamar o setSpinnerMarca -> setSpinnerUnidadeDeMedida -> setSpinnerCategorias
      */
     public void initializeSpinnersWithData(){
+        ViewHelper.showProgressDialog(context);
         setSpinnerMarca();
         setSpinnerCategoria();
         setSpinnerUnidadeDeMedida();
@@ -79,14 +80,12 @@ public class ProdutoPresenter implements IProdutoPresenter {
     public void setSpinnerMarca() {
 
         new MarcaServiceImpl().findAll()
-                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
                        produtoView.fillDataInSpinnerMarca();
                     }
                 })
-                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<Marca>>() {
                     @Override
                     public void onCompleted() {
@@ -113,14 +112,13 @@ public class ProdutoPresenter implements IProdutoPresenter {
     public void setSpinnerUnidadeDeMedida() {
 
         new UnidadeDeMedidaServiceImpl().findAll()
-                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
                        produtoView.fillDataInSpinnerUnidadeDeMedida();
+                       produtoView.onLoadeadEntitys();
                     }
                 })
-                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<UnidadeDeMedida>>() {
                     @Override
                     public void onCompleted() {
@@ -147,14 +145,12 @@ public class ProdutoPresenter implements IProdutoPresenter {
     public void setSpinnerCategoria() {
 
         new CategoriaServiceImpl().findAll()
-                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
                         produtoView.fillDataInSpinnerCategoria();
                     }
                 })
-                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<Categoria>>() {
                     @Override
                     public void onCompleted() {

@@ -11,3 +11,5 @@
 .externalNativeBuild
 pernavendas.jks
 .idea/caches/gradle_models.ser
+.idea/misc.xml
+app/release/app-release.apk

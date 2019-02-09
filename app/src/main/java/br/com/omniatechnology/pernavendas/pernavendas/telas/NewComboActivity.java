@@ -26,6 +26,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IComboPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosCombosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
@@ -83,6 +84,7 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
         comboPresenter = new ComboPresenter(this, this);
         comboPresenter.initializeSpinner(spnCategoria, spnUnidadeDeMedida);
+        comboPresenter.initializeSpinnersWithData();
 
         comboPresenter.addTextWatcherNomeCombo(inpNomeCombo);
         comboPresenter.addTextWatcherPrecoVenda(inpPrecoVenda);
@@ -109,8 +111,6 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(ConstraintUtils.COMBO_INTENT)) {
             combo = (Combo) getIntent().getExtras().get(ConstraintUtils.COMBO_INTENT);
             preencherDadosNaView();
-
-
         }else{
             atualizarListDeProdutos();
         }
@@ -192,8 +192,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     @Override
     public void onLoadeadEntitys() {
 
-        fillDataInSpinnerCategoria();
-        fillDataInSpinnerUnidadeDeMedida();
+
+        ViewHelper.closeProgressDialog();
 
     }
 

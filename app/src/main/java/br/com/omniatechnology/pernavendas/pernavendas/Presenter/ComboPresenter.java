@@ -21,7 +21,10 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CombosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
@@ -36,15 +39,13 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 import rx.Observer;
 import rx.functions.Action0;
 
-public class ComboPresenter implements IComboPresenter, ITaskProcess {
+public class ComboPresenter implements IComboPresenter {
 
     IModelView.IComboView comboView;
     private Context context;
     Combo combo;
-    private Boolean isSave;
-    private List<Combo> combos;
+    private List<Combo> combos = new ArrayList<>();
     private CombosAdapter combosAdapter;
-    private OperationType operationType;
 
     private Spinner spnCategoria;
     private Spinner spnUnidadeDeMedida;
@@ -58,15 +59,12 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     private ListView view;
     private TextView txtEmpty;
-    private List<Produto> produtos;
+    private List<Produto> produtos = new ArrayList<>();
 
     public ComboPresenter() {
         combo = new Combo();
     }
 
-    public ComboPresenter(IModelView.IComboView comboView) {
-        this.comboView = comboView;
-    }
 
     public ComboPresenter(IModelView.IComboView comboView, Context context) {
         this();
@@ -193,21 +191,37 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     @Override
     public void onCreate() {
 
-        operationType = OperationType.SAVE;
-        getDadosSpinnerCategoria(spnCategoria);
-        getDadosSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
         String retornoStr = combo.isValid(context);
 
-        if (retornoStr.length() > 1)
+        getDadosSpinnerCategoria(spnCategoria);
+        getDadosSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+
+
+        if (retornoStr.length() == 0) {
+
+            new ComboServiceImpl().save(combo)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                    .subscribe(new Observer<Combo>() {
+                        @Override
+                        public void onCompleted() {
+                            comboView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            comboView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Combo combo) {
+
+                        }
+                    });
+
+
+        } else {
             comboView.onMessageError(retornoStr);
-        else {
-
-            try {
-              //  new GenericDAO(context, this).execute(combo, ConstraintUtils.SALVAR, new ComboServiceImpl());
-            } catch (Exception e) {
-                Log.i(ConstraintUtils.TAG, e.getMessage());
-            }
-
         }
 
     }
@@ -215,41 +229,93 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     @Override
     public void onDelete(Long id) {
 
-        operationType = OperationType.DELETE;
+        new ComboServiceImpl().delete(id)
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        findAll();
+                    }
+                })
+                .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        comboView.onMessageSuccess(context.getString(R.string.save_success));
 
-        try {
-          //  new GenericDAO(context, this).execute(id, ConstraintUtils.DELETAR, new ComboServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        comboView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSave) {
+
+                    }
+                });
     }
-
 
 
     @Override
     public void findById() {
 
-        operationType = OperationType.FIND_BY_ID;
-
-        try {
-          //  new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_BY_ID, new ComboServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
     }
 
     @Override
     public void findAll() {
 
-        operationType = OperationType.FIND_ALL;
+        new ComboServiceImpl().findAll()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doOnUnsubscribe(
+                        ViewHelper.closeProgressDialogAction(context)
+                )
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        comboView.onLoadeadEntitys();
+                    }
+                })
+                .subscribe(new Observer<List<Combo>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-            //new GenericDAO(context, this).execute(combo, ConstraintUtils.FIND_ALL, new ComboServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        if (combosAdapter == null) {
+                            combosAdapter = new CombosAdapter(context, combos);
+
+                            view.setAdapter(combosAdapter);
+                        } else {
+                            combosAdapter.notifyDataSetChanged();
+                        }
+
+                        if (combos.isEmpty()) {
+                            view.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        combosAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Combo> combosTemp) {
+                        if (combos != null) {
+                            combos.clear();
+                            combos.addAll(combosTemp);
+                        }
+                    }
+                });
+
     }
+
 
     public void addTextWatcherNomeCombo(final EditText editText) {
 
@@ -397,115 +463,6 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         });
     }
 
-    @Override
-    public void onPostProcess(Serializable serializable) {
-
-        switch (operationType) {
-            case SAVE:
-            case UPDATE:
-            case DELETE:
-
-                isSave = (Boolean) serializable;
-
-                if (isSave)
-                    comboView.onMessageSuccess(context.getResources().getString(R.string.save_success));
-                else
-                    comboView.onMessageError(context.getResources().getString(R.string.error_operacao));
-
-                if (operationType == OperationType.DELETE)
-                    findAll();
-                break;
-            case FIND_ALL:
-
-                if (combos != null) {
-                    combos.clear();
-                    List<Combo> comboTemp = (List<Combo>) serializable;
-                    if (comboTemp != null) {
-                        combos.addAll(comboTemp);
-                    }
-                } else {
-                    combos = (List<Combo>) serializable;
-                    if (combos == null) {
-                        combos = new ArrayList<>();
-                    }
-                }
-
-                if (combosAdapter == null) {
-                    combosAdapter = new CombosAdapter(context, combos);
-
-                    view.setAdapter(combosAdapter);
-                } else {
-                    combosAdapter.notifyDataSetChanged();
-                }
-
-                if (combos.isEmpty()) {
-                    view.setVisibility(View.GONE);
-                    txtEmpty.setVisibility(View.VISIBLE);
-                } else {
-                    view.setVisibility(View.VISIBLE);
-                    txtEmpty.setVisibility(View.GONE);
-                }
-
-                combosAdapter.notifyDataSetChanged();
-
-                break;
-
-            case FIND_ALL_PRODUTO:
-
-                produtos = (List<Produto>) serializable;
-
-                if (produtos == null) {
-                    produtos = new ArrayList<>();
-                }
-
-                arrayAdapter = new ArrayAdapter<Produto>
-                        (context, android.R.layout.select_dialog_item, produtos);
-
-                actProdutos.setAdapter(arrayAdapter);
-
-                setSpinnerCategoria();
-
-                break;
-
-            case FIND_ALL_UNIDADE_DE_MEDIDA:
-
-                List<UnidadeDeMedida> unidadeDeMedidas = (List<UnidadeDeMedida>) serializable;
-
-                if(unidadeDeMedidas == null){
-                    unidadeDeMedidas = new ArrayList<>();
-                }
-
-                ArrayAdapter arrayUnidadeDeMedida = new ArrayAdapter(context, android.R.layout.simple_spinner_item, unidadeDeMedidas);
-                arrayUnidadeDeMedida.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spnUnidadeDeMedida.setAdapter(arrayUnidadeDeMedida);
-
-                comboView.onLoadeadEntitys();
-
-                break;
-
-            case FIND_ALL_CATEGORIA:
-
-                List<Categoria> categorias = (List<Categoria>) serializable;
-                if(categorias==null){
-                    categorias = new ArrayList<>();
-                }
-
-                ArrayAdapter arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
-                arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spnCategoria.setAdapter(arrayCategorias);
-
-                setSpinnerUnidadeDeMedida();
-
-                break;
-
-            case FIND_BY_ID:
-
-                break;
-
-            default:
-        }
-
-    }
 
     public Produto verificarProdutoPorEAN(String ean) {
 
@@ -525,13 +482,35 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     public void findAllProdutos() {
 
-        operationType = OperationType.FIND_ALL_PRODUTO;
+        new ProdutoServiceImpl().findAll()
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        comboView.onLoadeadEntitys();
+                    }
+                })
+                .subscribe(new Observer<List<Produto>>() {
+                    @Override
+                    public void onCompleted() {
 
-        try {
-          //  new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new ProdutoServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+                        arrayAdapter = new ArrayAdapter<Produto>
+                                (context, android.R.layout.select_dialog_item, produtos);
+
+                        actProdutos.setAdapter(arrayAdapter);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Produto> produtosTemp) {
+                        produtos.addAll(produtosTemp);
+                    }
+                });
+
+
     }
 
     public void getDadosSpinnerCategoria(Spinner spinner) {

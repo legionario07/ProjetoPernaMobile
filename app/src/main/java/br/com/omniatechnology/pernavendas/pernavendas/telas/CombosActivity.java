@@ -121,4 +121,14 @@ public class CombosActivity extends AppCompatActivity implements IModelView.ICom
     public void onLoadeadEntitys() {
 
     }
+
+    @Override
+    public void fillDataInSpinnerCategoria() {
+
+    }
+
+    @Override
+    public void fillDataInSpinnerUnidadeDeMedida() {
+
+    }
 }

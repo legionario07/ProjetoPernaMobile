@@ -22,21 +22,19 @@ import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.CombosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.CategoriaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.GenericDAO;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.MarcaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.UnidadeDeMedidaServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
+import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.interfaces.ITaskProcess;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
+import rx.Observer;
+import rx.functions.Action0;
 
 public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
@@ -50,6 +48,9 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     private Spinner spnCategoria;
     private Spinner spnUnidadeDeMedida;
+
+    private List<UnidadeDeMedida> unidadesDeMedidas = new ArrayList<>();
+    private List<Categoria> categorias = new ArrayList<>();
 
     private AutoCompleteTextView actProdutos;
 
@@ -89,25 +90,77 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
 
     }
 
-    public void setSpinnerCategoria() {
 
-        operationType = OperationType.FIND_ALL_CATEGORIA;
-        try {
-            //new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new CategoriaServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
-
+    /**
+     * Ira chamar o setSpinnerMarca -> setSpinnerUnidadeDeMedida -> setSpinnerCategorias
+     */
+    public void initializeSpinnersWithData(){
+        ViewHelper.showProgressDialog(context);
+        setSpinnerCategoria();
+        setSpinnerUnidadeDeMedida();
     }
 
     public void setSpinnerUnidadeDeMedida() {
 
-        operationType = OperationType.FIND_ALL_UNIDADE_DE_MEDIDA;
-        try {
-           // new GenericDAO(context, this).execute(false, ConstraintUtils.FIND_ALL, new UnidadeDeMedidaServiceImpl());
-        } catch (Exception e) {
-            Log.e(ConstraintUtils.TAG, e.getMessage());
-        }
+        new UnidadeDeMedidaServiceImpl().findAll()
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        comboView.fillDataInSpinnerUnidadeDeMedida();
+                        comboView.onLoadeadEntitys();
+                    }
+                })
+                .subscribe(new Observer<List<UnidadeDeMedida>>() {
+                    @Override
+                    public void onCompleted() {
+
+                        ArrayAdapter arrayUnidadeDeMedidas = new ArrayAdapter(context, android.R.layout.simple_spinner_item, unidadesDeMedidas);
+                        arrayUnidadeDeMedidas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spnUnidadeDeMedida.setAdapter(arrayUnidadeDeMedidas);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<UnidadeDeMedida> unidadeDeMedidasTemp) {
+                        unidadesDeMedidas.addAll(unidadeDeMedidasTemp);
+                    }
+                });
+
+
+    }
+
+    public void setSpinnerCategoria() {
+
+        new CategoriaServiceImpl().findAll()
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        comboView.fillDataInSpinnerCategoria();
+                    }
+                })
+                .subscribe(new Observer<List<Categoria>>() {
+                    @Override
+                    public void onCompleted() {
+
+                        ArrayAdapter arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
+                        arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spnCategoria.setAdapter(arrayCategorias);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Categoria> categoriasTemp) {
+                        categorias.addAll(categoriasTemp);
+                    }
+                });
 
 
     }
@@ -141,8 +194,8 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
     public void onCreate() {
 
         operationType = OperationType.SAVE;
-        getDadoSpinnerCategoria(spnCategoria);
-        getDadoSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+        getDadosSpinnerCategoria(spnCategoria);
+        getDadosSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
         String retornoStr = combo.isValid(context);
 
         if (retornoStr.length() > 1)
@@ -481,11 +534,11 @@ public class ComboPresenter implements IComboPresenter, ITaskProcess {
         }
     }
 
-    public void getDadoSpinnerCategoria(Spinner spinner) {
+    public void getDadosSpinnerCategoria(Spinner spinner) {
         combo.setCategoria((Categoria) getDadosDeSpinner(spinner));
     }
 
-    public void getDadoSpinnerUnidadeDeMedida(Spinner spinner) {
+    public void getDadosSpinnerUnidadeDeMedida(Spinner spinner) {
         combo.setUnidadeDeMedida((UnidadeDeMedida) getDadosDeSpinner(spinner));
     }
 

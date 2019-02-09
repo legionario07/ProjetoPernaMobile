@@ -3,7 +3,6 @@ package br.com.omniatechnology.pernavendas.pernavendas.telas;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -19,21 +18,16 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.CategoriaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.ComboPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IComboPresenter;
-import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
-import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.ProdutosCombosAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Categoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
-import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.UnidadeDeMedida;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
@@ -88,13 +82,13 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
         spnUnidadeDeMedida = findViewById(R.id.spnUnidadeDeMedidaCombo);
 
         comboPresenter = new ComboPresenter(this, this);
-        ((ComboPresenter) comboPresenter).initializeSpinner(spnCategoria, spnUnidadeDeMedida);
+        comboPresenter.initializeSpinner(spnCategoria, spnUnidadeDeMedida);
 
-        ((ComboPresenter) comboPresenter).addTextWatcherNomeCombo(inpNomeCombo);
-        ((ComboPresenter) comboPresenter).addTextWatcherPrecoVenda(inpPrecoVenda);
-        ((ComboPresenter) comboPresenter).addTextWatcherEanCombo(inpEanCombo);
-        ((ComboPresenter) comboPresenter).addTextWatcherDescricaoCombo(inpDescricaoCombo);
-        ((ComboPresenter) comboPresenter).addTextWatcherQtdeCombo(inpQtdeCombo);
+        comboPresenter.addTextWatcherNomeCombo(inpNomeCombo);
+        comboPresenter.addTextWatcherPrecoVenda(inpPrecoVenda);
+        comboPresenter.addTextWatcherEanCombo(inpEanCombo);
+        comboPresenter.addTextWatcherDescricaoCombo(inpDescricaoCombo);
+        comboPresenter.addTextWatcherQtdeCombo(inpQtdeCombo);
         comboPresenter.atualizarProdutos(inpProduto);
 
         btnSave.setOnClickListener(this);
@@ -198,6 +192,15 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
     @Override
     public void onLoadeadEntitys() {
 
+        fillDataInSpinnerCategoria();
+        fillDataInSpinnerUnidadeDeMedida();
+
+    }
+
+    public void fillDataInSpinnerCategoria() {
+
+        if(combo == null)
+            return;
 
         for(int i = 0;i<spnCategoria.getAdapter().getCount();i++){
 
@@ -205,10 +208,16 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
             if (combo.getCategoria().getId().compareTo(categoria.getId())==0) {
                 spnCategoria.setSelection(i);
-                continue;
+                return;
             }
 
         }
+    }
+
+    public void fillDataInSpinnerUnidadeDeMedida() {
+
+        if(combo == null)
+            return;
 
         for(int i = 0;i<spnUnidadeDeMedida.getAdapter().getCount();i++){
 
@@ -216,11 +225,10 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
             if (combo.getUnidadeDeMedida().getId().compareTo(unidadeDeMedida.getId())==0) {
                 spnUnidadeDeMedida.setSelection(i);
-                continue;
+                return;
             }
 
         }
-
     }
 
     @Override
@@ -284,8 +292,8 @@ public class NewComboActivity extends AppCompatActivity implements IModelView.IC
 
     private void getDadosDeSpinner() {
 
-        comboPresenter.getDadoSpinnerCategoria(spnCategoria);
-        comboPresenter.getDadoSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
+        comboPresenter.getDadosSpinnerCategoria(spnCategoria);
+        comboPresenter.getDadosSpinnerUnidadeDeMedida(spnUnidadeDeMedida);
 
     }
 

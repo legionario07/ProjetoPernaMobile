@@ -32,4 +32,5 @@ public interface IProdutoPresenter extends IModelPresenter{
     void getDadosForCheckboxSubProduto(CheckBox isSubProduto);
     void getDadosForCheckboxAtivo(CheckBox isSubProduto);
 
+
 }

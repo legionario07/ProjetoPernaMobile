@@ -30,6 +30,8 @@ public interface IModelView {
 
     interface IComboView extends IModelView{
         void onLoadeadEntitys();
+        void fillDataInSpinnerCategoria();
+        void fillDataInSpinnerUnidadeDeMedida();
     }
 
     interface IConfiguracaoView extends IModelView{

@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,12 +15,20 @@ public interface IComboPresenter extends IModelPresenter{
 
     void atualizarList(ListView view, TextView txtEmpty);
 
+    void initializeSpinnersWithData();
+    void initializeSpinner(Spinner spnCategoria, Spinner spnUnidadeDeMedida);
 
     void atualizarProdutos(AutoCompleteTextView autoCompleteTextView);
 
     void setProdutosEmCombo(List<Produto> produtos);
 
-    void getDadoSpinnerCategoria(Spinner spnCategoria);
+    void getDadosSpinnerCategoria(Spinner spnCategoria);
 
-    void getDadoSpinnerUnidadeDeMedida(Spinner spnUnidadeDeMedida);
+    void getDadosSpinnerUnidadeDeMedida(Spinner spnUnidadeDeMedida);
+
+    void addTextWatcherPrecoVenda(EditText editText);
+    void addTextWatcherEanCombo(EditText editText);
+    void addTextWatcherQtdeCombo(EditText editText);
+    void addTextWatcherDescricaoCombo(EditText editText);
+    void addTextWatcherNomeCombo(EditText editText);
 }

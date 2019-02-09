@@ -90,4 +90,5 @@
     <string name="apenas_administradores_editam">Apenas Administradores podem Editar ou Excluir Vendas</string>
     <string name="version">Version:</string>
     <string name="conexao_com_a_internet">Verifique sua conexão com a Internet</string>
+    <string name="conexao_internet">Verifique sua conexão com a Internet</string>
 </resources>

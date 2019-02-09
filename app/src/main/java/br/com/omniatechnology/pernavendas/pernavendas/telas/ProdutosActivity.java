@@ -36,7 +36,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         setContentView(R.layout.produtos_activity);
 
         if (!VerificaConexaoStrategy.verificarConexao(this)) {
-            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.conexao_internet), Toast.LENGTH_LONG).show();
             finishAffinity();
         }
 
@@ -52,21 +52,11 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
-        ((ProdutoPresenter) produtoPresenter).atualizarList(rcViewProdutos, txtEmpty);
+        produtoPresenter.atualizarList(rcViewProdutos, txtEmpty);
 
 
 
     }
-
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        getMenuInflater().inflate(R.menu.menu_contextual, menu);
-//
-//        ContextMenuRecyclerView.RecyclerContextMenuInfo info = (ContextMenuRecyclerView
-//                .RecyclerContextMenuInfo) menuInfo;
-//
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -131,5 +121,20 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     @Override
     public void onLoadeadEntitys() {
        produtosAdapter = (ProdutosAdapter) rcViewProdutos.getAdapter();
+    }
+
+    @Override
+    public void fillDataInSpinnerMarca() {
+
+    }
+
+    @Override
+    public void fillDataInSpinnerCategoria() {
+
+    }
+
+    @Override
+    public void fillDataInSpinnerUnidadeDeMedida() {
+
     }
 }

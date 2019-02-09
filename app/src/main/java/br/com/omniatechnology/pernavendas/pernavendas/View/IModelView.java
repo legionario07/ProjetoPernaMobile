@@ -15,6 +15,9 @@ public interface IModelView {
     interface IProdutoView extends IModelView{
 
         void onLoadeadEntitys();
+        void fillDataInSpinnerMarca();
+        void fillDataInSpinnerCategoria();
+        void fillDataInSpinnerUnidadeDeMedida();
     }
 
     interface IMarcaView extends IModelView{

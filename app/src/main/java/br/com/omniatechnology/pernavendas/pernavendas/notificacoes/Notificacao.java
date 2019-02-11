@@ -40,10 +40,10 @@ public class Notificacao {
                 .setContentIntent(pendingIntent);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-          //  builder.setSmallIcon(R.mipmap);
+           builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setColor(NotificationCompat.COLOR_DEFAULT);
         } else {
-            //builder.setSmallIcon(R.mipmap.poker_sale);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
         }
 
 

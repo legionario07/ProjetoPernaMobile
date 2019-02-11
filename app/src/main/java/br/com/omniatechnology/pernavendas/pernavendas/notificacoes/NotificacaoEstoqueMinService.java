@@ -94,7 +94,7 @@ public class NotificacaoEstoqueMinService extends Service {
                     }
 
                     try {
-                        Thread.sleep(1_800);
+                        Thread.sleep(1_800_000);
                     } catch (InterruptedException e) {
                         Log.e(ConstraintUtils.TAG,e.getMessage());
                         e.printStackTrace();

@@ -20,6 +20,7 @@ public class SessionUtil {
     private List<Categoria> categorias;
     private List<Marca> marcas;
     private List<UnidadeDeMedida> unidadeDeMedidas;
+    private Integer qtdeMinEstoqueDefault;
 
     private SessionUtil(){
 
@@ -90,5 +91,13 @@ public class SessionUtil {
         }
 
         return instance;
+    }
+
+    public Integer getQtdeMinEstoqueDefault() {
+        return qtdeMinEstoqueDefault;
+    }
+
+    public void setQtdeMinEstoqueDefault(Integer qtdeMinEstoqueDefault) {
+        this.qtdeMinEstoqueDefault = qtdeMinEstoqueDefault;
     }
 }

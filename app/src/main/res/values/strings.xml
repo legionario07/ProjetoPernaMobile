@@ -106,4 +106,6 @@
     <string name="unidades_de_medidas">Unidades de Medidas</string>
     <string name="Produtos">Produtos</string>
     <string name="cadastros">Cadastros</string>
+    <string name="perna_vendas">PERNA VENDAS</string>
+    <string name="produtos_acabando">Produtos estão acabando em seu Estoque</string>
 </resources>

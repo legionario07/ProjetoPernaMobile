@@ -16,6 +16,7 @@ public interface IConfiguracaoService {
     String FIND_BY_ID = BASE_URL_CONFIGURACOES + "findById";
     String SAVE = BASE_URL_CONFIGURACOES + "save";
     String DELETE = BASE_URL_CONFIGURACOES + "delete";
+    String FIND_BY_PROPRIEDADE = BASE_URL_CONFIGURACOES + "findByPropriedade";
 
 
 
@@ -31,4 +32,6 @@ public interface IConfiguracaoService {
     @GET(FIND_BY_ID)
     Observable<Configuracao> findById(@Query("id") Long id);
 
+    @GET(FIND_BY_PROPRIEDADE)
+    Observable<Configuracao> findByPropriedade(@Query("propriedade") String propriedade);
 }

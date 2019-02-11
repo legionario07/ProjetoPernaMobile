@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -51,6 +52,16 @@
         <activity android:name=".telas.CombosActivity" />
         <activity android:name=".telas.NewComboActivity" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".telas.PedidosActivity" />
+
+        <service android:name="br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService"
+            android:label="NotificacaoEstoqueMinService">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="PRODUTOS_ESTOQUE_MIN"/>
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

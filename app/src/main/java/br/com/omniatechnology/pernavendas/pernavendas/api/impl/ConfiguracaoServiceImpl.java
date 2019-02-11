@@ -68,6 +68,18 @@ public class ConfiguracaoServiceImpl implements IConfiguracaoService {
 
     }
 
+    public Observable<Configuracao> findByPropriedade(final String propriedade){
+
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IConfiguracaoService.class);
+
+        return service.findByPropriedade(propriedade).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
     public Observable<Boolean> delete(final Long id){
 
         retrofit = RetrofitConfig.getBuilderAdapter();

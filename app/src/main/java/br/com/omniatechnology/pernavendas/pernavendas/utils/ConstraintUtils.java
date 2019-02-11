@@ -29,6 +29,10 @@ public class ConstraintUtils {
 
     //NOTIFICAÇÒES
     public static final int NOTIFICACAO_QTDE_MIN_DEFAULT = 1;
+    public static final String NOTIFICACAO_QTDE_MIN_DEFAULT_STR = "NOTIFICACAO_QTDE_MIN_DEFAULT";
+    public static final String PRODUTOS_ESTOQUE_MIN = "PRODUTOS_ESTOQUE_MIN";
+    public static final String NOTIFICACAO_CLASS_SERVICE = "br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService";
+
 
 
 }

@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ServiceUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 
 public class HomeActivity extends AppCompatActivity
@@ -50,6 +53,11 @@ public class HomeActivity extends AppCompatActivity
         menu = navigationView.getMenu();
 
         inativarMenu();
+
+        if (!ServiceUtil.isRunningService(this, ConstraintUtils.NOTIFICACAO_CLASS_SERVICE)) {
+            Intent i = new Intent(this, NotificacaoEstoqueMinService.class);
+            startService(i);
+        }
 
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,7 +65,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private TextView txtNomeProduto;
     private TextView txtDescricaoProduto;
     private TextInputLayout inpLayoutQuantidade;
-    private TextInputLayout inpNomeCliente;
+    private EditText inpNomeCliente;
     private TextInputLayout inpLayoutDesconto;
 
     private ImageButton imgQrCode;
@@ -92,7 +93,6 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         imgQrCode.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
-        ((VendaPresenter) vendaPresenter).addTextWatcherNomeCliente(inpNomeCliente.getEditText());
 
         vendaPresenter.addDataForAdapter(inpProduto);
 
@@ -189,6 +189,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
                 venda.setPedidos(pedidos);
                 venda.setUsuario(SessionUtil.getInstance().getUsuario());
                 venda.setValorTotal(new BigDecimal(txtTotal.getText().toString()));
+                venda.setNomeCliente(inpNomeCliente.getText().toString());
 
                 vendaPresenter.save(venda);
 

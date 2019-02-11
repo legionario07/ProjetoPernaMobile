@@ -248,12 +248,12 @@ public class VendaPresenter implements IVendaPresenter{
                     @Override
                     public void onCompleted() {
 
-                        if (pedidosAdapter == null) {
+                        if (vendasAbertasAdapter == null) {
                             vendasAbertasAdapter = new VendasAbertasAdapter(context, vendas);
 
-                            lstVenda.setAdapter(pedidosAdapter);
+                            lstVenda.setAdapter(vendasAbertasAdapter);
                         } else {
-                            pedidosAdapter.notifyDataSetChanged();
+                            vendasAbertasAdapter.notifyDataSetChanged();
                         }
 
                         if (vendas.isEmpty()) {
@@ -264,7 +264,7 @@ public class VendaPresenter implements IVendaPresenter{
                             txtEmpty.setVisibility(View.GONE);
                         }
 
-                        pedidosAdapter.notifyDataSetChanged();
+                        vendasAbertasAdapter.notifyDataSetChanged();
 
                     }
 

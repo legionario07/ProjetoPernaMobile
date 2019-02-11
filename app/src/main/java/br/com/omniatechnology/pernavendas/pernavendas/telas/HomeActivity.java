@@ -44,6 +44,9 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        FloatingActionButton fabNewVenda = findViewById(R.id.fabNovaVenda);
+        fabNewVenda.setOnClickListener(this);
+
         menu = navigationView.getMenu();
 
         inativarMenu();
@@ -52,13 +55,13 @@ public class HomeActivity extends AppCompatActivity
 
     private void inativarMenu() {
 
-        if(SessionUtil.getInstance().getUsuario().getPerfil().getId()!=1){
+        if (SessionUtil.getInstance().getUsuario().getPerfil().getId() != 1) {
             menu.getItem(0).setVisible(false); //Vendas
-            menu.getItem(1).getSubMenu().getItem(5).setVisible(false); //Usuarios
+            menu.getItem(2).getSubMenu().getItem(5).setVisible(false); //Usuarios
         }
 
-            menu.getItem(1).getSubMenu().getItem(6).setVisible(false); //Perfil
-            menu.getItem(1).getSubMenu().getItem(7).setVisible(false); //Configurações
+        menu.getItem(2).getSubMenu().getItem(6).setVisible(false); //Perfil
+        menu.getItem(2).getSubMenu().getItem(7).setVisible(false); //Configurações
 
     }
 
@@ -106,7 +109,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_configuracao) {
 
-           startActivity(new Intent(this, ConfiguracoesActivity.class));
+            startActivity(new Intent(this, ConfiguracoesActivity.class));
 
         } else if (id == R.id.nav_combos) {
 
@@ -125,15 +128,19 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_unidades_de_medidas) {
 
-           startActivity(new Intent(this, UnidadesDeMedidasActivity.class));
+            startActivity(new Intent(this, UnidadesDeMedidasActivity.class));
 
-        }else if (id == R.id.nav_usuarios) {
+        } else if (id == R.id.nav_usuarios) {
 
             startActivity(new Intent(this, UsuariosActivity.class));
 
-        }else if (id == R.id.nav_vendas) {
+        } else if (id == R.id.nav_vendas) {
 
             startActivity(new Intent(this, VendasActivity.class));
+
+        } else if (id == R.id.nav_pedidos) {
+
+            startActivity(new Intent(this, PedidosActivity.class));
 
         }
 
@@ -145,14 +152,22 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.img_vendas:
+
 
                 startActivity(new Intent(this, PedidosActivity.class));
 
                 break;
 
-                default:
+            case R.id.fabNovaVenda:
+
+
+                startActivity(new Intent(this, NewVendaActivity.class));
+
+                break;
+
+            default:
         }
 
     }

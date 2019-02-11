@@ -15,12 +15,16 @@ public interface IVendaService {
     String BASE_URL_VENDAS = "vendas/";
     String FIND_BY_ID = BASE_URL_VENDAS + "findById";
     String SAVE = BASE_URL_VENDAS + "save";
+    String SAVE_SEM_DECREMENTAR = BASE_URL_VENDAS + "saveSemDecrementar";
     String VENDAS_ABERTAS = BASE_URL_VENDAS + "findAllVendasAbertas";
     String VENDAS_FECHADAS = BASE_URL_VENDAS + "findAllVendasFechadas";
     String DELETE = BASE_URL_VENDAS + "delete";
 
     @POST(SAVE)
     Observable<Venda> save(@Body Venda venda);
+
+    @POST(SAVE_SEM_DECREMENTAR)
+    Observable<Venda> saveSemDrecrementar(@Body Venda venda);
 
     @DELETE(DELETE)
     Observable<Boolean> delete(@Query("id") Long id);

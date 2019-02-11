@@ -23,4 +23,6 @@ public class ConstraintUtils {
     public static final String PREFERENCES = "PREFERENCES_APP";
     public static final int IDENTIFICATION_ACTIVITY = 1 ;
     public static final String COMBO_INTENT = "0001";
+    public static final String IS_VENDA_ABERTA = "VENDA_ABERTA";
+    public static final String VENDA_INTENT = "0001";
 }

@@ -33,6 +33,17 @@ public class VendaServiceImpl implements IVendaService {
 
     }
 
+    @Override
+    public Observable<Venda> saveSemDrecrementar(Venda venda) {
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IVendaService.class);
+
+
+        return service.saveSemDrecrementar(venda).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Observable<List<Venda>> findAll(){
 
         retrofit = RetrofitConfig.getBuilderAdapter();

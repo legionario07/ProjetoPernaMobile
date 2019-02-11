@@ -124,6 +124,12 @@ public class VendasActivity extends AppCompatActivity implements IModelView.IVen
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
 
 
 

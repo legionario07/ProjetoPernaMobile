@@ -100,6 +100,11 @@ public class VendaPresenter implements IVendaPresenter{
         onCreate();
     }
 
+    public void saveSemDecrementar(Venda venda) {
+        this.venda = venda;
+        onCreateSemDecrementar();
+    }
+
     public void atualizarListaVenda(ListView view, TextView txtEmpty) {
 
         this.lstVenda = view;
@@ -142,6 +147,47 @@ public class VendaPresenter implements IVendaPresenter{
 
             new VendaServiceImpl().save(venda)
                     .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doOnUnsubscribe(ViewHelper.closeProgressDialogAction(context))
+                    .doAfterTerminate(new Action0() {
+                        @Override
+                        public void call() {
+                            findAllVendasAbertas();
+                        }
+                    })
+                    .subscribe(new Observer<Venda>() {
+                        @Override
+                        public void onCompleted() {
+                            vendaView.onMessageSuccess(context.getString(R.string.save_success));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            vendaView.onMessageError(context.getString(R.string.error_operacao) + " - " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Venda venda) {
+
+                        }
+                    });
+
+
+        } else {
+            vendaView.onMessageError(retornoStr);
+        }
+
+    }
+
+    @Override
+    public void onCreateSemDecrementar() {
+
+        String retornoStr = venda.isValid(context);
+
+
+        if (retornoStr.length() == 0) {
+
+            new VendaServiceImpl().saveSemDrecrementar(venda)
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                     .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
                     .subscribe(new Observer<Venda>() {
                         @Override
@@ -167,7 +213,6 @@ public class VendaPresenter implements IVendaPresenter{
 
     }
 
-   
 
     @Override
     public void findById() {

@@ -34,6 +34,11 @@ public class PedidosAdapter extends ArrayAdapter<Pedido> {
     }
 
     @Override
+    public void addAll(Pedido... items) {
+        super.addAll(items);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         Pedido pedido = this.lista.get(position);
@@ -46,7 +51,7 @@ public class PedidosAdapter extends ArrayAdapter<Pedido> {
         TextView txtItemValor = (TextView) convertView.findViewById(R.id.txtItemValor);
 
 
-        if(pedido.getProduto().getId()!=null){
+        if(pedido.getProduto()!=null){
             txtItemNomeProduto.setText(((Produto) pedido.getProduto() ).getNome());
         }else{
             txtItemNomeProduto.setText(((Combo) pedido.getCombo() ).getNome());

@@ -52,7 +52,7 @@ public class PedidosActivity extends AppCompatActivity implements IModelView.IVe
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getMenuInflater().inflate(R.menu.menu_contextual, menu);
+        getMenuInflater().inflate(R.menu.menu_contextual_salvar_venda, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -62,16 +62,28 @@ public class PedidosActivity extends AppCompatActivity implements IModelView.IVe
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 
-        if(SessionUtil.getInstance().getUsuario().getPerfil().getId().compareTo(1l)!=1){
+        if(SessionUtil.getInstance().getUsuario().getPerfil().getId().compareTo(1l)!=0){
             Toast.makeText(this, getString(R.string.apenas_administradores_editam),Toast.LENGTH_LONG).show();
             return true;
         }
 
         switch (item.getItemId()) {
+
+            case R.id.menu_fechar:
+
+                Venda venda = (Venda) lstVenda.getItemAtPosition(info.position);
+                venda.setClosed(true);
+
+               vendaPresenter.save(venda);
+
+
+                break;
+
             case R.id.menu_editar:
 
                 Intent intent = new Intent(this,NewVendaActivity.class);
-                intent.putExtra(ConstraintUtils.USUARIO_INTENT, (Serializable) lstVenda.getItemAtPosition(info.position));
+                intent.putExtra(ConstraintUtils.VENDA_INTENT, (Serializable) lstVenda.getItemAtPosition(info.position));
+                intent.putExtra(ConstraintUtils.IS_VENDA_ABERTA, "true");
                 startActivityForResult(intent, ConstraintUtils.IDENTIFICATION_ACTIVITY);
 
                 break;
@@ -124,6 +136,12 @@ public class PedidosActivity extends AppCompatActivity implements IModelView.IVe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
 
 
 

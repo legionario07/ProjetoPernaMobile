@@ -37,6 +37,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
@@ -67,6 +68,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private TextInputLayout inpLayoutQuantidade;
     private EditText inpNomeCliente;
     private TextInputLayout inpLayoutDesconto;
+
+    private boolean isVendaAberta;
 
     private ImageButton imgQrCode;
 
@@ -106,10 +109,37 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         });
 
 
-        atualizarListDePedidos();
-
         registerForContextMenu(lstPedidos);
 
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            if (getIntent().getExtras().containsKey(ConstraintUtils.VENDA_INTENT)) {
+                venda = (Venda) getIntent().getExtras().get(ConstraintUtils.VENDA_INTENT);
+                preencherDadosNaView();
+            }
+
+            if (getIntent().getExtras().containsKey(ConstraintUtils.IS_VENDA_ABERTA)) {
+                isVendaAberta = true;
+            }
+        } else {
+            atualizarListDePedidos();
+        }
+
+    }
+
+    private void preencherDadosNaView() {
+
+        String nomeCliente = venda.getNomeCliente();
+
+        if (nomeCliente != null) {
+            inpNomeCliente.setText(nomeCliente);
+        } else {
+            inpNomeCliente.setText("");
+        }
+
+        pedidos = venda.getPedidos();
+
+        atualizarListDePedidos();
 
     }
 
@@ -144,7 +174,9 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         BigDecimal valorTotal = new BigDecimal("0.0");
 
         if (pedidosAdapter == null) {
-            pedidos = new ArrayList<>();
+            if (pedidos == null)
+                pedidos = new ArrayList<>();
+
             pedidosAdapter = new PedidosAdapter(this, pedidos);
             lstPedidos.setAdapter(pedidosAdapter);
 
@@ -152,10 +184,10 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
             pedidosAdapter.notifyDataSetChanged();
 
-            for (Pedido p : pedidos) {
-                valorTotal = valorTotal.add(p.getValorTotal());
-            }
+        }
 
+        for (Pedido p : pedidos) {
+            valorTotal = valorTotal.add(p.getValorTotal());
         }
 
         txtTotal.setText(valorTotal.toString());
@@ -166,7 +198,8 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     @Override
     public void onMessageSuccess(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        onBackPressed();
+        Intent intent = new Intent(this, PedidosActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -178,20 +211,22 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     public void onClick(View v) {
 
         if (!VerificaConexaoStrategy.verificarConexao(this)) {
-            Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.conexao_com_a_internet), Toast.LENGTH_LONG).show();
             finishAffinity();
         }
 
         switch (v.getId()) {
             case R.id.imgSalvarVenda:
 
-                venda = new Venda();
+                if (venda == null) {
+                    venda = new Venda();
+                }
                 venda.setPedidos(pedidos);
                 venda.setUsuario(SessionUtil.getInstance().getUsuario());
                 venda.setValorTotal(new BigDecimal(txtTotal.getText().toString()));
                 venda.setNomeCliente(inpNomeCliente.getText().toString());
 
-                vendaPresenter.save(venda);
+                vendaPresenter.saveSemDecrementar(venda);
 
 
                 break;
@@ -316,5 +351,10 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
 }

@@ -23,7 +23,7 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
 
     public Combo(Long id) {
         this();
-       setId(id);
+        setId(id);
     }
 
     public Combo() {
@@ -41,7 +41,6 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
     }
 
 
-
     @Override
     public String toString() {
         return getNome() + " - " + getDescricao();
@@ -51,11 +50,13 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
     @Override
     public String isValid(Context context) {
         StringBuilder retorno = new StringBuilder();
-        if(TextUtils.isEmpty(getNome())){
+        if (TextUtils.isEmpty(getNome())) {
 
             retorno.append(context.getResources().getString(R.string.nome_vazio_combo));
-        }else if(getValorVenda()==null){
+        } else if (getValorVenda() == null) {
             retorno.append(context.getResources().getString(R.string.preco_vazio_combo));
+        } else if (getQtde() == null) {
+            retorno.append(context.getResources().getString(R.string.deve_haver_qtde));
         }
 
         return retorno.toString();

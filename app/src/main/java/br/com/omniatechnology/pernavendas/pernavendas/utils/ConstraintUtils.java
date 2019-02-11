@@ -25,4 +25,10 @@ public class ConstraintUtils {
     public static final String COMBO_INTENT = "0001";
     public static final String IS_VENDA_ABERTA = "VENDA_ABERTA";
     public static final String VENDA_INTENT = "0001";
+
+
+    //NOTIFICAÇÒES
+    public static final int NOTIFICACAO_QTDE_MIN_DEFAULT = 1;
+
+
 }

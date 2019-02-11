@@ -3,6 +3,7 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -197,7 +198,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
                     @Override
                     public void onCompleted() {
 
-                        if (configuracoes == null) {
+                        if (configuracoesAdapter == null) {
                             configuracoesAdapter = new ConfiguracoesAdapter(context, configuracoes);
 
                             view.setAdapter(configuracoesAdapter);
@@ -219,6 +220,7 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        configuracaoView.onMessageError(e.getMessage());
                     }
 
                     @Override

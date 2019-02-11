@@ -30,7 +30,6 @@
     <string name="total_vazio">A Quantidade não pode ser vazia</string>
     <string name="categoria_ex_bebidas">Categoria (Ex. Bebidas)</string>
     <string name="configuracao">Configuração</string>
-    <string name="marca">Marca</string>
     <string name="propriedade">Propriedade</string>
     <string name="valor">Valor</string>
     <string name="nao_possivel_dados_solicitados">Não foi possível localizar os dados solicitados</string>
@@ -98,4 +97,13 @@
     <string name="pedidos_em_aberto">Pedidos Em Abertos</string>
     <string name="digite_nome_cliente">Digite o nome do Cliente</string>
     <string name="deve_haver_qtde">Qtde deve ser preenchido</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="Perfil">Perfil</string>
+    <string name="usuarios">Usuários</string>
+    <string name="categorias">Categorias</string>
+    <string name="marcas">Marcas</string>
+    <string name="marca">Marca</string>
+    <string name="unidades_de_medidas">Unidades de Medidas</string>
+    <string name="Produtos">Produtos</string>
+    <string name="cadastros">Cadastros</string>
 </resources>

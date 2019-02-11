@@ -58,10 +58,11 @@ public class HomeActivity extends AppCompatActivity
         if (SessionUtil.getInstance().getUsuario().getPerfil().getId() != 1) {
             menu.getItem(0).setVisible(false); //Vendas
             menu.getItem(2).getSubMenu().getItem(5).setVisible(false); //Usuarios
+            menu.getItem(2).getSubMenu().getItem(7).setVisible(false); //Configurações
         }
 
         menu.getItem(2).getSubMenu().getItem(6).setVisible(false); //Perfil
-        menu.getItem(2).getSubMenu().getItem(7).setVisible(false); //Configurações
+
 
     }
 

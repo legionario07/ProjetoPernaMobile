@@ -15,13 +15,13 @@
             android:title="@string/pedidos" />
     </group>
 
-    <item android:title="Cadastros">
+    <item android:title="@string/cadastros">
         <menu>
 
             <item
                 android:id="@+id/nav_produtos"
                 android:icon="@drawable/ic_list_white_24dp"
-                android:title="Produtos" />
+                android:title="@string/Produtos" />
 
             <item
                 android:id="@+id/nav_combos"
@@ -31,32 +31,32 @@
             <item
                 android:id="@+id/nav_unidades_de_medidas"
                 android:icon="@drawable/ic_settings_ethernet_white_24dp"
-                android:title="Unidades de Medidas" />
+                android:title="@string/unidades_de_medidas" />
 
 
             <item
                 android:id="@+id/nav_categorias"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Categorias" />
+                android:title="@string/categorias" />
             <item
                 android:id="@+id/nav_marcas"
                 android:icon="@drawable/ic_store_mall_directory_white_24dp"
-                android:title="Marca" />
+                android:title="@string/marcas" />
 
             <item
                 android:id="@+id/nav_usuarios"
                 android:icon="@drawable/ic_person_add_white_24dp"
-                android:title="Usuários" />
+                android:title="@string/usuarios" />
 
             <item
                 android:id="@+id/nav_perfil"
                 android:icon="@drawable/ic_person_white_24dp"
-                android:title="Perfil" />
+                android:title="@string/Perfil" />
 
             <item
                 android:id="@+id/nav_configuracao"
                 android:icon="@drawable/ic_settings_white_24dp"
-                android:title="Configuração" />
+                android:title="@string/configuracoes" />
         </menu>
     </item>
 

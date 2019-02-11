@@ -28,6 +28,7 @@ public class Combo extends Mercadoria implements Serializable, ICombo {
 
     public Combo() {
         this.produtos = new ArrayList<Produto>();
+        this.setQtde(0);
     }
 
 

@@ -97,4 +97,5 @@
     <string name="cliente">Cliente</string>
     <string name="pedidos_em_aberto">Pedidos Em Abertos</string>
     <string name="digite_nome_cliente">Digite o nome do Cliente</string>
+    <string name="deve_haver_qtde">Qtde deve ser preenchido</string>
 </resources>

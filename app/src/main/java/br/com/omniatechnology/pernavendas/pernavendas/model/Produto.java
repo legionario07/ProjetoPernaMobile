@@ -31,6 +31,7 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
 
     public Produto() {
         super();
+        this.setQtde(0);
         this.qtdeSubProduto = 0;
     }
 
@@ -77,6 +78,8 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
             retorno.append(context.getResources().getString(R.string.valor_venda_vazio));
         }else if(getSubProduto() && TextUtils.isEmpty(getEanPai())){
             retorno.append(context.getResources().getString(R.string.se_sub_produto_deve_haver_ean_pai));
+        }else if(getQtde()==null){
+            retorno.append(context.getResources().getString(R.string.deve_haver_qtde));
         }
 
         return retorno.toString();

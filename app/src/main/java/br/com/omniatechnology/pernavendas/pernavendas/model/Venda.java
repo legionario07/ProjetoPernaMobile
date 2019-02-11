@@ -24,6 +24,25 @@ public class Venda implements Serializable, IVenda {
 	private BigDecimal valorTotal;
 	private List<Pedido> pedidos;
 	private Usuario usuario;
+	private Boolean isClosed;
+
+	public Boolean getClosed() {
+		return isClosed;
+	}
+
+	public void setClosed(Boolean closed) {
+		isClosed = closed;
+	}
+
+	public String getNomeCliente() {
+		return nomeCliente;
+	}
+
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente.toUpperCase().trim();
+	}
+
+	private String nomeCliente;
 	
 	public Venda(Long id) {
 		this();
@@ -34,6 +53,7 @@ public class Venda implements Serializable, IVenda {
 		this.pedidos = new ArrayList<Pedido>();
 		this.usuario = new Usuario();
 		this.dataVenda = Calendar.getInstance().getTimeInMillis();
+		this.isClosed = false;
 	}
 	
 	public Long getId() {

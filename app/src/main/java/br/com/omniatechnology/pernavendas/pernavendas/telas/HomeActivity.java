@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity
         switch (v.getId()){
             case R.id.img_vendas:
 
-                startActivity(new Intent(this, NewVendaActivity.class));
+                startActivity(new Intent(this, PedidosActivity.class));
 
                 break;
 

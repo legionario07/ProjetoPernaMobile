@@ -50,6 +50,7 @@
         <activity android:name=".telas.VendasActivity" />
         <activity android:name=".telas.CombosActivity" />
         <activity android:name=".telas.NewComboActivity" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".telas.PedidosActivity" />
     </application>
 
 </manifest>

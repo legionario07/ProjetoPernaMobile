@@ -91,4 +91,10 @@
     <string name="version">Version:</string>
     <string name="conexao_com_a_internet">Verifique sua conexão com a Internet</string>
     <string name="conexao_internet">Verifique sua conexão com a Internet</string>
+    <string name="novo_pedido">Novo Pedido</string>
+    <string name="pedidos">Pedidos</string>
+    <string name="aberto_em">Aberto Em</string>
+    <string name="cliente">Cliente</string>
+    <string name="pedidos_em_aberto">Pedidos Em Abertos</string>
+    <string name="digite_nome_cliente">Digite o nome do Cliente</string>
 </resources>

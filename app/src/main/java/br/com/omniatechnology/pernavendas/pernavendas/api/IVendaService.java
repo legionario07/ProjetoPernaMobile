@@ -15,6 +15,8 @@ public interface IVendaService {
     String BASE_URL_VENDAS = "vendas/";
     String FIND_BY_ID = BASE_URL_VENDAS + "findById";
     String SAVE = BASE_URL_VENDAS + "save";
+    String VENDAS_ABERTAS = BASE_URL_VENDAS + "findAllVendasAbertas";
+    String VENDAS_FECHADAS = BASE_URL_VENDAS + "findAllVendasFechadas";
     String DELETE = BASE_URL_VENDAS + "delete";
 
     @POST(SAVE)
@@ -28,4 +30,14 @@ public interface IVendaService {
 
     @GET(FIND_BY_ID)
     Observable<Venda> findById(@Query("id") Long id);
+
+
+    @GET(VENDAS_ABERTAS)
+    Observable<List<Venda>> findAllVendasAbertas();
+
+
+    @GET(VENDAS_FECHADAS)
+    Observable<List<Venda>> findAllVendasFechadas();
+
+
 }

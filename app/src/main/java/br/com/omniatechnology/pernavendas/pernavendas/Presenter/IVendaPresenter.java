@@ -14,6 +14,7 @@ public interface IVendaPresenter extends IModelPresenter{
     void atualizarListaPedidos(ListView listView);
     void atualizarListaVenda(ListView listView, TextView textView);
     void addDataForAdapter(AutoCompleteTextView autoCompleteTextView);
+    void atualizarListaVendasAbertas(ListView listView, TextView textView);
 
 
 }

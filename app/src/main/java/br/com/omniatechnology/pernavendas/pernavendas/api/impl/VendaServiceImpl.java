@@ -58,6 +58,30 @@ public class VendaServiceImpl implements IVendaService {
 
     }
 
+    @Override
+    public Observable<List<Venda>> findAllVendasFechadas() {
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IVendaService.class);
+
+
+        return service.findAllVendasFechadas().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    @Override
+    public Observable<List<Venda>> findAllVendasAbertas() {
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IVendaService.class);
+
+
+        return service.findAllVendasAbertas().subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
     public Observable<Boolean> delete(final Long id){
 
         retrofit = RetrofitConfig.getBuilderAdapter();

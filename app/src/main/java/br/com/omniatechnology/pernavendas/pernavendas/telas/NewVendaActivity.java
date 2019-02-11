@@ -21,28 +21,24 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.IVendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.Presenter.VendaPresenter;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAbertasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.QrCodeUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
-import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -68,6 +64,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     private TextView txtNomeProduto;
     private TextView txtDescricaoProduto;
     private TextInputLayout inpLayoutQuantidade;
+    private TextInputLayout inpNomeCliente;
     private TextInputLayout inpLayoutDesconto;
 
     private ImageButton imgQrCode;
@@ -75,7 +72,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.venda);
+        setContentView(R.layout.pedidos);
 
         if (!VerificaConexaoStrategy.verificarConexao(this)) {
             Toast.makeText(this, "Verifique sua conexão com a Internet", Toast.LENGTH_LONG).show();
@@ -84,6 +81,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
 
         lstPedidos = findViewById(R.id.lstPedidos);
         inpProduto = findViewById(R.id.inp_produto);
+        inpNomeCliente = findViewById(R.id.inp_nome_cliente);
         txtTotal = findViewById(R.id.txtTotal);
         imgAdicionarProduto = findViewById(R.id.imgAdicionarProduto);
         imgSalvarVenda = findViewById(R.id.imgSalvarVenda);
@@ -94,6 +92,7 @@ public class NewVendaActivity extends AppCompatActivity implements IModelView.IV
         imgQrCode.setOnClickListener(this);
 
         vendaPresenter = new VendaPresenter(this, this);
+        ((VendaPresenter) vendaPresenter).addTextWatcherNomeCliente(inpNomeCliente.getEditText());
 
         vendaPresenter.addDataForAdapter(inpProduto);
 

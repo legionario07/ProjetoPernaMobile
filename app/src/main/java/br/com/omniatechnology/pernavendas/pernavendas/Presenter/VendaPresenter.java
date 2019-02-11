@@ -2,9 +2,12 @@ package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,12 +17,12 @@ import java.util.List;
 import br.com.omniatechnology.pernavendas.pernavendas.R;
 import br.com.omniatechnology.pernavendas.pernavendas.View.IModelView;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.PedidosAdapter;
+import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAbertasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.adapter.VendasAdapter;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ComboServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.PedidoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImpl;
 import br.com.omniatechnology.pernavendas.pernavendas.api.impl.VendaServiceImpl;
-import br.com.omniatechnology.pernavendas.pernavendas.enums.OperationType;
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Combo;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
@@ -27,6 +30,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.model.Mercadoria;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Pedido;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Venda;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 import rx.Observer;
 import rx.functions.Action0;
 
@@ -40,6 +44,7 @@ public class VendaPresenter implements IVendaPresenter{
     private List<Mercadoria> produtos = new ArrayList<>();
     private List<Pedido> pedidos = new ArrayList<>();
     ArrayAdapter<Mercadoria> adapter;
+    private VendasAbertasAdapter vendasAbertasAdapter;
     private PedidosAdapter pedidosAdapter;
     private VendasAdapter vendasAdapter;
 
@@ -70,6 +75,25 @@ public class VendaPresenter implements IVendaPresenter{
         autoCompleteProdutos.setTextColor(Color.RED);
 
     }
+
+    @Override
+    public void atualizarListaVendasAbertas(ListView view, TextView txtEmpty) {
+
+        this.lstVenda = view;
+        this.txtEmpty = txtEmpty;
+
+        if (vendasAbertasAdapter == null) {
+            findAllVendasAbertas();
+
+        } else {
+
+            vendasAbertasAdapter.notifyDataSetChanged();
+
+        }
+
+
+    }
+
 
     public void save(Venda venda) {
         this.venda = venda;
@@ -153,7 +177,7 @@ public class VendaPresenter implements IVendaPresenter{
     @Override
     public void findAll() {
 
-        new VendaServiceImpl().findAll()
+        new VendaServiceImpl().findAllVendasFechadas()
                 .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
                 .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
                 .subscribe(new Observer<List<Venda>>() {
@@ -213,6 +237,54 @@ public class VendaPresenter implements IVendaPresenter{
     public void setItem(IModel model) {
         this.venda = (Venda) model;
     }
+
+
+    public void findAllVendasAbertas() {
+
+        new VendaServiceImpl().findAllVendasAbertas()
+                .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                .doAfterTerminate(ViewHelper.closeProgressDialogAction(context))
+                .subscribe(new Observer<List<Venda>>() {
+                    @Override
+                    public void onCompleted() {
+
+                        if (pedidosAdapter == null) {
+                            vendasAbertasAdapter = new VendasAbertasAdapter(context, vendas);
+
+                            lstVenda.setAdapter(pedidosAdapter);
+                        } else {
+                            pedidosAdapter.notifyDataSetChanged();
+                        }
+
+                        if (vendas.isEmpty()) {
+                            lstVenda.setVisibility(View.GONE);
+                            txtEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            lstVenda.setVisibility(View.VISIBLE);
+                            txtEmpty.setVisibility(View.GONE);
+                        }
+
+                        pedidosAdapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(List<Venda> vendasTemp) {
+                        if (vendas != null) {
+                            vendas.clear();
+                            vendas.addAll(vendasTemp);
+                        }
+                    }
+                });
+
+
+    }
+
+
 
     public void findAllPedidos() {
 
@@ -314,6 +386,34 @@ public class VendaPresenter implements IVendaPresenter{
         }
 
         return null;
+    }
+
+    public void addTextWatcherNomeCliente(final EditText editText) {
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                venda.setNomeCliente(s.toString());
+            }
+        });
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (false == hasFocus) {
+                    ViewUtils.hideKeyboard(context, editText);
+                }
+            }
+        });
     }
 
 

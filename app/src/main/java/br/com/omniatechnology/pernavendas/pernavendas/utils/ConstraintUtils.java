@@ -34,6 +34,7 @@ public class ConstraintUtils {
     public static final String NOTIFICACAO_CLASS_SERVICE = "br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService";
     public static final int NOTIFICACAO_LIGADA = 1;
     public static final String NOTIFICACAO_LIGADA_STR = "NOTIFICACAO_LIGADA";
+    public static final String NOTIFICACAO_TEMPO_DIAS = "NOTIFICACAO_TEMPO_DIAS";
 
 
 }

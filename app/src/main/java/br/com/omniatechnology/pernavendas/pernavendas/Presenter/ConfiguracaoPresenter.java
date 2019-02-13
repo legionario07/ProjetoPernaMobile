@@ -1,6 +1,7 @@
 package br.com.omniatechnology.pernavendas.pernavendas.Presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +20,11 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServi
 import br.com.omniatechnology.pernavendas.pernavendas.helpers.ViewHelper;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.IModel;
+import br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService;
+import br.com.omniatechnology.pernavendas.pernavendas.telas.HomeActivity;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ServiceUtil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ViewUtils;
 import rx.Observer;
 import rx.functions.Action0;
@@ -129,6 +135,38 @@ public class ConfiguracaoPresenter implements IConfiguracaoPresenter {
                         @Override
                         public void onCompleted() {
                             configuracaoView.onMessageSuccess(context.getString(R.string.save_success));
+
+                            if(configuracao.getPropriedade().equals(ConstraintUtils.NOTIFICACAO_TEMPO_DIAS)){
+                                try {
+                                    SessionUtil.getInstance().setNotificacaoTempo(Long.valueOf(configuracao.getValor()));
+                                }catch(Exception e){
+                                    SessionUtil.getInstance().setNotificacaoTempo(1l);
+                                }
+                            }
+
+                            //é NOTIFICAÇAO LIGADA
+                            if(configuracao.getPropriedade().equals(ConstraintUtils.NOTIFICACAO_LIGADA_STR)){
+                                try {
+                                    SessionUtil.getInstance().setNotificacaoLigada(Integer.valueOf(configuracao.getValor()));
+
+                                    Integer ligadoInt = Integer.valueOf(configuracao.getValor());
+
+                                    Intent i = new Intent(context, NotificacaoEstoqueMinService.class);
+
+                                    if (!ServiceUtil.isRunningService(context, ConstraintUtils.NOTIFICACAO_CLASS_SERVICE) && ligadoInt == 1) {
+
+                                        context.startService(i);
+                                    }else if(ServiceUtil.isRunningService(context, ConstraintUtils.NOTIFICACAO_CLASS_SERVICE) && ligadoInt == 0){
+                                        context.stopService(i);
+                                    }
+
+                                }catch (Exception e){
+                                    return;
+                                }
+
+
+                            }
+
                         }
 
                         @Override

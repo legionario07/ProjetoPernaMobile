@@ -16,6 +16,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ProdutoServiceImp
 import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.model.Produto;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.ServiceUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 import rx.Observer;
@@ -47,6 +48,7 @@ public class NotificacaoEstoqueMinService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.startId = startId;
+
 
         context = getBaseContext();
 
@@ -94,7 +96,8 @@ public class NotificacaoEstoqueMinService extends Service {
                     }
 
                     try {
-                        Thread.sleep(1_800_000);
+                        long timeSleep =  SessionUtil.getInstance().getNotificacaoTempo() * 1440 * (60*1000);
+                        Thread.sleep(timeSleep);
                     } catch (InterruptedException e) {
                         Log.e(ConstraintUtils.TAG,e.getMessage());
                         e.printStackTrace();

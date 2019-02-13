@@ -22,6 +22,7 @@ public class SessionUtil {
     private List<UnidadeDeMedida> unidadeDeMedidas;
     private Integer qtdeMinEstoqueDefault;
     private Integer notificacaoLigada;
+    private Long notificacaoTempo;
 
     private SessionUtil(){
 
@@ -108,5 +109,13 @@ public class SessionUtil {
 
     public void setNotificacaoLigada(Integer notificacaoLigada) {
         this.notificacaoLigada = notificacaoLigada;
+    }
+
+    public Long getNotificacaoTempo() {
+        return notificacaoTempo;
+    }
+
+    public void setNotificacaoTempo(Long notificacaoTempo) {
+        this.notificacaoTempo = notificacaoTempo;
     }
 }

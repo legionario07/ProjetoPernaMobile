@@ -25,6 +25,7 @@ import br.com.omniatechnology.pernavendas.pernavendas.utils.ServiceUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
 import rx.Observer;
+import rx.functions.Action0;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -64,10 +65,42 @@ public class HomeActivity extends AppCompatActivity
                 return;
             }
 
-            validarNotificacaoAtiva();
+            verificarTempoDeNotificacao();
 
 
         }
+
+    }
+
+    private void verificarTempoDeNotificacao() {
+        new ConfiguracaoServiceImpl().findByPropriedade(ConstraintUtils.NOTIFICACAO_TEMPO_DIAS)
+                .doAfterTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                        validarNotificacaoAtiva();
+                    }
+                })
+                .subscribe(new Observer<Configuracao>() {
+                    @Override
+                    public void onCompleted() {
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Configuracao configuracao) {
+                        try {
+                            SessionUtil.getInstance().setNotificacaoTempo(Long.valueOf(configuracao.getValor()));
+                        }catch (Exception e){
+                            SessionUtil.getInstance().setNotificacaoTempo(1l);
+                        }
+                    }
+                });
 
     }
 

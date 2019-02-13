@@ -1,18 +1,17 @@
 package br.com.omniatechnology.pernavendas.pernavendas.api;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import br.com.omniatechnology.pernavendas.pernavendas.utils.CalendarDeserializer;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RetrofitConfig {
 
@@ -27,6 +26,8 @@ public class RetrofitConfig {
     }
 
     public static Retrofit getBuilderAdapter(){
+
+
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

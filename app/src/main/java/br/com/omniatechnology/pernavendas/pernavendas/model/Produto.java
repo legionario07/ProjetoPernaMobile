@@ -92,7 +92,7 @@ public class Produto extends Mercadoria implements Serializable, IProduto {
     }
 
     public void setEanPai(String eanPai) {
-        this.eanPai = eanPai;
+        this.eanPai = eanPai.trim();
     }
 
     public Boolean getSubProduto() {

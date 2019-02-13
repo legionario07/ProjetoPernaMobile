@@ -87,7 +87,7 @@ public class Mercadoria implements Serializable {
     }
 
     public void setEan(String ean) {
-        this.ean = ean;
+        this.ean = ean.trim();
     }
 
     public boolean isAtivo() {

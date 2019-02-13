@@ -79,7 +79,7 @@ public class NotificacaoEstoqueMinService extends Service {
                                             try {
                                                 SessionUtil.getInstance().setQtdeMinEstoqueDefault(Integer.valueOf(configuracao.getValor()));
                                             }catch (Exception e){
-                                                return;
+                                                SessionUtil.getInstance().setQtdeMinEstoqueDefault(1);
                                             }
                                         }
                                     });

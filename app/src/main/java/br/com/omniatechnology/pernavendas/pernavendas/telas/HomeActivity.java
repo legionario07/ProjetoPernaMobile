@@ -17,10 +17,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import br.com.omniatechnology.pernavendas.pernavendas.R;
+import br.com.omniatechnology.pernavendas.pernavendas.api.impl.ConfiguracaoServiceImpl;
+import br.com.omniatechnology.pernavendas.pernavendas.model.Configuracao;
 import br.com.omniatechnology.pernavendas.pernavendas.notificacoes.NotificacaoEstoqueMinService;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ConstraintUtils;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.ServiceUtil;
 import br.com.omniatechnology.pernavendas.pernavendas.utils.SessionUtil;
+import br.com.omniatechnology.pernavendas.pernavendas.utils.VerificaConexaoStrategy;
+import rx.Observer;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -55,9 +59,48 @@ public class HomeActivity extends AppCompatActivity
         inativarMenu();
 
         if (!ServiceUtil.isRunningService(this, ConstraintUtils.NOTIFICACAO_CLASS_SERVICE)) {
-            Intent i = new Intent(this, NotificacaoEstoqueMinService.class);
-            startService(i);
+
+            if(!VerificaConexaoStrategy.verificarConexao(this)){
+                return;
+            }
+
+            validarNotificacaoAtiva();
+
+
         }
+
+    }
+
+    private void validarNotificacaoAtiva() {
+
+
+        new ConfiguracaoServiceImpl().findByPropriedade(ConstraintUtils.NOTIFICACAO_LIGADA_STR)
+                .subscribe(new Observer<Configuracao>() {
+                    @Override
+                    public void onCompleted() {
+
+                        if(SessionUtil.getInstance().getNotificacaoLigada()==ConstraintUtils.NOTIFICACAO_LIGADA){
+
+                            Intent i = new Intent(HomeActivity.this, NotificacaoEstoqueMinService.class);
+                            startService(i);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(Configuracao configuracao) {
+                        try {
+                            SessionUtil.getInstance().setNotificacaoLigada(Integer.valueOf(configuracao.getValor()));
+                        }catch (Exception e){
+                            SessionUtil.getInstance().setNotificacaoLigada(0);
+                        }
+                    }
+                });
+
 
     }
 

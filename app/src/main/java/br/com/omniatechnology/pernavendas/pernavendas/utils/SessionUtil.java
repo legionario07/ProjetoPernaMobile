@@ -21,6 +21,7 @@ public class SessionUtil {
     private List<Marca> marcas;
     private List<UnidadeDeMedida> unidadeDeMedidas;
     private Integer qtdeMinEstoqueDefault;
+    private Integer notificacaoLigada;
 
     private SessionUtil(){
 
@@ -99,5 +100,13 @@ public class SessionUtil {
 
     public void setQtdeMinEstoqueDefault(Integer qtdeMinEstoqueDefault) {
         this.qtdeMinEstoqueDefault = qtdeMinEstoqueDefault;
+    }
+
+    public Integer getNotificacaoLigada() {
+        return notificacaoLigada;
+    }
+
+    public void setNotificacaoLigada(Integer notificacaoLigada) {
+        this.notificacaoLigada = notificacaoLigada;
     }
 }

@@ -62,11 +62,6 @@ public class PedidosActivity extends AppCompatActivity implements IModelView.IVe
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 
-        if(SessionUtil.getInstance().getUsuario().getPerfil().getId().compareTo(1l)!=0){
-            Toast.makeText(this, getString(R.string.apenas_administradores_editam),Toast.LENGTH_LONG).show();
-            return true;
-        }
-
         switch (item.getItemId()) {
 
             case R.id.menu_fechar:

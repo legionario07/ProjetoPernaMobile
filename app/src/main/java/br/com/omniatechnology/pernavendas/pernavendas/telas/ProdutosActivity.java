@@ -63,7 +63,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         spnCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                produtoPresenter.filtrarLista(position);
+                produtoPresenter.findByCategoria(position);
 
             }
 

@@ -72,4 +72,15 @@ public class ProdutoServiceImpl implements IProdutoService {
 
     }
 
+    @Override
+    public Observable<List<Produto>> findByCategoriaId(Long categoriaId) {
+        retrofit = RetrofitConfig.getBuilderAdapter();
+
+        service = retrofit.create(IProdutoService.class);
+
+
+        return service.findByCategoriaId(categoriaId).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

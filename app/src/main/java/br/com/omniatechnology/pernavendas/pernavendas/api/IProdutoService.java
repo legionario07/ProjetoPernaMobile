@@ -15,6 +15,7 @@ public interface IProdutoService {
 
     String BASE_URL_PRODUTOS = "produtos/";
     String FIND_BY_ID = BASE_URL_PRODUTOS + "findById";
+    String FIND_BY_CATEGORIA = BASE_URL_PRODUTOS + "findByCategoriaId";
     String SAVE = BASE_URL_PRODUTOS + "save";
     String DELETE = BASE_URL_PRODUTOS + "delete";
 
@@ -30,6 +31,9 @@ public interface IProdutoService {
 
     @DELETE(DELETE)
     Observable<Boolean> delete(@Query("id") Long id);
+
+    @GET(FIND_BY_CATEGORIA)
+    Observable<List<Produto>> findByCategoriaId(@Query("categoriaId") Long categoriaId);
 
 
 }

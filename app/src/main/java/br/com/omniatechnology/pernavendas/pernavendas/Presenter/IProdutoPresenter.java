@@ -15,7 +15,7 @@ public interface IProdutoPresenter extends IModelPresenter{
     void initializeSpinner(Spinner spnMarca, Spinner spnCategoria, Spinner spnUnidadeDeMedida);
     void initializeSpinnersWithData();
     void initializeSpinnerCategoria(Spinner spinner);
-    void filtrarLista(Integer position);
+    void findByCategoria(Integer position);
     void setSpinnerCategoria();
     void init();
     void setSpinnerMarca();

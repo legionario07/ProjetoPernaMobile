@@ -49,8 +49,6 @@ public class ProdutoPresenter implements IProdutoPresenter {
     private Spinner spnUnidadeDeMedida;
 
     private ArrayAdapter arrayCategorias;
-    private List<Produto> listaInicial = new ArrayList<>();
-
     private TextView txtEmpty;
 
     public ProdutoPresenter() {
@@ -161,7 +159,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
                     @Override
                     public void onCompleted() {
 
-                       arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
+                        arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
                         arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spnCategoria.setAdapter(arrayCategorias);
 
@@ -330,13 +328,70 @@ public class ProdutoPresenter implements IProdutoPresenter {
                     public void onNext(List<Produto> produtosTemp) {
                         if (produtos != null) {
                             produtos.clear();
-                            listaInicial.clear();
-                            listaInicial.addAll(produtosTemp);
                             produtos.addAll(produtosTemp);
                         }
                     }
                 });
 
+    }
+
+    public void findByCategoria(final Integer position) {
+
+        if(produtosAdapter==null)
+            return;
+
+        if (position == 0) {
+            findAll();
+        } else {
+
+            new ProdutoServiceImpl().findByCategoriaId(categorias.get(position).getId())
+                    .doOnSubscribe(ViewHelper.showProgressDialogAction(context))
+                    .doOnUnsubscribe(
+                            ViewHelper.closeProgressDialogAction(context)
+                    )
+                    .doAfterTerminate(new Action0() {
+                        @Override
+                        public void call() {
+                            produtoView.onLoadeadEntitys();
+                        }
+                    })
+                    .subscribe(new Observer<List<Produto>>() {
+                        @Override
+                        public void onCompleted() {
+
+                            if (produtosAdapter == null) {
+                                produtosAdapter = new ProdutosAdapter(context, produtos);
+
+                                view.setAdapter(produtosAdapter);
+                            } else {
+                                produtosAdapter.notifyDataSetChanged();
+                            }
+
+                            if (produtos.isEmpty()) {
+                                view.setVisibility(View.GONE);
+                                txtEmpty.setVisibility(View.VISIBLE);
+                            } else {
+                                view.setVisibility(View.VISIBLE);
+                                txtEmpty.setVisibility(View.GONE);
+                            }
+
+                            produtosAdapter.notifyDataSetChanged();
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(List<Produto> produtosTemp) {
+                            if (produtos != null) {
+                                produtos.clear();
+                                produtos.addAll(produtosTemp);
+                            }
+                        }
+                    });
+        }
     }
 
 
@@ -585,39 +640,13 @@ public class ProdutoPresenter implements IProdutoPresenter {
         produto.setSubProduto(checkBox.isChecked());
     }
 
-    public void init(){
+    public void init() {
         Categoria categoria = new Categoria();
         categoria.setNome("Todos");
 
         categorias.add(0, categoria);
 
         arrayCategorias.notifyDataSetChanged();
-
-    }
-    public void filtrarLista(Integer position) {
-
-        if(produtosAdapter==null)
-            return;
-
-
-        if (position > 0) {
-
-            Categoria categoria = categorias.get(position);
-
-            List<Produto> listaTemp = new ArrayList<>();
-            for (Produto p : listaInicial) {
-                if (p.getCategoria().getId().compareTo(categoria.getId()) == 0)
-                    listaTemp.add(p);
-            }
-
-            produtos.clear();
-            produtos.addAll(listaTemp);
-            view.getAdapter().notifyDataSetChanged();
-
-        }else{
-            findAll();
-        }
-
 
     }
 }

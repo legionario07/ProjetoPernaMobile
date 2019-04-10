@@ -17,6 +17,14 @@
             android:layout_weight="1"
             android:text="@string/produtos" />
 
+        <Spinner
+            android:id="@+id/spn_categoria"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAlignment="center"
+            android:prompt="@string/todos"
+            android:layout_weight="0.5"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcViewProdutos"
             android:layout_width="match_parent"

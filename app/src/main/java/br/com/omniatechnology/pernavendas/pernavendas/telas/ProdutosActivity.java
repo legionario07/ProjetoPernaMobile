@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
     IProdutoPresenter produtoPresenter;
     private TextView txtEmpty;
     private ProdutosAdapter produtosAdapter;
+    private Spinner spnCategoria;
 
 
     @Override
@@ -43,6 +46,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
         rcViewProdutos = findViewById(R.id.rcViewProdutos);
         txtEmpty = findViewById(R.id.txtEmpty);
+        spnCategoria = findViewById(R.id.spn_categoria);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -53,9 +57,21 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
         fabNewProduto.setOnClickListener(this);
 
         produtoPresenter = new ProdutoPresenter(this, this);
+        produtoPresenter.initializeSpinnerCategoria(spnCategoria);
+        produtoPresenter.setSpinnerCategoria();
+
+        spnCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                produtoPresenter.filtrarLista(position);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         produtoPresenter.atualizarList(rcViewProdutos, txtEmpty);
-
-
 
     }
 
@@ -127,12 +143,11 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
 
     @Override
     public void fillDataInSpinnerMarca() {
-
     }
 
     @Override
     public void fillDataInSpinnerCategoria() {
-
+        produtoPresenter.init();
     }
 
     @Override

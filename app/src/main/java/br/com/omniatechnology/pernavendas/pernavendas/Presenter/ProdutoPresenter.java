@@ -48,6 +48,9 @@ public class ProdutoPresenter implements IProdutoPresenter {
     private Spinner spnCategoria;
     private Spinner spnUnidadeDeMedida;
 
+    private ArrayAdapter arrayCategorias;
+    private List<Produto> listaInicial = new ArrayList<>();
+
     private TextView txtEmpty;
 
     public ProdutoPresenter() {
@@ -60,17 +63,20 @@ public class ProdutoPresenter implements IProdutoPresenter {
         this.context = context;
     }
 
+    public void initializeSpinnerCategoria(Spinner spnCategoria) {
+        this.spnCategoria = spnCategoria;
+    }
 
     public void initializeSpinner(Spinner spnMarca, Spinner spnCategoria, Spinner spnUnidadeDeMedida) {
+        initializeSpinnerCategoria(spnCategoria);
         this.spnUnidadeDeMedida = spnUnidadeDeMedida;
-        this.spnCategoria = spnCategoria;
         this.spnMarca = spnMarca;
     }
 
     /**
      * Ira chamar o setSpinnerMarca -> setSpinnerUnidadeDeMedida -> setSpinnerCategorias
      */
-    public void initializeSpinnersWithData(){
+    public void initializeSpinnersWithData() {
         ViewHelper.showProgressDialog(context);
         setSpinnerMarca();
         setSpinnerCategoria();
@@ -83,7 +89,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
-                       produtoView.fillDataInSpinnerMarca();
+                        produtoView.fillDataInSpinnerMarca();
                     }
                 })
                 .subscribe(new Observer<List<Marca>>() {
@@ -115,8 +121,8 @@ public class ProdutoPresenter implements IProdutoPresenter {
                 .doAfterTerminate(new Action0() {
                     @Override
                     public void call() {
-                       produtoView.fillDataInSpinnerUnidadeDeMedida();
-                       produtoView.onLoadeadEntitys();
+                        produtoView.fillDataInSpinnerUnidadeDeMedida();
+                        produtoView.onLoadeadEntitys();
                     }
                 })
                 .subscribe(new Observer<List<UnidadeDeMedida>>() {
@@ -155,7 +161,7 @@ public class ProdutoPresenter implements IProdutoPresenter {
                     @Override
                     public void onCompleted() {
 
-                        ArrayAdapter arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
+                       arrayCategorias = new ArrayAdapter(context, android.R.layout.simple_spinner_item, categorias);
                         arrayCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spnCategoria.setAdapter(arrayCategorias);
 
@@ -324,6 +330,8 @@ public class ProdutoPresenter implements IProdutoPresenter {
                     public void onNext(List<Produto> produtosTemp) {
                         if (produtos != null) {
                             produtos.clear();
+                            listaInicial.clear();
+                            listaInicial.addAll(produtosTemp);
                             produtos.addAll(produtosTemp);
                         }
                     }
@@ -575,5 +583,41 @@ public class ProdutoPresenter implements IProdutoPresenter {
 
     public void getDadosForCheckboxSubProduto(CheckBox checkBox) {
         produto.setSubProduto(checkBox.isChecked());
+    }
+
+    public void init(){
+        Categoria categoria = new Categoria();
+        categoria.setNome("Todos");
+
+        categorias.add(0, categoria);
+
+        arrayCategorias.notifyDataSetChanged();
+
+    }
+    public void filtrarLista(Integer position) {
+
+        if(produtosAdapter==null)
+            return;
+
+
+        if (position > 0) {
+
+            Categoria categoria = categorias.get(position);
+
+            List<Produto> listaTemp = new ArrayList<>();
+            for (Produto p : listaInicial) {
+                if (p.getCategoria().getId().compareTo(categoria.getId()) == 0)
+                    listaTemp.add(p);
+            }
+
+            produtos.clear();
+            produtos.addAll(listaTemp);
+            view.getAdapter().notifyDataSetChanged();
+
+        }else{
+            findAll();
+        }
+
+
     }
 }

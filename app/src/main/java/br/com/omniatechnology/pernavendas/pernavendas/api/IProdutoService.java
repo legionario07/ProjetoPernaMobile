@@ -19,7 +19,6 @@ public interface IProdutoService {
     String SAVE = BASE_URL_PRODUTOS + "save";
     String DELETE = BASE_URL_PRODUTOS + "delete";
 
-
     @GET(BASE_URL_PRODUTOS)
     Observable<List<Produto>> findAll();
 

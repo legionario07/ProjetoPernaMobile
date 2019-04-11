@@ -83,4 +83,5 @@ public class ProdutoServiceImpl implements IProdutoService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+
 }

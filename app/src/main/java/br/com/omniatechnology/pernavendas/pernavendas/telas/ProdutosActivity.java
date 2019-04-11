@@ -92,6 +92,7 @@ public class ProdutosActivity extends AppCompatActivity implements IModelView.IP
                 produtoPresenter.onDelete(produtosAdapter.getItem(item.getGroupId()).getId());
 
                 break;
+
         }
         return super.onContextItemSelected(item);
     }
